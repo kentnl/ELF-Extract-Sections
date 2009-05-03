@@ -1,7 +1,11 @@
 package ELF::Extract::Sections;
 
-use warnings;
-use strict;
+use Moose;
+our $VERSION = '0.01';
+
+1;
+
+__END__
 
 =head1 NAME
 
@@ -9,12 +13,9 @@ ELF::Extract::Sections - The great new ELF::Extract::Sections!
 
 =head1 VERSION
 
-Version 0.01
+Version 0.01 $Id:$
 
 =cut
-
-our $VERSION = '0.01';
-
 
 =head1 SYNOPSIS
 
@@ -38,15 +39,9 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =cut
 
-sub function1 {
-}
-
 =head2 function2
 
 =cut
-
-sub function2 {
-}
 
 =head1 AUTHOR
 
@@ -104,4 +99,3 @@ under the same terms as Perl itself.
 
 =cut
 
-1; # End of ELF::Extract::Sections
