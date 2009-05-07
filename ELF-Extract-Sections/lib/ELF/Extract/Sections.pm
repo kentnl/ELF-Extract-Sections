@@ -2,8 +2,9 @@ use 5.010;
 use MooseX::Declare;
 our $VERSION = '0.01';
 
+#<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
-
+#>>>
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef );
     use MooseX::Types::Path::Class qw( File );
     use Carp                  ();
@@ -13,9 +14,8 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     use MooseX::Types -declare => [qw( FilterField )];
 
     BEGIN {
-    subtype FilterField, as enum([qw[ name offset size ]]);
+        subtype FilterField, as enum( [qw[ name offset size ]] );
     }
-
 
     has file => (
         is       => 'ro',
@@ -61,89 +61,157 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         lazy_build => 1,
     );
 
-    method BUILD($args) {
-        if ( not $self->file->stat )
-        {
+    #<<<
+    method BUILD( $args ) {
+    #>>>
+        if ( not $self->file->stat ) {
             $self->log->logconfess(q{File Specifed could not be found.});
         }
-    };
+    #<<<
+    }
+    #>>>
 
+    #<<<
     method _build__section_header_identifier {
+    #>>>
         my $header = $self->_header_regex;
         my $offset = $self->_offset_regex;
 
         return qr/${header}\s*${offset}:/;
-    };
+    #<<<
+    }
+    #>>>
 
+    #<<<
+    method _objdump {
+    #>>>
+        if ( open my $fh,
+            '-|', 'objdump', qw( -D -F ), $self->file->cleanup->absolute )
+        {
+            return $fh;
+        }
+        $self->log->logconfess(
+            qq{An error occured requesting section data from objdump $^ $@ });
+        return;
+    #<<<
+    }
+    #>>>
+
+    #<<<
+    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ){
+    #>>>
+        $self->log->info("objdump -D -F : Section $header at $offset");
+          my $o = hex($offset);
+          if ( exists $stash->{$o} ) {
+            $self->log->logcluck(
+
+                q{Warning, duplicate file offset reported by objdump. }
+                  . $stash->{$o}
+                  . qq( and $header collide at $offset )
+                  . q( Assuming )
+                  . $stash->{$o}
+                  . q( is empty and replacing it )
+
+            );
+        }
+        $stash->{$o} = $header;
+    #<<<
+    }
+    #>>>
+
+    #<<<
+    method _build_offset_table ( FileHandle $fh! ){
+    #>>>
+        my $re = $self->_section_header_identifier;
+
+          my %offsetStash = ();
+          while ( my $line = <$fh> ) {
+            next if ( $line !~ $re );
+            my ( $header, $offset ) = ( $+{header}, $+{offset} );
+            $self->_stash_record( \%offsetStash, $header, $offset, );
+        }
+        return \%offsetStash;
+    #<<<
+    }
+    #>>>
+
+    #<<<
+    method _build_section_section( Str $stashName, Int $start, Int $stop , File $file ){
+    #>>>
+        $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
+          return ELF::Extract::Section->new(
+            offset => $start,
+            size   => $stop - $start,
+            name   => $stashName,
+            source => $file,
+          );
+    #<<<
+    }
+    #>>>
+
+    #<<<
+    method _build_section_table ( HashRef $ob! ){
+    #>>>
+        my %dataStash = ();
+          my @k       = sort { $a <=> $b } keys %{$ob};
+          my $i       = 0;
+          while ( $i < $#k ) {
+            $dataStash{ $ob->{ $k[$i] } } = $self->_build_section_section(
+                $ob->{ $k[$i] },
+                $k[$i], $k[ $i + 1 ],
+                $self->file
+            );
+            $i++;
+        }
+        return \%dataStash;
+    #<<<
+    }
+    #>>>
+
+    #<<<
     method _build_sections {
-
+    #>>>
         use Data::Dumper;
 
         $self->log->debug('Building Section List');
 
-        open my $fh, '-|', 'objdump', qw( -D -F ),
-          $self->file->cleanup->absolute
-          or $self->log->logconfess(
-            sprintf q{An error occured requesting section data from objdump } );
-
-        my $re = $self->_section_header_identifier;
-
-        my %offsetStash = ();
-        my %dataStash   = ();
-
-        while ( my $line = <$fh> ) {
-            if ( $line =~ $re ) {
-                $self->log->info(
-                    "objdump -D -F : Section $+{header} at $+{offset}");
-                my $off = hex( $+{offset} );
-                if ( exists $offsetStash{$off} ) {
-                    $self->log->logcluck(
-                        q{Warning, duplicate file offset reported by objdump.}
-                          . qq( $offsetStash{$off} and $+{header} collide at $+{offset} )
-
-                    );
-                }
-                $offsetStash{$off} = $+{header};
-            }
-        }
-
-        my @k = sort { $a <=> $b } keys %offsetStash;
-        my $i = 0;
-        while ( $i < $#k ) {
-            my $stashName  = $offsetStash{ $k[$i] };
-            my $stashStart = $k[$i];
-            my $stashStop  = $k[ $i + 1 ];
-            my $size       = $stashStop - $stashStart;
-            $self->log->info(
-                " Section ${stashName} , ${stashStart} -> ${stashStop} ");
-            $dataStash{$stashName} = ELF::Extract::Section->new(
-                offset => $stashStart,
-                size   => $size,
-                name   => $stashName,
-                source => $self->file,
-            );
-
-            $i++;
-        }
-        return \%dataStash;
+        return $self->_build_section_table(
+            $self->_build_offset_table( $self->_objdump ) );
+    #<<<
     }
+    #>>>
 
+    #<<<
     method section_names {
+    #>>>
         my $filehandle = $self->file->openr
           or
           $self->log->logcroak( sprintf q{Can't Read %s: %s}, $self->file, $! );
+    #<<<
+    }
+    #>>>
 
+    #<<<
+    multi method sorted_sections(  FilterField :$field!, Bool :$descending! where { $_ }  ) {
+    #>>>
+        return [
+            sort { -( $a->compare( other => $b, field => $field ) ) }
+              values %{ $self->sections }
+        ];
     };
-
-    multi method sorted_sections( FilterField :$field!, Bool :$descending! where { $_ } ) {
-        my @data = sort { -($a->compare( other => $b ,field=> $field )) } values %{$self->sections};
-        return \@data;
+    #<<<
+    multi method sorted_sections( FilterField :$field!, Bool :$descending? where { !$_ } ) {
+    #>>>
+        return [
+            sort { $a->compare( other => $b, field => $field ) }
+              values %{ $self->sections }
+        ];
+    #<<<
     }
-    multi method sorted_sections( FilterField :$field!, Bool :$descending? where { !$_ }  ) {
-        my @data = sort { $a->compare( other => $b, field=> $field ) } values %{$self->sections};
-        return \@data;
-    }
+    #>>>
+#<<<
 }
+#>>>
 
 1;
 
