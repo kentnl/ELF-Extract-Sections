@@ -52,7 +52,10 @@ class ELF::Extract::Section {
 
     }
 
+    #<<<
     method compare ( ELF::Extract::Section :$other , FilterField :$field ){
+    #>>>
+
         if ( $field eq 'name' ){
             return ( $self->name cmp $other->name );
         }
@@ -63,6 +66,31 @@ class ELF::Extract::Section {
             return ( $self->size <=> $other->size );
         }
         return undef;
+    }
+    #<<<
+    method write_to( File :$file does coerce  ){
+    #>>>
+        my $fh = $self->source->openr;
+        seek( $fh, $self->offset, 0 );
+        my $output = $file->openw;
+        my $chunksize = 1024;
+        my $bytes_left = $self->size;
+        my $chunk  = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+        while(read( $fh, my $buffer, $chunk )){
+            print {$output} $buffer;
+            $bytes_left -= $chunksize;
+            $chunk  = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+        }
+        return 1;
+    }
+    #<<<
+    method contents {
+    #>>>
+        my $fh = $self->source->openr;
+        seek( $fh, $self->offset, 0 );
+        my $b ;
+        read( $fh, $b, $self->size );
+        return $b;
     }
 };
 

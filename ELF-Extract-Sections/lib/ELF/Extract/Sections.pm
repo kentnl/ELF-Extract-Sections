@@ -24,13 +24,6 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         coerce   => 1,
     );
 
-    has debug => (
-        is       => 'ro',
-        isa      => Bool,
-        required => 0,
-        default  => 0,
-    );
-
     has sections => (
         isa        => 'HashRef[ELF::Extract::Section]',
         is         => 'ro',
@@ -177,16 +170,6 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
         return $self->_build_section_table(
             $self->_build_offset_table( $self->_objdump ) );
-    #<<<
-    }
-    #>>>
-
-    #<<<
-    method section_names {
-    #>>>
-        my $filehandle = $self->file->openr
-          or
-          $self->log->logcroak( sprintf q{Can't Read %s: %s}, $self->file, $! );
     #<<<
     }
     #>>>
