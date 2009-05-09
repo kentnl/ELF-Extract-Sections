@@ -1,9 +1,8 @@
+use strict;
+use warnings;
 use 5.010;
 use MooseX::Declare;
 our $VERSION = '0.01';
-
-
-
 
 class ELF::Extract::Section {
 
@@ -95,4 +94,6 @@ class ELF::Extract::Section {
 };
 
 1;
+
+__END__
 
