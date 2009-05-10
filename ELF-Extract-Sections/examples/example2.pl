@@ -6,9 +6,9 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use ELF::Extract::Sections;
 
-#use Log::Log4perl qw( :easy );
+use Log::Log4perl qw( :easy );
 
-#Log::Log4perl->easy_init($DEBUG);
+Log::Log4perl->easy_init($DEBUG);
 
 my $extractor = ELF::Extract::Sections->new( file => '/lib/libz.so', );
 print "5 Largest Sections:\n";

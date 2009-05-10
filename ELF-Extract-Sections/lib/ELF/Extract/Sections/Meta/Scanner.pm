@@ -18,7 +18,7 @@ __END__
 
 =head1 Required Methods for Applying Roles
 
-=head2 -> open_file filename => FILE
+=head2 -> open_file file => FILE
 
 Must take a filename and assume a state reset. 
 

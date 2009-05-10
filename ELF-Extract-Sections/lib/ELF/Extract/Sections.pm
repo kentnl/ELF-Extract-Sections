@@ -7,9 +7,8 @@ our $VERSION = '0.01';
 #<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
-    use MooseX::Types::Moose qw( Bool HashRef RegexpRef );
+    use MooseX::Types::Moose qw( Bool HashRef RegexpRef ClassName Object );
     use MooseX::Types::Path::Class qw( File );
-    use Carp ();
     use ELF::Extract::Sections::Section qw( FilterField );
 
     has file => (
@@ -26,28 +25,67 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         lazy_build => 1,
     );
 
-    has _header_regex => (
-        isa     => RegexpRef,
-        is      => 'ro',
-        default => sub {
-            return qr/<(?<header>[^>]+)>/;
-        },
+    has scanner => (
+        isa      => 'Str',
+        is       => 'ro',
+        required => 0,
+        default  => 'Objdump',
     );
 
-    has _offset_regex => (
-        isa     => RegexpRef,
-        is      => 'ro',
-        default => sub {
-            return qr/\(File Offset:\s*(?<offset>0x[0-9a-f]+)\)/;
-        },
-    );
-
-    has _section_header_identifier => (
-        isa        => RegexpRef,
+    has _scanner_package => (
+        isa        => ClassName,
         is         => 'ro',
-        required   => 0,
         lazy_build => 1,
     );
+
+    has _scanner_instance => (
+        isa        => Object,
+        is         => 'ro',
+        lazy_build => 1,
+    );
+
+    #
+    # Public Interfaces
+    #
+
+    #<<<
+    method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
+    #>>>
+        my $m = 1;
+          $m = -1 if ($descending);
+          return [
+            sort { $m * ( $a->compare( other => $b, field => $field ) ) }
+              values %{ $self->sections }
+          ];
+    };
+
+    #
+    # Moose Builders
+    #
+
+    method _build__scanner_package {
+        my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
+        eval "use $pkg; 1"
+          or $self->log->logconfess( "The Scanner "
+              . $self->scanner
+              . " could not be found as $pkg. >$! >$@ " );
+        return $pkg;
+    };
+
+    method _build__scanner_instance {
+        my $instance = $self->_scanner_package->new();
+        return $instance;
+    };
+
+    method _build_sections {
+        $self->log->debug('Building Section List');
+        if ( $self->_scanner_instance->can_compute_size ) {
+            return $self->_scan_with_size;
+        }
+        else {
+            return $self->_scan_guess_size;
+        }
+    }
 
     #<<<
     method BUILD( $args ) {
@@ -55,73 +93,28 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         if ( not $self->file->stat ) {
             $self->log->logconfess(q{File Specifed could not be found.});
         }
-    #<<<
-    }
-    #>>>
+    };
 
-    #<<<
-    method _build__section_header_identifier {
-    #>>>
-        my $header = $self->_header_regex;
-        my $offset = $self->_offset_regex;
-
-        return qr/${header}\s*${offset}:/;
-    #<<<
-    }
-    #>>>
-
-    #<<<
-    method _objdump {
-    #>>>
-        if ( open my $fh,
-            '-|', 'objdump', qw( -D -F ), $self->file->cleanup->absolute )
-        {
-            return $fh;
-        }
-        $self->log->logconfess(
-            qq{An error occured requesting section data from objdump $^ $@ });
-        return;
-    #<<<
-    }
-    #>>>
-
+    #
+    # Internals
+    #
     #<<<
     method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ){
     #>>>
-        $self->log->info("objdump -D -F : Section $header at $offset");
-          my $o = hex($offset);
-          if ( exists $stash->{$o} ) {
+        if ( exists $stash->{$offset} ) {
             $self->log->logcluck(
 
-                q{Warning, duplicate file offset reported by objdump. }
-                  . $stash->{$o}
+                q{Warning, duplicate file offset reported by scanner. }
+                  . $stash->{$offset}
                   . qq( and $header collide at $offset )
                   . q( Assuming )
-                  . $stash->{$o}
+                  . $stash->{$offset}
                   . q( is empty and replacing it )
 
             );
         }
-        $stash->{$o} = $header;
-    #<<<
-    }
-    #>>>
-
-    #<<<
-    method _build_offset_table ( FileHandle $fh! ){
-    #>>>
-        my $re = $self->_section_header_identifier;
-
-          my %offsetStash = ();
-          while ( my $line = <$fh> ) {
-            next if ( $line !~ $re );
-            my ( $header, $offset ) = ( $+{header}, $+{offset} );
-            $self->_stash_record( \%offsetStash, $header, $offset, );
-        }
-        return \%offsetStash;
-    #<<<
-    }
-    #>>>
+        $stash->{$offset} = $header;
+    };
 
     #<<<
     method _build_section_section( Str $stashName, Int $start, Int $stop , File $file ){
@@ -133,9 +126,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
             name   => $stashName,
             source => $file,
           );
-    #<<<
-    }
-    #>>>
+    };
 
     #<<<
     method _build_section_table ( HashRef $ob! ){
@@ -152,39 +143,37 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
             $i++;
         }
         return \%dataStash;
-    #<<<
-    }
-    #>>>
-
-    #<<<
-    method _build_sections {
-    #>>>
-        use Data::Dumper;
-
-        $self->log->debug('Building Section List');
-
-        return $self->_build_section_table(
-            $self->_build_offset_table( $self->_objdump ) );
-    #<<<
-    }
-    #>>>
-
-    #<<<
-    method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
-    #>>>
-        my $m = 1;
-          $m = -1 if ($descending);
-          return [
-            sort { $m * ( $a->compare( other => $b, field => $field ) ) }
-              values %{ $self->sections }
-          ];
     };
 
-    #>>>
+    method _scan_guess_size {
+        $self->_scanner_instance->open_file( file => $self->file );
+        my %offsets = ();
+        while ( $self->_scanner_instance->next_section() ) {
+            my $name   = $self->_scanner_instance->section_name;
+            my $offset = $self->_scanner_instance->section_offset;
+            $self->_stash_record( \%offsets, $name, $offset );
+        }
+        return $self->_build_section_table( \%offsets );
+    };
+
+    method _scan_with_size {
+        my %dataStash = ();
+        $self->_scanner_instance->open_file( file => $self->file );
+        while ( $self->_scanner_instance->next_section() ) {
+            my $name   = $self->_scanner_instance->section_name;
+            my $offset = $self->_scanner_instance->section_offset;
+            my $size   = $self->_scanner_instance->section_size;
+
+            $dataStash{$name} =
+              $self->_build_section_section( $name, $offset, $offset + $size,
+                $self->file );
+        }
+        return \%dataStash;
+    };
+
 #<<<
 }
 #>>>
-
 1;
 
 __END__
