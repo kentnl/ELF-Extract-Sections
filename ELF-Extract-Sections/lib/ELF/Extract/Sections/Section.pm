@@ -4,7 +4,7 @@ use 5.010;
 use MooseX::Declare;
 our $VERSION = '0.01';
 
-class ELF::Extract::Section {
+class ELF::Extract::Sections::Section {
 
     use MooseX::Types::Moose qw( Str Int );
     use MooseX::Types::Path::Class qw( File );
@@ -13,7 +13,7 @@ class ELF::Extract::Section {
     use MooseX::Types -declare => [qw( FilterField )];
 
     BEGIN {
-    subtype FilterField, as enum([qw[ name offset size ]]);
+        subtype FilterField, as enum([qw[ name offset size ]]);
     }
     has source => (
         isa      => File,
@@ -52,7 +52,7 @@ class ELF::Extract::Section {
     }
 
     #<<<
-    method compare ( ELF::Extract::Section :$other , FilterField :$field ){
+    method compare ( ELF::Extract::Sections::Section :$other , FilterField :$field ){
     #>>>
 
         if ( $field eq 'name' ){

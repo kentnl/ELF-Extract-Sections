@@ -9,21 +9,8 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef );
     use MooseX::Types::Path::Class qw( File );
-    use Carp                  ();
-    use ELF::Extract::Section ();
-    use MooseX::MultiMethods;
-
-    use MooseX::Types -declare => [qw( FilterField IsTrue IsFalse )];
-
-    BEGIN {
-        subtype FilterField, as enum( [qw[ name offset size ]] );
-        subtype IsTrue, as Bool,
-                where { $_ },
-                message { 'Boolean is not true' };
-        subtype IsFalse, as  Bool,
-                where {!$_ },
-                where { 'Boolean is not false' };
-    }
+    use Carp ();
+    use ELF::Extract::Sections::Section qw( FilterField );
 
     has file => (
         is       => 'ro',
@@ -33,7 +20,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     );
 
     has sections => (
-        isa        => 'HashRef[ELF::Extract::Section]',
+        isa        => 'HashRef[ELF::Extract::Sections::Section]',
         is         => 'ro',
         required   => 0,
         lazy_build => 1,
@@ -140,7 +127,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     method _build_section_section( Str $stashName, Int $start, Int $stop , File $file ){
     #>>>
         $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
-          return ELF::Extract::Section->new(
+          return ELF::Extract::Sections::Section->new(
             offset => $start,
             size   => $stop - $start,
             name   => $stashName,
@@ -183,22 +170,16 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     #>>>
 
     #<<<
-    multi method sorted_sections(  FilterField :$field!, IsTrue :$descending! ) {
+    method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
     #>>>
-        return [
-            sort { -( $a->compare( other => $b, field => $field ) ) }
+        my $m = 1;
+          $m = -1 if ($descending);
+          return [
+            sort { $m * ( $a->compare( other => $b, field => $field ) ) }
               values %{ $self->sections }
-        ];
+          ];
     };
-    #<<<
-    multi method sorted_sections( FilterField :$field!, IsFalse :$descending?  ) {
-    #>>>
-        return [
-            sort { $a->compare( other => $b, field => $field ) }
-              values %{ $self->sections }
-        ];
-    #<<<
-    }
+
     #>>>
 #<<<
 }
@@ -270,9 +251,9 @@ Returns the file the section data is being created for.
 
 Returns a HashRef of the available sections.
 
-=head2 -> sorted_sections ( SORT_BY )
+=head2 -> sorted_sections ( field => SORT_BY )
 
-=head2 -> sorted_sections ( SORT_BY, DESCENDING )
+=head2 -> sorted_sections ( field => SORT_BY, descending => DESCENDING )
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
@@ -303,6 +284,24 @@ The Size of the section.
 =back
 
 =back
+
+=head1 Debugging
+
+This library uses L<Log::Log4perl>. To see more verbose processing notices, do this:
+
+    use Log::Log4perl qw( :easy );
+    Log::Log4perl->easy_init($DEBUG);
+
+For convenience to make sure you don't happen to miss this fact, we never initialize Log4perl ourself, so it will
+spit the following message if you have not set it up:
+
+    Log4perl: Seems like no initialization happened. Forgot to call init()?
+
+To suppress this, just do
+
+    use Log::Log4perl qw( :easy );
+
+I request however you B<don't> do that for modules intended to be consumed by others without good cause.
 
 =head1 Author
 
