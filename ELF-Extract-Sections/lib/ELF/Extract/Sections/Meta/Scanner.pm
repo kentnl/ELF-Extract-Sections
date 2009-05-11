@@ -1,6 +1,8 @@
 package ELF::Extract::Sections::Meta::Scanner;
 
 # $Id:$
+use strict;
+use warnings;
 
 use Moose::Role;
 our $VERSION = '0.01';
@@ -9,8 +11,8 @@ use namespace::clean -except => [qw( meta )];
 
 with 'MooseX::Log::Log4perl';
 
-requires qw( open_file next_section section_offset section_size section_name can_compute_size );
-
+requires
+  qw( open_file next_section section_offset section_size section_name can_compute_size );
 
 1;
 
