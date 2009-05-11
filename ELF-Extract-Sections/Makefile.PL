@@ -23,7 +23,5 @@ recommends 'lib';
 
 requires_external_bin 'objdump';  # This should be available as part of BinUtils
 
-auto_install;
-
 WriteAll;
 
