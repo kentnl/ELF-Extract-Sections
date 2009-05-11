@@ -294,7 +294,7 @@ I request however you B<don't> do that for modules intended to be consumed by ot
 
 =head1 Author
 
-Kent Fredric, C<< <kentfredric at gmail.com> >>
+Kent Fredric, C<< <kentnl@cpan.org> >>
 
 =head1 Bugs
 
