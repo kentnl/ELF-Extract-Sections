@@ -1,7 +1,7 @@
-blib* 
+blib.*
 Makefile
 Makefileold
 pm_to_bilb
-*.tar.gz
-ELF-Extract-Sections-*
+.*.tar.gz
+ELF-Extract-Sections-.*
 dist.ini
