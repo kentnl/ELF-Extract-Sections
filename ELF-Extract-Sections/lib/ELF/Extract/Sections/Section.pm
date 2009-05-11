@@ -4,7 +4,7 @@ use 5.010;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
-
+    our $VERSION = '0.01.00';
     use MooseX::Types::Moose qw( Str Int );
     use MooseX::Types::Path::Class qw( File );
 

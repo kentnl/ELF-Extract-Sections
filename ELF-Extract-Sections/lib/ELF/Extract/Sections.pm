@@ -7,6 +7,7 @@ use MooseX::Declare;
 #<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
+    our $VERSION='0.01.00';
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef ClassName Object );
     use MooseX::Types::Path::Class qw( File );
     use ELF::Extract::Sections::Section qw( FilterField );
@@ -332,7 +333,6 @@ L<http://search.cpan.org/dist/ELF-Extract-Sections/>
 
 
 =head1 Acknowledgements
-
 
 =head1 Copyright & License
 

@@ -4,6 +4,7 @@ name 'ELF-Extract-Sections';
 all_from 'lib/ELF/Extract/Sections.pm';
 author 'Kent Fredric <kentfredric@gmail.com>';
 license 'perl';
+version '0.01.00';
 
 repository 'git://github.com/kentfredric/ELF-Extract-Sections.git';
 
@@ -22,6 +23,7 @@ recommends 'FindBin';
 recommends 'lib';
 
 requires_external_bin 'objdump';  # This should be available as part of BinUtils
+auto_provides_class;
 
 no_index => 'examples';
 

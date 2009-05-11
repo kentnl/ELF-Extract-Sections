@@ -7,6 +7,7 @@ use MooseX::Declare;
 class ELF::Extract::Sections::Scanner::Objdump
 with ELF::Extract::Sections::Meta::Scanner {
 #>>>
+    our $VERSION = '0.01.00';
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef FileHandle );
     use MooseX::Types::Path::Class qw( File );
 
