@@ -5,7 +5,7 @@ use MooseX::Declare;
 our $VERSION = '0.01';
 
 #<<<
-class ELF::Extract::Sections::Scanner::Objdump 
+class ELF::Extract::Sections::Scanner::Objdump
 with ELF::Extract::Sections::Meta::Scanner {
 #>>>
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef FileHandle );
@@ -145,4 +145,34 @@ with ELF::Extract::Sections::Meta::Scanner {
 }
 #>>>
 1;
+
+__END__
+
+=head1 Name
+
+ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
+
+=head1 Description
+
+This module is a model implementaiton of a Naive and system relaint ELF Section detector.
+Its currently highly inefficient due to having to run the entire ELF through a disassembly
+process to determine the section positions and only I<guesses> at section lengths by
+advertisng that it cant' compute sizes.
+
+=head1 Does
+
+This module is a Performer of L<ELF::Extract::Sections::Meta::Scanner>
+
+=head1 Methods
+
+See  L<ELF::Extract::Sections::Meta::Scanner> for a method breakdown.
+
+=head1 Synopsis
+
+TO use this module, simply initialise L<ELF::Extract::Sections> as so
+
+    my $extractor  = ELF::Extract::Sections->new(
+            file => "/path/to/file.so" ,
+            scanner => "Objdump",
+    );
 
