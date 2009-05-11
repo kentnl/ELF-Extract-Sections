@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use 5.010;
 use MooseX::Declare;
-our $VERSION = '0.01';
+
 
 #<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
@@ -181,10 +181,6 @@ __END__
 =head1 Name
 
 ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sections
-
-=head1 Version
-
-Version 0.01 $Id:$
 
 =head1 Caveats
 

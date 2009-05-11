@@ -2,7 +2,6 @@
 use strict;
 use warnings;
 use MooseX::Declare;
-our $VERSION = '0.01';
 
 #<<<
 class ELF::Extract::Sections::Scanner::Objdump

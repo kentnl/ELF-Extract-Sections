@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 use Moose::Role;
-our $VERSION = '0.01';
 
 use namespace::clean -except => [qw( meta )];
 
