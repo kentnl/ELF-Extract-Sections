@@ -7,51 +7,39 @@ use MooseX::Declare;
 class ELF::Extract::Sections::Scanner::Objdump
 with ELF::Extract::Sections::Meta::Scanner {
 #>>>
-    our $VERSION = '0.01.00';
+    our $VERSION = '0.0101';
+    use MooseX::Has::Sugar qw( :allattrs );
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef FileHandle );
     use MooseX::Types::Path::Class qw( File );
 
     has _header_regex => (
-        isa     => RegexpRef,
-        is      => 'ro',
+        isa => RegexpRef,
+        ro,
         default => sub {
             return qr/<(?<header>[^>]+)>/;
         },
     );
 
     has _offset_regex => (
-        isa     => RegexpRef,
-        is      => 'ro',
+        isa => RegexpRef,
+        ro,
         default => sub {
             return qr/\(File Offset:\s*(?<offset>0x[0-9a-f]+)\)/;
         },
     );
 
-    has _section_header_identifier => (
-        isa        => RegexpRef,
-        is         => 'ro',
-        required   => 0,
-        lazy_build => 1,
-    );
+    has _section_header_identifier => ( isa => RegexpRef, ro, lazy_build, );
 
-    has _file => (
-        isa      => File,
-        is       => 'rw',
-        required => 0,
-        clearer  => '_clear_file',
-    );
+    has _file => ( isa => File, rw, clearer => '_clear_file', );
 
     has _filehandle => (
-        isa      => FileHandle,
-        is       => 'rw',
-        required => 0,
-        clearer  => '_clear_filehandle',
+        isa => FileHandle,
+        rw, clearer => '_clear_filehandle',
     );
 
     has _state => (
-        isa       => HashRef,
-        is        => 'rw',
-        required  => 0,
+        isa => HashRef,
+        rw,
         predicate => '_has_state',
         clearer   => '_clear_state',
     );
