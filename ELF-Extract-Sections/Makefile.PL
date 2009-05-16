@@ -2,9 +2,9 @@ use inc::Module::Install;
 
 name 'ELF-Extract-Sections';
 all_from 'lib/ELF/Extract/Sections.pm';
-author 'Kent Fredric <kentfredric@gmail.com>';
+author 'Kent Fredric <kentnl@cpan.org>';
 license 'perl';
-version '0.01.00';
+version '0.0101';
 
 repository 'git://github.com/kentfredric/ELF-Extract-Sections.git';
 
