@@ -3,7 +3,7 @@ use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
-    our $VERSION = '0.0101';
+    our $VERSION = '0.0102';
     use MooseX::Has::Sugar qw( :allattrs );
     use MooseX::Types::Moose qw( Str Int );
     use MooseX::Types::Path::Class qw( File );

@@ -7,7 +7,7 @@ use warnings;
 use Moose::Role;
 
 use namespace::clean -except => [qw( meta )];
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
 with 'MooseX::Log::Log4perl';
 
 requires

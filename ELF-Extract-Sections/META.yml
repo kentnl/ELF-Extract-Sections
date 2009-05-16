@@ -23,6 +23,9 @@ provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
     version: 0.0101
+  ELF::Extract::Sections::Meta::Scanner:
+    file: lib/ELF/Extract/Sections/Meta/Scanner.pm
+    version: 0.0101
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
     version: 0.0101
@@ -37,6 +40,7 @@ requires:
   Moose: 0.76
   Moose::Role: 0.00
   MooseX::Declare: 0.20
+  MooseX::Has::Sugar: 0.0100
   MooseX::Log::Log4perl: 0.31
   MooseX::Types::Moose: 0.10
   MooseX::Types::Path::Class: 0.05
