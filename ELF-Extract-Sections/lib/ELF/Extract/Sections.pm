@@ -1,49 +1,28 @@
 use strict;
 use warnings;
-use 5.010;
 use MooseX::Declare;
-
 
 #<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
-    our $VERSION='0.01.00';
+    our $VERSION = '0.01001';
+    use MooseX::Has::Sugar qw( :allattrs );
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef ClassName Object );
     use MooseX::Types::Path::Class qw( File );
     use ELF::Extract::Sections::Section qw( FilterField );
 
-    has file => (
-        is       => 'ro',
-        isa      => File,
-        required => 1,
-        coerce   => 1,
-    );
+    has file => ( ro, required, isa => File, coerce => 1, );
 
     has sections => (
-        isa        => 'HashRef[ELF::Extract::Sections::Section]',
-        is         => 'ro',
-        required   => 0,
-        lazy_build => 1,
+        isa => 'HashRef[ELF::Extract::Sections::Section]',
+        ro, lazy_build,
     );
 
-    has scanner => (
-        isa      => 'Str',
-        is       => 'ro',
-        required => 0,
-        default  => 'Objdump',
-    );
+    has scanner => ( isa => 'Str', default => 'Objdump', ro, );
 
-    has _scanner_package => (
-        isa        => ClassName,
-        is         => 'ro',
-        lazy_build => 1,
-    );
+    has _scanner_package => ( isa => ClassName, ro, lazy_build, );
 
-    has _scanner_instance => (
-        isa        => Object,
-        is         => 'ro',
-        lazy_build => 1,
-    );
+    has _scanner_instance => ( isa => Object, ro, lazy_build, );
 
     #
     # Public Interfaces

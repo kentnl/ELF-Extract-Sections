@@ -1,10 +1,10 @@
 use strict;
 use warnings;
-use 5.010;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
-    our $VERSION = '0.01.00';
+    our $VERSION = '0.0101';
+    use MooseX::Has::Sugar qw( :allattrs );
     use MooseX::Types::Moose qw( Str Int );
     use MooseX::Types::Path::Class qw( File );
 
@@ -15,41 +15,27 @@ class ELF::Extract::Sections::Section {
         subtype FilterField, as enum( [qw[ name offset size ]] );
     }
     has source => (
-        isa      => File,
-        is       => 'ro',
-        required => 1,
-        coerce   => 1,
+        isa => File,
+        ro, required, coerce => 1,
     );
 
-    has name => (
-        isa      => Str,
-        is       => 'ro',
-        required => 1,
-    );
+    has name => ( isa => Str, ro, required );
 
-    has offset => (
-        isa      => Int,
-        is       => 'ro',
-        required => 1,
-    );
+    has offset => ( isa => Int, ro, required );
 
-    has size => (
-        isa      => Int,
-        is       => 'ro',
-        required => 1,
-    );
+    has size => ( isa => Int, ro, required );
 
     #<<<
     method to_string ( Any $other?, Bool $polarity? ) {
     #>>>
-        return sprintf(
-            qq{[ Section %s of size %s in %s @ %x to %x ]},
-            $self->name,   $self->size,
-            $self->source, $self->offset,
-            $self->offset + $self->size
-        );
+              return sprintf(
+                  qq{[ Section %s of size %s in %s @ %x to %x ]},
+                  $self->name,   $self->size,
+                  $self->source, $self->offset,
+                  $self->offset + $self->size
+              );
 
-    };
+        };
 
     #<<<
     method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ){
@@ -64,24 +50,24 @@ class ELF::Extract::Sections::Section {
             return ( $self->size <=> $other->size );
         }
         return undef;
-    }
+      }
 
     #<<<
     method write_to( File :$file does coerce  ){
     #>>>
         my $fh = $self->source->openr;
-        seek( $fh, $self->offset, 0 );
-        my $output     = $file->openw;
-        my $chunksize  = 1024;
-        my $bytes_left = $self->size;
-        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read( $fh, my $buffer, $chunk ) ) {
+          seek( $fh, $self->offset, 0 );
+          my $output     = $file->openw;
+          my $chunksize  = 1024;
+          my $bytes_left = $self->size;
+          my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+          while ( read( $fh, my $buffer, $chunk ) ) {
             print {$output} $buffer;
             $bytes_left -= $chunksize;
             $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
         }
         return 1;
-    }
+      }
 
     #<<<
     method contents {
