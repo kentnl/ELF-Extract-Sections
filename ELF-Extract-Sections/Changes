@@ -1,5 +1,7 @@
 Revision history for ELF-Extract-Sections
 
+0.0102     Dependancy Fixups, yes, more of them.
+
 0.0101     Re-Release with fixed inc/
            using MX::Has::Sugar
            dropped Hard dependancy on Perl 5.10
