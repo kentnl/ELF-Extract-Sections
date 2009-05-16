@@ -1,0 +1,51 @@
+---
+abstract: 'Extract Raw Chunks of data from identifiable ELF Sections'
+author:
+  - 'Kent Fredric <kentnl@cpan.org>'
+build_requires:
+  ExtUtils::MakeMaker: 6.42
+  Test::More: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
+distribution_type: module
+generated_by: 'Module::Install version 0.88'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: ELF-Extract-Sections
+no_index:
+  directory:
+    - examples
+    - inc
+    - t
+provides:
+  ELF::Extract::Sections:
+    file: lib/ELF/Extract/Sections.pm
+    version: 0.0102
+  ELF::Extract::Sections::Meta::Scanner:
+    file: lib/ELF/Extract/Sections/Meta/Scanner.pm
+    version: 0.0102
+  ELF::Extract::Sections::Scanner::Objdump:
+    file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
+    version: 0.0102
+  ELF::Extract::Sections::Section:
+    file: lib/ELF/Extract/Sections/Section.pm
+    version: 0.0102
+recommends:
+  FindBin: 0
+  lib: 0
+requires:
+  Log::Log4perl: 1.21
+  Moose: 0.76
+  Moose::Role: 0.00
+  MooseX::Declare: 0.20
+  MooseX::Has::Sugar: 0.0100
+  MooseX::Log::Log4perl: 0.31
+  MooseX::Types::Moose: 0.10
+  MooseX::Types::Path::Class: 0.05
+  namespace::clean: 0.11
+resources:
+  license: http://dev.perl.org/licenses/
+  repository: git://github.com/kentfredric/ELF-Extract-Sections.git
+version: 0.0102
