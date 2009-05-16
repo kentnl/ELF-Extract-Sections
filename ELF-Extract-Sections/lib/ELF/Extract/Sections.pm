@@ -5,7 +5,7 @@ use MooseX::Declare;
 #<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
-    our $VERSION = '0.01001';
+    our $VERSION = '0.0101';
     use MooseX::Has::Sugar qw( :allattrs );
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef ClassName Object );
     use MooseX::Types::Path::Class qw( File );
