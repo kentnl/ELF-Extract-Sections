@@ -5,15 +5,12 @@ use MooseX::Declare;
 class ELF::Extract::Sections::Section {
     our $VERSION = '0.0103';
     use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose qw( Str Int );
-    use MooseX::Types::Path::Class qw( File );
+    use MooseX::Types::Moose                ( ':all', );
+    use ELF::Extract::Sections::Meta::Types ( ':all', );
+    use MooseX::Types::Path::Class          ( 'File', );
 
-    use overload '""'          => \&to_string;
-    use MooseX::Types -declare => [qw( FilterField )];
+    use overload '""' => \&to_string;
 
-    BEGIN {
-        subtype FilterField, as enum( [qw[ name offset size ]] );
-    }
     has source => (
         isa => File,
         ro, required, coerce => 1,

@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 1;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -38,15 +38,6 @@ sub module_boilerplate_ok {
 
 TODO: {
   local $TODO = "Need to replace the boilerplate text";
-
-  not_in_file_ok(README =>
-    "The README is used..."       => qr/The README is used/,
-    "'version information here'"  => qr/to provide version information/,
-  );
-
-  not_in_file_ok(Changes =>
-    "placeholder date/time"       => qr(Date/time)
-  );
 
   module_boilerplate_ok('lib/ELF/Extract/Sections.pm');
 

@@ -7,16 +7,15 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
     our $VERSION = '0.0103';
     use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose qw( Str Bool HashRef RegexpRef ClassName Object );
-    use MooseX::Types::Path::Class qw( File );
-    use ELF::Extract::Sections::Section qw( FilterField );
+    use MooseX::Types::Moose                ( ':all', );
+    use MooseX::Types::Path::Class          ( 'File', );
+    use ELF::Extract::Sections::Meta::Types ( ':all', );
+
+    require ELF::Extract::Sections::Section;
 
     has file => ( ro, required, isa => File, coerce => 1, );
 
-    has sections => (
-        isa => 'HashRef[ELF::Extract::Sections::Section]',
-        ro, lazy_build,
-    );
+    has sections => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
     has scanner => ( isa => Str, default => 'Objdump', ro, );
 
