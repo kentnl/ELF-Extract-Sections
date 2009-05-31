@@ -5,9 +5,9 @@ use MooseX::Declare;
 #<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
 #>>>
-    our $VERSION = '0.0101';
-    use MooseX::Has::Sugar qw( :allattrs );
-    use MooseX::Types::Moose qw( Bool HashRef RegexpRef ClassName Object );
+    our $VERSION = '0.0103';
+    use MooseX::Has::Sugar 0.0300;
+    use MooseX::Types::Moose qw( Str Bool HashRef RegexpRef ClassName Object );
     use MooseX::Types::Path::Class qw( File );
     use ELF::Extract::Sections::Section qw( FilterField );
 
@@ -18,7 +18,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         ro, lazy_build,
     );
 
-    has scanner => ( isa => 'Str', default => 'Objdump', ro, );
+    has scanner => ( isa => Str, default => 'Objdump', ro, );
 
     has _scanner_package => ( isa => ClassName, ro, lazy_build, );
 
@@ -65,7 +65,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         else {
             return $self->_scan_guess_size;
         }
-    }
+    };
 
     #<<<
     method BUILD( $args ) {
@@ -158,9 +158,13 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 __END__
 
-=head1 Name
+=head1 NAME
 
 ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sections
+
+=head1 VERSION
+
+version 0.0103
 
 =head1 Caveats
 

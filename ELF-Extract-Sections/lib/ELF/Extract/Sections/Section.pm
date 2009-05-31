@@ -3,8 +3,8 @@ use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
-    our $VERSION = '0.0101';
-    use MooseX::Has::Sugar qw( :allattrs );
+    our $VERSION = '0.0103';
+    use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose qw( Str Int );
     use MooseX::Types::Path::Class qw( File );
 
@@ -32,7 +32,7 @@ class ELF::Extract::Sections::Section {
                   qq{[ Section %s of size %s in %s @ %x to %x ]},
                   $self->name,   $self->size,
                   $self->source, $self->offset,
-                  $self->offset + $self->size
+                  $self->offset + $self->size,
               );
 
         };
@@ -50,7 +50,7 @@ class ELF::Extract::Sections::Section {
             return ( $self->size <=> $other->size );
         }
         return undef;
-      }
+    };
 
     #<<<
     method write_to( File :$file does coerce  ){
@@ -67,7 +67,7 @@ class ELF::Extract::Sections::Section {
             $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
         }
         return 1;
-      }
+    };
 
     #<<<
     method contents {
@@ -77,16 +77,20 @@ class ELF::Extract::Sections::Section {
         my $b;
         read( $fh, $b, $self->size );
         return $b;
-    }
+    };
 };
 
 1;
 
 __END__
 
-=head1 Name
+=head1 NAME
 
 ELF::Extract::Sections::Section - An Objective reference to a section in an ELF file.
+
+=head1 VERSION
+
+version 0.0103
 
 =head1 Description
 

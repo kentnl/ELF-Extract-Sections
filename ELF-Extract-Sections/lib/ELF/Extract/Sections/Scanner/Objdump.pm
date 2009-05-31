@@ -7,8 +7,8 @@ use MooseX::Declare;
 class ELF::Extract::Sections::Scanner::Objdump
 with ELF::Extract::Sections::Meta::Scanner {
 #>>>
-    our $VERSION = '0.0101';
-    use MooseX::Has::Sugar qw( :allattrs );
+    our $VERSION = '0.0103';
+    use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose qw( Bool HashRef RegexpRef FileHandle );
     use MooseX::Types::Path::Class qw( File );
 
@@ -54,9 +54,9 @@ with ELF::Extract::Sections::Meta::Scanner {
           $self->_file($file);
           $self->_filehandle( $self->_objdump );
           return 1;
-      }
+    };
 
-      method next_section {
+    method next_section {
         my $re = $self->_section_header_identifier;
         my $fh = $self->_filehandle;
         while ( my $line = <$fh> ) {
@@ -71,7 +71,7 @@ with ELF::Extract::Sections::Meta::Scanner {
         $self->_clear_filehandle;
         $self->_clear_state;
         return 0;
-    }
+    };
 
     method section_offset {
         if ( not $self->_has_state ) {
@@ -80,12 +80,12 @@ with ELF::Extract::Sections::Meta::Scanner {
             return;
         }
         return hex( $self->_state->{offset} );
-    }
+    };
 
     method section_size {
         $self->log->logcroak(
             'Can\'t perform section_size on this type of object.');
-    }
+    };
 
     method section_name {
         if ( not $self->_has_state ) {
@@ -93,11 +93,11 @@ with ELF::Extract::Sections::Meta::Scanner {
                 'Invalid call to section_name outside of file scan');
         }
         return $self->_state->{header};
-    }
+    };
 
     method can_compute_size {
         return 0;
-    }
+    };
 
     #
     # Internals
@@ -111,7 +111,7 @@ with ELF::Extract::Sections::Meta::Scanner {
 
         return qr/${header}\s*${offset}:/;
     #<<<
-    }
+    };
     #>>>
 
     #<<<
@@ -126,7 +126,7 @@ with ELF::Extract::Sections::Meta::Scanner {
             qq{An error occured requesting section data from objdump $^ $@ });
         return;
     #<<<
-    }
+    };
     #>>>
 
 #<<<
@@ -136,9 +136,13 @@ with ELF::Extract::Sections::Meta::Scanner {
 
 __END__
 
-=head1 Name
+=head1 NAME
 
 ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
+
+=head1 VERSION
+
+version 0.0103
 
 =head1 Description
 
