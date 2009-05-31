@@ -1,7 +1,0 @@
-blib.*
-^Makefile$
-^Makefile.old$
-^pm_to_bilb$
-^.*.tar.gz$
-^ELF-Extract-Sections-.*$
-^dist.ini$
