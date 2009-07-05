@@ -20,13 +20,13 @@ for my $file (@files) {
     my $yaml    = file( $file . '.yaml' );
     my $data    = YAML::XS::LoadFile( $yaml->stringify );
     my $scanner = ELF::Extract::Sections->new( file => $f );
-    my $d = {};
-    for ( values %{ $scanner->sections } ){
-        $d->{$_->name} = {
-            size => $_->size,
+    my $d       = {};
+    for ( values %{ $scanner->sections } ) {
+        $d->{ $_->name } = {
+            size   => $_->size,
             offset => $_->offset,
         };
     }
-    is_deeply( $d, $data, "Analysis of ". $f->basename . " matches stored data in " . $yaml->basename );
+    is_deeply( $d, $data, "Analysis of " . $f->basename . " matches stored data in " . $yaml->basename );
 }
 
