@@ -12,9 +12,7 @@ Log::Log4perl->easy_init($DEBUG);
 
 my $extractor = ELF::Extract::Sections->new( file => '/lib/libz.so', );
 print "5 Largest Sections:\n";
-for ( @{ $extractor->sorted_sections( field => 'size', descending => 1 ) }
-    [ 0 .. 5 ] )
-{
+for ( @{ $extractor->sorted_sections( field => 'size', descending => 1 ) }[ 0 .. 5 ] ) {
     print "$_\n";
     print "-\n";
     print substr( $_->contents, 0, 10 );
