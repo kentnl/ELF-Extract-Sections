@@ -11,25 +11,17 @@ class ELF::Extract::Sections::Section {
 
     use overload '""' => \&to_string;
 
-    has source => (
-        isa => File,
-        ro, required, coerce => 1,
-    );
-
-    has name => ( isa => Str, ro, required );
-
-    has offset => ( isa => Int, ro, required );
-
-    has size => ( isa => Int, ro, required );
+    has source => ( isa => File, ro, required, coerce, );
+    has name   => ( isa => Str,  ro, required );
+    has offset => ( isa => Int,  ro, required );
+    has size   => ( isa => Int,  ro, required );
 
     #<<<
     method to_string ( Any $other?, Bool $polarity? ) {
     #>>>
               return sprintf(
                   qq{[ Section %s of size %s in %s @ %x to %x ]},
-                  $self->name,   $self->size,
-                  $self->source, $self->offset,
-                  $self->offset + $self->size,
+                  $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
               );
 
         };
@@ -57,7 +49,7 @@ class ELF::Extract::Sections::Section {
           my $output     = $file->openw;
           my $chunksize  = 1024;
           my $bytes_left = $self->size;
-          my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+          my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
           while ( read( $fh, my $buffer, $chunk ) ) {
             print {$output} $buffer;
             $bytes_left -= $chunksize;

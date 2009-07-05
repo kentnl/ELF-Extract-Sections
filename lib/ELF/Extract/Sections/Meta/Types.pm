@@ -8,7 +8,7 @@ use Moose;
 our $VERSION = '0.0103';
 
 use MooseX::Types::Moose (':all');
-use MooseX::Types -declare => [ 'FilterField','ElfSection'];
+use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
 
 subtype FilterField, as enum( [ 'name', 'offset', 'size', ] );
 

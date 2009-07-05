@@ -9,40 +9,15 @@ with ELF::Extract::Sections::Meta::Scanner {
 #>>>
     our $VERSION = '0.0103';
     use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose qw( Bool HashRef RegexpRef FileHandle );
-    use MooseX::Types::Path::Class qw( File );
+    use MooseX::Types::Moose ( 'Bool', 'HashRef', 'RegexpRef', 'FileHandle', );
+    use MooseX::Types::Path::Class ('File');
 
-    has _header_regex => (
-        isa => RegexpRef,
-        ro,
-        default => sub {
-            return qr/<(?<header>[^>]+)>/;
-        },
-    );
-
-    has _offset_regex => (
-        isa => RegexpRef,
-        ro,
-        default => sub {
-            return qr/\(File Offset:\s*(?<offset>0x[0-9a-f]+)\)/;
-        },
-    );
-
-    has _section_header_identifier => ( isa => RegexpRef, ro, lazy_build, );
-
-    has _file => ( isa => File, rw, clearer => '_clear_file', );
-
-    has _filehandle => (
-        isa => FileHandle,
-        rw, clearer => '_clear_filehandle',
-    );
-
-    has _state => (
-        isa => HashRef,
-        rw,
-        predicate => '_has_state',
-        clearer   => '_clear_state',
-    );
+    has _header_regex => ( isa => RegexpRef, ro, default => sub { return qr/<(?<header>[^>]+)>/; }, );
+    has _offset_regex => ( isa => RegexpRef, ro, default => sub { return qr/\(File Offset:\s*(?<offset>0x[0-9a-f]+)\)/; }, );
+    has _section_header_identifier => ( isa => RegexpRef,  ro, lazy_build, );
+    has _file                      => ( isa => File,       rw, clearer => '_clear_file', );
+    has _filehandle                => ( isa => FileHandle, rw, clearer => '_clear_filehandle', );
+    has _state                     => ( isa => HashRef,    rw, predicate => '_has_state', clearer => '_clear_state', );
 
     #
     # Interface Methods
@@ -75,22 +50,19 @@ with ELF::Extract::Sections::Meta::Scanner {
 
     method section_offset {
         if ( not $self->_has_state ) {
-            $self->log->logcroak(
-                'Invalid call to section_offset outside of file scan');
+            $self->log->logcroak('Invalid call to section_offset outside of file scan');
             return;
         }
         return hex( $self->_state->{offset} );
     };
 
     method section_size {
-        $self->log->logcroak(
-            'Can\'t perform section_size on this type of object.');
+        $self->log->logcroak('Can\'t perform section_size on this type of object.');
     };
 
     method section_name {
         if ( not $self->_has_state ) {
-            $self->log->logcroak(
-                'Invalid call to section_name outside of file scan');
+            $self->log->logcroak('Invalid call to section_name outside of file scan');
         }
         return $self->_state->{header};
     };
@@ -117,13 +89,10 @@ with ELF::Extract::Sections::Meta::Scanner {
     #<<<
     method _objdump {
     #>>>
-        if ( open my $fh,
-            '-|', 'objdump', qw( -D -F ), $self->_file->cleanup->absolute )
-        {
+        if ( open my $fh, '-|', 'objdump', qw( -D -F ), $self->_file->cleanup->absolute ) {
             return $fh;
         }
-        $self->log->logconfess(
-            qq{An error occured requesting section data from objdump $^ $@ });
+        $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });
         return;
     #<<<
     };

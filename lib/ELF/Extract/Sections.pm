@@ -13,15 +13,11 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
     require ELF::Extract::Sections::Section;
 
-    has file => ( ro, required, isa => File, coerce => 1, );
-
-    has sections => ( isa => HashRef [ElfSection], ro, lazy_build, );
-
+    has file => ( isa => File, ro, required, coerce, );
     has scanner => ( isa => Str, default => 'Objdump', ro, );
-
-    has _scanner_package => ( isa => ClassName, ro, lazy_build, );
-
-    has _scanner_instance => ( isa => Object, ro, lazy_build, );
+    has sections => ( isa => HashRef [ElfSection], ro, lazy_build, );
+    has _scanner_package  => ( isa => ClassName, ro, lazy_build, );
+    has _scanner_instance => ( isa => Object,    ro, lazy_build, );
 
     #
     # Public Interfaces
@@ -32,10 +28,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     #>>>
         my $m = 1;
           $m = -1 if ($descending);
-          return [
-            sort { $m * ( $a->compare( other => $b, field => $field ) ) }
-              values %{ $self->sections }
-          ];
+          return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
     };
 
     #
@@ -45,9 +38,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     method _build__scanner_package {
         my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
         eval "use $pkg; 1"
-          or $self->log->logconfess( "The Scanner "
-              . $self->scanner
-              . " could not be found as $pkg. >$! >$@ " );
+          or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
         return $pkg;
     };
 
@@ -114,11 +105,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
           my @k       = sort { $a <=> $b } keys %{$ob};
           my $i       = 0;
           while ( $i < $#k ) {
-            $dataStash{ $ob->{ $k[$i] } } = $self->_build_section_section(
-                $ob->{ $k[$i] },
-                $k[$i], $k[ $i + 1 ],
-                $self->file
-            );
+            $dataStash{ $ob->{ $k[$i] } } = $self->_build_section_section( $ob->{ $k[$i] }, $k[$i], $k[ $i + 1 ], $self->file );
             $i++;
         }
         return \%dataStash;
@@ -143,9 +130,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
             my $offset = $self->_scanner_instance->section_offset;
             my $size   = $self->_scanner_instance->section_size;
 
-            $dataStash{$name} =
-              $self->_build_section_section( $name, $offset, $offset + $size,
-                $self->file );
+            $dataStash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
         }
         return \%dataStash;
     };
