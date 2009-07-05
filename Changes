@@ -1,0 +1,13 @@
+Revision history for ELF-Extract-Sections
+
+0.0103     Updated to MooseX::Has::Sugar 0.0300
+
+0.0102     Dependancy Fixups, yes, more of them.
+
+0.0101     Re-Release with fixed inc/
+           using MX::Has::Sugar
+           dropped Hard dependancy on Perl 5.10
+
+0.01.00    Mon May 11 02:04:58 UTC 2009
+           First Version. Mostly working.
+
