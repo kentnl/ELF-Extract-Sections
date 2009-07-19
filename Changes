@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+           Fixed Extrac typo which lead to dual indexing.
 
 0.0103    2009-07-19 14:59:11 UTC
            Muted warning in tests

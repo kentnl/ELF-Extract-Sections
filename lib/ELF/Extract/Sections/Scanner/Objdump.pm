@@ -1,4 +1,4 @@
-package ELF::Extrac::Sections::Scanner::Objdump;
+package ELF::Extract::Sections::Scanner::Objdump;
 
 # ABSTRACT: An C<objdump> based section scanner.
 
@@ -93,14 +93,6 @@ with ELF::Extract::Sections::Meta::Scanner {
 1;
 
 __END__
-
-=head1 NAME
-
-ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
-
-=head1 VERSION
-
-version 0.0103
 
 =head1 Description
 
