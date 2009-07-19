@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+           Muted warning in tests
            Moved to Dist::Zilla instead of MI
            Updated to MooseX::Has::Sugar 0.0300
 
