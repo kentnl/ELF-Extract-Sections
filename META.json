@@ -1,0 +1,61 @@
+{
+   "resources" : {
+      "repository" : "git://github.com/kentfredric/ELF-Extract-Sections.git"
+   },
+   "meta-spec" : {
+      "version" : 1.4,
+      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
+   },
+   "generated_by" : "Dist::Zilla::Plugin::MetaJSON version 1.092000",
+   "version" : "0.0103",
+   "name" : "ELF-Extract-Sections",
+   "author" : [
+      "Kent Fredric <kentnl@cpan.org>"
+   ],
+   "license" : "perl",
+   "provides" : {
+      "ELF::Extract::Sections::Section" : {
+         "version" : "0.0103",
+         "file" : "lib/ELF/Extract/Sections/Section.pm"
+      },
+      "ELF::Extract::Sections::Scanner::Objdump" : {
+         "version" : "0.0103",
+         "file" : "lib/ELF/Extract/Sections/Scanner/Objdump.pm"
+      },
+      "ELF::Extract::Sections" : {
+         "version" : "0.0103",
+         "file" : "lib/ELF/Extract/Sections.pm"
+      },
+      "ELF::Extract::Sections::Meta::Scanner" : {
+         "version" : "0.0103",
+         "file" : "lib/ELF/Extract/Sections/Meta/Scanner.pm"
+      },
+      "ELF::Extract::Sections::Meta::Types" : {
+         "version" : "0.0103",
+         "file" : "lib/ELF/Extract/Sections/Meta/Types.pm"
+      },
+      "ELF::Extrac::Sections::Scanner::Objdump" : {
+         "version" : "0.0103",
+         "file" : "lib/ELF/Extract/Sections/Scanner/Objdump.pm"
+      }
+   },
+   "requires" : {
+      "MooseX::Types::Moose" : "0.10",
+      "MooseX::Has::Sugar" : "0.0300",
+      "MooseX::Declare" : "0.20",
+      "FindBin" : "0",
+      "YAML::XS" : "0",
+      "lib" : "0",
+      "MooseX::Log::Log4perl" : "0.31",
+      "Moose" : "0.76",
+      "Moose::Role" : "0",
+      "File::Find::Rule" : "0",
+      "overload" : "0",
+      "Test::More" : "0",
+      "MooseX::Types::Path::Class" : "0.05",
+      "MooseX::Types" : "0",
+      "Path::Class" : "0",
+      "Log::Log4perl" : "1.21"
+   },
+   "abstract" : "Extract Raw Chunks of data from identifiable ELF Sections"
+}
