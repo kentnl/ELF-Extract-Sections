@@ -1,5 +1,7 @@
 package ELF::Extract::Sections::Meta::Scanner;
 
+# ABSTRACT: Interface Contract for Scanners
+
 # $Id:$
 use strict;
 use warnings;
@@ -8,22 +10,13 @@ use MooseX::Declare;
 
 role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {
 
-    our $VERSION = '0.0103';
+  requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
 
-    requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
 }
 
 1;
 
 __END__
-
-=head1 NAME
-
-ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
-
-=head1 VERSION 
-
-version 0.0103
 
 =head1 Required Methods for Applying Roles
 

@@ -1,154 +1,139 @@
+package ELF::Extract::Sections;
+
+# ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
+
 use strict;
 use warnings;
 use MooseX::Declare;
 
-#<<<
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
-#>>>
-    our $VERSION = '0.0103';
-    use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose                ( ':all', );
-    use MooseX::Types::Path::Class          ( 'File', );
-    use ELF::Extract::Sections::Meta::Types ( ':all', );
 
-    require ELF::Extract::Sections::Section;
+  use MooseX::Has::Sugar 0.0300;
+  use MooseX::Types::Moose                ( ':all', );
+  use MooseX::Types::Path::Class          ( 'File', );
+  use ELF::Extract::Sections::Meta::Types ( ':all', );
 
-    has file => ( isa => File, ro, required, coerce, );
-    has scanner => ( isa => Str, default => 'Objdump', ro, );
-    has sections => ( isa => HashRef [ElfSection], ro, lazy_build, );
-    has _scanner_package  => ( isa => ClassName, ro, lazy_build, );
-    has _scanner_instance => ( isa => Object,    ro, lazy_build, );
+  require ELF::Extract::Sections::Section;
 
-    #
-    # Public Interfaces
-    #
+  has '_scanner_package'  => ( isa => ClassName, ro, lazy_build, );
+  has '_scanner_instance' => ( isa => Object,    ro, lazy_build, );
 
-    #<<<
-    method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
-    #>>>
-        my $m = 1;
-          $m = -1 if ($descending);
-          return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
-    };
+  has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
+  has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
+  has 'file' => ( isa => File, ro, required, coerce, );
 
-    #
-    # Moose Builders
-    #
+  #
+  # Public Interfaces
+  #
 
-    method _build__scanner_package {
-        my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-        eval "use $pkg; 1"
-          or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
-        return $pkg;
-    };
+  method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
+    my $m = 1;
+    $m = -1 if ($descending);
+    return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
+  };
 
-    method _build__scanner_instance {
-        my $instance = $self->_scanner_package->new();
-        return $instance;
-    };
+  #
+  # Moose Builders
+  #
 
-    method _build_sections {
-        $self->log->debug('Building Section List');
-        if ( $self->_scanner_instance->can_compute_size ) {
-            return $self->_scan_with_size;
-        }
-        else {
-            return $self->_scan_guess_size;
-        }
-    };
+  method _build__scanner_package {
+    my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
+    eval "use $pkg; 1"
+      or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
+    return $pkg;
+  };
 
-    #<<<
-    method BUILD( $args ) {
-    #>>>
-        if ( not $self->file->stat ) {
-            $self->log->logconfess(q{File Specifed could not be found.});
-        }
-    };
+  method _build__scanner_instance {
+    my $instance = $self->_scanner_package->new();
+    return $instance;
+  };
 
-    #
-    # Internals
-    #
-    #<<<
-    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ){
-    #>>>
-        if ( exists $stash->{$offset} ) {
-            $self->log->logcluck(
+  method _build_sections {
+    $self->log->debug('Building Section List');
+    if ( $self->_scanner_instance->can_compute_size ) {
+      return $self->_scan_with_size;
+    }
+    else {
+      return $self->_scan_guess_size;
+    }
+  };
 
-                q{Warning, duplicate file offset reported by scanner. }
-                  . $stash->{$offset}
-                  . qq( and $header collide at $offset )
-                  . q( Assuming )
-                  . $stash->{$offset}
-                  . q( is empty and replacing it )
+  method BUILD( $args ) {
+    if ( not $self->file->stat ) {
+      $self->log->logconfess(q{File Specifed could not be found.});
+    }
+  };
 
-            );
-        }
-        $stash->{$offset} = $header;
-    };
+  #
+  # Internals
+  #
+  method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ){
+    if ( exists $stash->{$offset} ) {
+      $self->log->logcluck(
 
-    #<<<
-    method _build_section_section( Str $stashName, Int $start, Int $stop , File $file ){
-    #>>>
-        $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
-          return ELF::Extract::Sections::Section->new(
-            offset => $start,
-            size   => $stop - $start,
-            name   => $stashName,
-            source => $file,
-          );
-    };
+        q{Warning, duplicate file offset reported by scanner. }
+          . $stash->{$offset}
+          . qq( and $header collide at $offset )
+          . q( Assuming )
+          . $stash->{$offset}
+          . q( is empty and replacing it )
 
-    #<<<
-    method _build_section_table ( HashRef $ob! ){
-    #>>>
-        my %dataStash = ();
-          my @k       = sort { $a <=> $b } keys %{$ob};
-          my $i       = 0;
-          while ( $i < $#k ) {
-            $dataStash{ $ob->{ $k[$i] } } = $self->_build_section_section( $ob->{ $k[$i] }, $k[$i], $k[ $i + 1 ], $self->file );
-            $i++;
-        }
-        return \%dataStash;
-    };
+      );
+    }
+    $stash->{$offset} = $header;
+  };
 
-    method _scan_guess_size {
-        $self->_scanner_instance->open_file( file => $self->file );
-        my %offsets = ();
-        while ( $self->_scanner_instance->next_section() ) {
-            my $name   = $self->_scanner_instance->section_name;
-            my $offset = $self->_scanner_instance->section_offset;
-            $self->_stash_record( \%offsets, $name, $offset );
-        }
-        return $self->_build_section_table( \%offsets );
-    };
+  method _build_section_section( Str $stashName, Int $start, Int $stop , File $file ){
+    $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
+    return ELF::Extract::Sections::Section->new(
+      offset => $start,
+      size   => $stop - $start,
+      name   => $stashName,
+      source => $file,
+    );
+  };
 
-    method _scan_with_size {
-        my %dataStash = ();
-        $self->_scanner_instance->open_file( file => $self->file );
-        while ( $self->_scanner_instance->next_section() ) {
-            my $name   = $self->_scanner_instance->section_name;
-            my $offset = $self->_scanner_instance->section_offset;
-            my $size   = $self->_scanner_instance->section_size;
+  method _build_section_table ( HashRef $ob! ){
+    my %dataStash = ();
+    my @k       = sort { $a <=> $b } keys %{$ob};
+    my $i       = 0;
+    while ( $i < $#k ) {
+      $dataStash{ $ob->{ $k[$i] } } = $self->_build_section_section( $ob->{ $k[$i] }, $k[$i], $k[ $i + 1 ], $self->file );
+      $i++;
+    }
+    return \%dataStash;
+  };
 
-            $dataStash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
-        }
-        return \%dataStash;
-    };
+  method _scan_guess_size {
+    $self->_scanner_instance->open_file( file => $self->file );
+    my %offsets = ();
+    while ( $self->_scanner_instance->next_section() ) {
+      my $name   = $self->_scanner_instance->section_name;
+      my $offset = $self->_scanner_instance->section_offset;
+      $self->_stash_record( \%offsets, $name, $offset );
+    }
+    return $self->_build_section_table( \%offsets );
+  };
+
+  method _scan_with_size {
+    my %dataStash = ();
+    $self->_scanner_instance->open_file( file => $self->file );
+    while ( $self->_scanner_instance->next_section() ) {
+      my $name   = $self->_scanner_instance->section_name;
+      my $offset = $self->_scanner_instance->section_offset;
+      my $size   = $self->_scanner_instance->section_size;
+
+      $dataStash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
+    }
+    return \%dataStash;
+  };
 
 #<<<
-}
+};
 #>>>
 1;
 
 __END__
-
-=head1 NAME
-
-ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sections
-
-=head1 VERSION
-
-version 0.0103
 
 =head1 Caveats
 
@@ -256,10 +241,6 @@ To suppress this, just do
 
 I request however you B<don't> do that for modules intended to be consumed by others without good cause.
 
-=head1 Author
-
-Kent Fredric, C<< <kentnl@cpan.org> >>
-
 =head1 Bugs
 
 Please report any bugs or feature requests to C<bug-elf-extract-sections at rt.cpan.org>, or through
@@ -300,14 +281,6 @@ L<http://search.cpan.org/dist/ELF-Extract-Sections/>
 
 
 =head1 Acknowledgements
-
-=head1 Copyright & License
-
-Copyright 2009 Kent Fredric, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
 
 =cut
 

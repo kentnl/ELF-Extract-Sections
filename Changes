@@ -1,6 +1,8 @@
-Revision history for ELF-Extract-Sections
+Revision history for {{$dist->name}}
 
-0.0103     Updated to MooseX::Has::Sugar 0.0300
+{{$NEXT}}
+           Moved to Dist::Zilla instead of MI
+           Updated to MooseX::Has::Sugar 0.0300
 
 0.0102     Dependancy Fixups, yes, more of them.
 

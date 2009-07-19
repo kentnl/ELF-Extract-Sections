@@ -1,13 +1,14 @@
+package ELF::Extrac::Sections::Scanner::Objdump;
+
+# ABSTRACT: An C<objdump> based section scanner.
+
 # $Id:$
 use strict;
 use warnings;
 use MooseX::Declare;
 
-#<<<
 class ELF::Extract::Sections::Scanner::Objdump
 with ELF::Extract::Sections::Meta::Scanner {
-#>>>
-    our $VERSION = '0.0103';
     use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose ( 'Bool', 'HashRef', 'RegexpRef', 'FileHandle', );
     use MooseX::Types::Path::Class ('File');
@@ -22,13 +23,11 @@ with ELF::Extract::Sections::Meta::Scanner {
     #
     # Interface Methods
     #
-    #<<<
     method open_file ( File :$file! ){
-    #>>>
         $self->log->debug("Opening $file");
-          $self->_file($file);
-          $self->_filehandle( $self->_objdump );
-          return 1;
+        $self->_file($file);
+        $self->_filehandle( $self->_objdump );
+        return 1;
     };
 
     method next_section {
@@ -75,32 +74,22 @@ with ELF::Extract::Sections::Meta::Scanner {
     # Internals
     #
 
-    #<<<
     method _build__section_header_identifier {
-    #>>>
         my $header = $self->_header_regex;
         my $offset = $self->_offset_regex;
 
         return qr/${header}\s*${offset}:/;
-    #<<<
     };
-    #>>>
 
-    #<<<
     method _objdump {
-    #>>>
         if ( open my $fh, '-|', 'objdump', qw( -D -F ), $self->_file->cleanup->absolute ) {
             return $fh;
         }
         $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });
         return;
-    #<<<
     };
-    #>>>
 
-#<<<
-}
-#>>>
+};
 1;
 
 __END__
