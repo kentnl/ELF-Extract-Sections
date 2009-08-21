@@ -17,6 +17,9 @@ lib/ELF/Extract/Sections/Scanner/Objdump.pm
 lib/ELF/Extract/Sections/Section.pm
 t/00-load.t
 t/01-elf-libs.t
+t/release-meta-yaml.t
+t/release-pod-coverage.t
+t/release-pod-syntax.t
 t/test_files/gen_expected.pl
 t/test_files/libc.so.6
 t/test_files/libc.so.6.yaml

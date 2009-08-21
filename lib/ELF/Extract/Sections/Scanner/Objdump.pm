@@ -1,5 +1,5 @@
-package ELF::Extrac::Sections::Scanner::Objdump;
-our $VERSION = '0.0103';
+package ELF::Extract::Sections::Scanner::Objdump;
+our $VERSION = '0.0104';
 
 
 # ABSTRACT: An C<objdump> based section scanner.
@@ -105,7 +105,7 @@ ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
 
 =head1 VERSION
 
-version 0.0103
+version 0.0104
 
 =head1 Description
 
@@ -142,7 +142,7 @@ This software is copyright (c) 2009 by Kent Fredric.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut
+=cut 
 
 
 

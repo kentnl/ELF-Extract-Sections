@@ -1,5 +1,5 @@
 package ELF::Extract::Sections;
-our $VERSION = '0.0103';
+our $VERSION = '0.0104';
 
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
@@ -10,6 +10,7 @@ use MooseX::Declare;
 
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
+
   use MooseX::Has::Sugar 0.0300;
   use MooseX::Types::Moose                ( ':all', );
   use MooseX::Types::Path::Class          ( 'File', );
@@ -17,16 +18,24 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
   require ELF::Extract::Sections::Section;
 
-  has '_scanner_package'  => ( isa => ClassName, ro, lazy_build, );
-  has '_scanner_instance' => ( isa => Object,    ro, lazy_build, );
 
-  has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
-  has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
+
   has 'file' => ( isa => File, ro, required, coerce, );
 
-  #
-  # Public Interfaces
-  #
+
+  has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
+
+
+  has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
+
+
+
+  method BUILD( $args ) {
+    if ( not $self->file->stat ) {
+      $self->log->logconfess(q{File Specifed could not be found.});
+    }
+  };
+
 
   method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
     my $m = 1;
@@ -34,21 +43,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
   };
 
-  #
-  # Moose Builders
-  #
 
-  method _build__scanner_package {
-    my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    eval "use $pkg; 1"
-      or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
-    return $pkg;
-  };
-
-  method _build__scanner_instance {
-    my $instance = $self->_scanner_package->new();
-    return $instance;
-  };
 
   method _build_sections {
     $self->log->debug('Building Section List');
@@ -60,15 +55,32 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     }
   };
 
-  method BUILD( $args ) {
-    if ( not $self->file->stat ) {
-      $self->log->logconfess(q{File Specifed could not be found.});
-    }
+
+
+
+  has '_scanner_package'  => ( isa => ClassName, ro, lazy_build, );
+
+
+  has '_scanner_instance' => ( isa => Object,    ro, lazy_build, );
+
+
+
+  method _build__scanner_package {
+    my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
+    eval "use $pkg; 1"
+      or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
+    return $pkg;
   };
 
-  #
-  # Internals
-  #
+
+  method _build__scanner_instance {
+    my $instance = $self->_scanner_package->new();
+    return $instance;
+  };
+
+
+
+
   method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ){
     if ( exists $stash->{$offset} ) {
       $self->log->logcluck(
@@ -85,6 +97,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     $stash->{$offset} = $header;
   };
 
+
   method _build_section_section( Str $stashName, Int $start, Int $stop , File $file ){
     $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
     return ELF::Extract::Sections::Section->new(
@@ -94,6 +107,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
       source => $file,
     );
   };
+
 
   method _build_section_table ( HashRef $ob! ){
     my %dataStash = ();
@@ -106,6 +120,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     return \%dataStash;
   };
 
+
   method _scan_guess_size {
     $self->_scanner_instance->open_file( file => $self->file );
     my %offsets = ();
@@ -116,6 +131,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     }
     return $self->_build_section_table( \%offsets );
   };
+
 
   method _scan_with_size {
     my %dataStash = ();
@@ -146,9 +162,9 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.0103
+version 0.0104
 
-=head1 Caveats
+=head1 CAVEATS
 
 =over 4
 
@@ -167,9 +183,9 @@ If you have any suggestions, please tell me via "report bugs". If you never seek
 
 This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
 
-=back
+=back 
 
-=head1 Synopsis
+=head1 SYNOPSIS
 
     use ELF::Extract::Sections;
 
@@ -188,19 +204,39 @@ This code is written by a human, and like all human code, it sucks. There will b
     # Get the raw bytes out of the section.
     print $data->contents  # returns bytes
 
-=head1 Methods
 
-=head2 -> new ( file => FILENAME )
 
-Creates A new Section Extractor object
+=head1 PUBLIC ATTRIBUTES
 
 =head2 -> file
 
 Returns the file the section data is being created for.
 
+
+
 =head2 -> sections
 
 Returns a HashRef of the available sections.
+
+
+
+=head2 -> scanner
+
+Returns the name of the default scanner plugin
+
+
+
+=head1 PUBLIC METHODS
+
+
+
+=head2 -> new ( file => FILENAME )
+
+=head2 -> new ( file => FILENAME , scanner => 'Objdump' )
+
+Creates A new Section Extractor object
+
+
 
 =head2 -> sorted_sections ( field => SORT_BY )
 
@@ -232,11 +268,47 @@ The Sections offset relative to the start of the file.
 
 The Size of the section.
 
-=back
+=back 
 
-=back
+=back 
 
-=head1 Debugging
+
+
+=head1 PUBLIC ATTRIBUTE BUILDERS
+
+These aren't really user servicable, but they make your front end work.
+
+
+
+=head2 -> _build_sections
+
+
+
+=head1 PRIVATE ATTRIBUTES
+
+=head2 -> _scanner_package
+
+=head2 -> _scanner_instance
+
+=head1 PRIVATE ATTRIBUTE BUILDERS
+
+=head2 -> _build__scanner_package
+
+=head2 -> _build__scanner_instance
+
+=head1 PRIVATE_METHODS
+
+=head2 -> _stash_record( HashRef, Str, Str )
+
+=head2 -> _build_section_section( Str, Int, Int, File )
+
+=head2 -> _build_section_table( HashRef )
+
+=head2 -> _scan_guess_size
+
+=head2 -> _scan_with_size
+
+=head1 DEBUGGING
 
 This library uses L<Log::Log4perl>. To see more verbose processing notices, do this:
 
@@ -254,13 +326,13 @@ To suppress this, just do
 
 I request however you B<don't> do that for modules intended to be consumed by others without good cause.
 
-=head1 Bugs
+=head1 BUGS
 
 Please report any bugs or feature requests to C<bug-elf-extract-sections at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ELF-Extract-Sections>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-=head1 Support
+=head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
@@ -286,9 +358,11 @@ L<http://cpanratings.perl.org/d/ELF-Extract-Sections>
 
 L<http://search.cpan.org/dist/ELF-Extract-Sections/>
 
-=back
+=back 
 
-=head1 Acknowledgements
+=head1 ACKNOWLEDGEMENTS
+
+
 
 =head1 AUTHOR
 
@@ -301,10 +375,11 @@ This software is copyright (c) 2009 by Kent Fredric.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut
+=cut 
 
 
 
 __END__
+
 
 

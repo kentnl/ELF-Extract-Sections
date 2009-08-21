@@ -3,9 +3,9 @@ NAME
     ELF Sections
 
 VERSION
-    version 0.0103
+    version 0.0104
 
-Caveats
+CAVEATS
     1. Beta Software
         This code is relatively new. It exists only as a best attempt at
         present until further notice. It has proven practical for at least
@@ -23,7 +23,7 @@ Caveats
         This code is written by a human, and like all human code, it sucks.
         There will be bugs. Please report them.
 
-Synopsis
+SYNOPSIS
         use ELF::Extract::Sections;
 
         # Create an extractor object for foo.so
@@ -41,15 +41,20 @@ Synopsis
         # Get the raw bytes out of the section.
         print $data->contents  # returns bytes
 
-Methods
-  -> new ( file => FILENAME )
-    Creates A new Section Extractor object
-
+PUBLIC ATTRIBUTES
   -> file
     Returns the file the section data is being created for.
 
   -> sections
     Returns a HashRef of the available sections.
+
+  -> scanner
+    Returns the name of the default scanner plugin
+
+PUBLIC METHODS
+  -> new ( file => FILENAME )
+  -> new ( file => FILENAME , scanner => 'Objdump' )
+    Creates A new Section Extractor object
 
   -> sorted_sections ( field => SORT_BY )
   -> sorted_sections ( field => SORT_BY, descending => DESCENDING )
@@ -70,7 +75,23 @@ Methods
 
         size  The Size of the section.
 
-Debugging
+PUBLIC ATTRIBUTE BUILDERS
+    These aren't really user servicable, but they make your front end work.
+
+  -> _build_sections
+PRIVATE ATTRIBUTES
+  -> _scanner_package
+  -> _scanner_instance
+PRIVATE ATTRIBUTE BUILDERS
+  -> _build__scanner_package
+  -> _build__scanner_instance
+PRIVATE_METHODS
+  -> _stash_record( HashRef, Str, Str )
+  -> _build_section_section( Str, Int, Int, File )
+  -> _build_section_table( HashRef )
+  -> _scan_guess_size
+  -> _scan_with_size
+DEBUGGING
     This library uses Log::Log4perl. To see more verbose processing notices,
     do this:
 
@@ -90,14 +111,14 @@ Debugging
     I request however you don't do that for modules intended to be consumed
     by others without good cause.
 
-Bugs
+BUGS
     Please report any bugs or feature requests to "bug-elf-extract-sections
     at rt.cpan.org", or through the web interface at
     <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ELF-Extract-Sections>. I
     will be notified, and then you'll automatically be notified of progress
     on your bug as I make changes.
 
-Support
+SUPPORT
     You can find documentation for this module with the perldoc command.
 
         perldoc ELF::Extract::Sections
@@ -120,7 +141,7 @@ Support
 
         <http://search.cpan.org/dist/ELF-Extract-Sections/>
 
-Acknowledgements
+ACKNOWLEDGEMENTS
 AUTHOR
       Kent Fredric <kentnl@cpan.org>
 

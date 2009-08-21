@@ -1,5 +1,5 @@
 package ELF::Extract::Sections::Section;
-our $VERSION = '0.0103';
+our $VERSION = '0.0104';
 
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
@@ -9,6 +9,9 @@ use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
+
+
+
     use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose                ( ':all', );
     use ELF::Extract::Sections::Meta::Types ( ':all', );
@@ -16,10 +19,21 @@ class ELF::Extract::Sections::Section {
 
     use overload '""' => \&to_string;
 
+
+
     has source => ( isa => File, ro, required, coerce, );
+
+
     has name   => ( isa => Str,  ro, required );
+
+
     has offset => ( isa => Int,  ro, required );
+
+
     has size   => ( isa => Int,  ro, required );
+
+
+
 
     method to_string ( Any $other?, Bool $polarity? ) {
         return sprintf(
@@ -27,6 +41,7 @@ class ELF::Extract::Sections::Section {
             $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
             );
     };
+
 
     method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ){
         if ( $field eq 'name' ) {
@@ -40,6 +55,7 @@ class ELF::Extract::Sections::Section {
         }
         return undef;
     };
+
 
     method write_to( File :$file does coerce  ){
         my $fh = $self->source->openr;
@@ -55,6 +71,7 @@ class ELF::Extract::Sections::Section {
         }
         return 1;
     };
+
 
     method contents {
         my $fh = $self->source->openr;
@@ -78,84 +95,84 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.0103
+version 0.0104
 
-=head1 Description
+=head1 DESCRIPTION
 
 Generally Intended for use by L<ELF::Extract::Sections> as a meta-structure for tracking data,
 but generated objects are returned to you for you to  deal with
 
-=head1 Synopsis
 
-    use ELF::Extract::Sections::Section;
 
-    my $s = ELF::Extract::Sections::Section->new(
-        source => '/foo/bar.pl',
-        name   => '.comment',
-        offset => 45670,
-        size   => 1244,
-    );
+=head1 SYNOPSIS
 
-    # prints a human friendly description
-    print $s->to_string;
+  use ELF::Extract::Sections::Section;
 
-    # does likewise.
-    print "$s";
+  my $s = ELF::Extract::Sections::Section->new(
+      source => '/foo/bar.pl',
+      name   => '.comment',
+      offset => 45670,
+      size   => 1244,
+  );
 
-    # Compare with another section ( preferably in the same file, meaningless otherwise
-    if( $s->compare( $y , 'name' ) ){
+  # prints a human friendly description
+  print $s->to_string;
 
-    }
+  # does likewise.
+  print "$s";
 
-    # Unimplemented
-    $s->write_to ( file => '/tmp/out.txt' );
+  # Compare with another section ( preferably in the same file, meaningless otherwise )
+  if( $s->compare( $y , 'name' ) ){
 
-    # Retuns the sections contents as a string
-    print $s->contents;
+  }
 
-=head1 Methods
+  # Unimplemented
+  $s->write_to ( file => '/tmp/out.txt' );
 
-=head2 -> new  ( %PARAMS )
+  # Retuns the sections contents as a string
+  print $s->contents;
 
-4 Parameters, all required.
 
-=over 4
 
-=item source
+=head1 PUBLIC ATTRIBUTES
+
+
+
+=head2 source
 
 C<Str>|C<Path::Class::File>: Either a String or a Path::Class instance pointing to the file in mention.
 
-=item name
+
+
+=head2 name
 
 C<Str>: The ELF Section Name
 
-=item size
 
-C<Int>: The ELF Section Size
 
-=item offset
+=head2 offset
 
 C<Int>: Position in bytes relative to the start of the file.
 
-=back
+
+
+=head2 size
+
+C<Int>: The ELF Section Size
+
+
+
+=head1 PUBLIC METHODS
+
+
+
+=head2 -> new ( %ATTRIBUTES )
+
+4 Parameters, all required.
 
 Returns an C<ELF::Extract::Sections::Section> object.
 
-=head2 -> source
 
-returns C<Path::Class::File>
-
-=head2 -> name
-
-returns C<Str>
-
-=head2 -> offset
-
-returns C<Int>
-
-=head2 -> size
-
-returns C<Int>
 
 =head2 -> to_string
 
@@ -163,7 +180,9 @@ returns C<Str> description of the object
 
     [ Section {name} of size {size} in {file} @ {start} to {stop} ]
 
-=head2 -> compare ( %PARAMS )
+
+
+=head2 -> compare ( other => $other, field => $field )
 
 2 Parameters, both required
 
@@ -177,11 +196,13 @@ C<ELF::Extract::Sections::Section>: Item to compare with
 
 C<Str['name','offset','size']>: Field to compare with.
 
-=back
+=back 
 
 returns C<Int> of comparison result, between -1 and 1
 
-=head2 -> write_to ( %PARAMS )
+
+
+=head2 -> write_to ( file => $file )
 
 B<UNIMPLEMENTED AS OF YET>
 
@@ -191,11 +212,15 @@ B<UNIMPLEMENTED AS OF YET>
 
 C<Str>|C<Path::Class::File>: File target to write section contents to.
 
-=back
+=back 
+
+
 
 =head2 -> contents
 
 returns C<Str> of binary data read out of file.
+
+
 
 =head1 AUTHOR
 
@@ -208,9 +233,10 @@ This software is copyright (c) 2009 by Kent Fredric.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut
+=cut 
 
 
 
 __END__
+
 

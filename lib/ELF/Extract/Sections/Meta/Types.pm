@@ -1,5 +1,5 @@
 package ELF::Extract::Sections::Meta::Types;
-our $VERSION = '0.0103';
+our $VERSION = '0.0104';
 
 
 # ABSTRACT: Generic Type Contraints for E:E:S
@@ -28,7 +28,7 @@ ELF::Extract::Sections::Meta::Types - Generic Type Contraints for E:E:S
 
 =head1 VERSION
 
-version 0.0103
+version 0.0104
 
 =head1 Types
 
@@ -51,7 +51,7 @@ This software is copyright (c) 2009 by Kent Fredric.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut
+=cut 
 
 
 

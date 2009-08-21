@@ -1,5 +1,5 @@
 package ELF::Extract::Sections::Meta::Scanner;
-our $VERSION = '0.0103';
+our $VERSION = '0.0104';
 
 
 # ABSTRACT: Interface Contract for Scanners
@@ -29,7 +29,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.0103
+version 0.0104
 
 =head1 Required Methods for Applying Roles
 
@@ -74,7 +74,7 @@ This software is copyright (c) 2009 by Kent Fredric.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut
+=cut 
 
 
 
