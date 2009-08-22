@@ -1,11 +1,12 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections::Section;
-our $VERSION = '0.0104';
+our $VERSION = '0.0105';
 
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
-use strict;
-use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
@@ -53,7 +54,7 @@ class ELF::Extract::Sections::Section {
         if ( $field eq 'size' ) {
             return ( $self->size <=> $other->size );
         }
-        return undef;
+        return;
     };
 
 
@@ -95,7 +96,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.0104
+version 0.0105
 
 =head1 DESCRIPTION
 

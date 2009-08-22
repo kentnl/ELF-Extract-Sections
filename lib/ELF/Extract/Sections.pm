@@ -1,11 +1,12 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections;
-our $VERSION = '0.0104';
+our $VERSION = '0.0105';
 
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
-use strict;
-use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
@@ -67,7 +68,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
   method _build__scanner_package {
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    eval "use $pkg; 1"
+    eval "use $pkg; 1;"
       or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
     return $pkg;
   };
@@ -162,7 +163,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.0104
+version 0.0105
 
 =head1 CAVEATS
 

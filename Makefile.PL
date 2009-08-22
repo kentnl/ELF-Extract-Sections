@@ -9,7 +9,7 @@ WriteMakefile(
   NAME      => 'ELF::Extract::Sections',
   AUTHOR    => 'Kent\ Fredric\ \<kentnl\@cpan\.org\>',
   ABSTRACT  => 'Extract\ Raw\ Chunks\ of\ data\ from\ identifiable\ ELF\ Sections',
-  VERSION   => '0.0104',
+  VERSION   => '0.0105',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

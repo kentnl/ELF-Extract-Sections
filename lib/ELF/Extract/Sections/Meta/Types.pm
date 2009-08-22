@@ -1,12 +1,13 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections::Meta::Types;
-our $VERSION = '0.0104';
+our $VERSION = '0.0105';
 
 
 # ABSTRACT: Generic Type Contraints for E:E:S
 
 # $Id:$
-use strict;
-use warnings;
 use Moose;
 
 use MooseX::Types::Moose (':all');
@@ -28,15 +29,15 @@ ELF::Extract::Sections::Meta::Types - Generic Type Contraints for E:E:S
 
 =head1 VERSION
 
-version 0.0104
+version 0.0105
 
 =head1 Types
 
 =head2 FilterField
 
-ENUM: name, offset, size 
+ENUM: name, offset, size
 
-=head2 ElfSection 
+=head2 ElfSection
 
 An object that isa ELF::Extract::Sections::Section
 

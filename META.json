@@ -7,7 +7,7 @@
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
    "generated_by" : "Dist::Zilla::Plugin::MetaJSON version 1.092310",
-   "version" : "0.0104",
+   "version" : "0.0105",
    "name" : "ELF-Extract-Sections",
    "author" : [
       "Kent Fredric <kentnl@cpan.org>"
@@ -15,23 +15,23 @@
    "license" : "perl",
    "provides" : {
       "ELF::Extract::Sections::Section" : {
-         "version" : "0.0104",
+         "version" : "0.0105",
          "file" : "lib/ELF/Extract/Sections/Section.pm"
       },
       "ELF::Extract::Sections::Scanner::Objdump" : {
-         "version" : "0.0104",
+         "version" : "0.0105",
          "file" : "lib/ELF/Extract/Sections/Scanner/Objdump.pm"
       },
       "ELF::Extract::Sections" : {
-         "version" : "0.0104",
+         "version" : "0.0105",
          "file" : "lib/ELF/Extract/Sections.pm"
       },
       "ELF::Extract::Sections::Meta::Scanner" : {
-         "version" : "0.0104",
+         "version" : "0.0105",
          "file" : "lib/ELF/Extract/Sections/Meta/Scanner.pm"
       },
       "ELF::Extract::Sections::Meta::Types" : {
-         "version" : "0.0104",
+         "version" : "0.0105",
          "file" : "lib/ELF/Extract/Sections/Meta/Types.pm"
       }
    },

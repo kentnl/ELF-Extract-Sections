@@ -1,7 +1,19 @@
 Revision history for ELF-Extract-Sections
 
+0.0105    2009-08-22 15:17:47 UTC
+           Tweaked Authortests/Release tests bundling somewhat
+            so they actually work.
+
+           Added Perl Critic tests and satisfied criteria.
+
+           Documenting the hell out of the Objdump default 
+            scanner, partially to see how CPAN renders this 
+            abuse. With a bit of luck, it will produce mean 
+            as API breakdowns for me :)
+
 0.0104    2009-08-21 17:34:29 UTC
            Fixed Extrac typo which lead to dual indexing.
+           Dist::Zilla automatic tests now included.
 
 0.0103    2009-07-19 14:59:11 UTC
            Muted warning in tests

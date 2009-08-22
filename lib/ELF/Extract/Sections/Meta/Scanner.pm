@@ -1,12 +1,13 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections::Meta::Scanner;
-our $VERSION = '0.0104';
+our $VERSION = '0.0105';
 
 
 # ABSTRACT: Interface Contract for Scanners
 
 # $Id:$
-use strict;
-use warnings;
 
 use MooseX::Declare;
 
@@ -29,7 +30,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.0104
+version 0.0105
 
 =head1 Required Methods for Applying Roles
 
