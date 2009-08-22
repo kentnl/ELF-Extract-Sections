@@ -1,9 +1,10 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections;
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
-use strict;
-use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
@@ -186,7 +187,7 @@ These aren't really user servicable, but they make your front end work.
 
   method _build__scanner_package {
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    eval "use $pkg; 1"
+    eval "use $pkg; 1;"
       or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
     return $pkg;
   };

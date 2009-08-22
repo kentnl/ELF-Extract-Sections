@@ -1,9 +1,10 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections::Section;
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
-use strict;
-use warnings;
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
@@ -145,7 +146,7 @@ returns C<Int> of comparison result, between -1 and 1
         if ( $field eq 'size' ) {
             return ( $self->size <=> $other->size );
         }
-        return undef;
+        return;
     };
 
 =head2 -> write_to ( file => $file )

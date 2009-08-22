@@ -1,10 +1,11 @@
+use strict;
+use warnings;
+
 package ELF::Extract::Sections::Meta::Scanner;
 
 # ABSTRACT: Interface Contract for Scanners
 
 # $Id:$
-use strict;
-use warnings;
 
 use MooseX::Declare;
 
