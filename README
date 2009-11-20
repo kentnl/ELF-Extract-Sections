@@ -3,25 +3,7 @@ NAME
     ELF Sections
 
 VERSION
-    version 0.0105
-
-CAVEATS
-    1. Beta Software
-        This code is relatively new. It exists only as a best attempt at
-        present until further notice. It has proven practical for at least
-        one application, and this is why the module exists. However, it
-        can't be guaranteed it will work for whatever you want it to in all
-        cases. Please report any bugs you find.
-
-    2. Feature Incomplete
-        This only presently has a very barebones functionality, which should
-        however prove practical for most purposes. If you have any
-        suggestions, please tell me via "report bugs". If you never seek,
-        you'll never find.
-
-    3. Humans
-        This code is written by a human, and like all human code, it sucks.
-        There will be bugs. Please report them.
+    version 0.02020308
 
 SYNOPSIS
         use ELF::Extract::Sections;
@@ -41,6 +23,24 @@ SYNOPSIS
         # Get the raw bytes out of the section.
         print $data->contents  # returns bytes
 
+CAVEATS
+    1. Beta Software
+        This code is relatively new. It exists only as a best attempt at
+        present until further notice. It has proved as practical for at
+        least one application, and this is why the module exists. However,
+        it can't be guaranteed it will work for whatever you want it to in
+        all cases. Please report any bugs you find.
+
+    2. Feature Incomplete
+        This only presently has a very bare-bones functionality, which
+        should however prove practical for most purposes. If you have any
+        suggestions, please tell me via "report bugs". If you never seek,
+        you'll never find.
+
+    3. Humans
+        This code is written by a human, and like all human code, it sucks.
+        There will be bugs. Please report them.
+
 PUBLIC ATTRIBUTES
   -> file
     Returns the file the section data is being created for.
@@ -49,7 +49,7 @@ PUBLIC ATTRIBUTES
     Returns a HashRef of the available sections.
 
   -> scanner
-    Returns the name of the default scanner plugin
+    Returns the name of the default scanner plug-in
 
 PUBLIC METHODS
   -> new ( file => FILENAME )
@@ -61,29 +61,30 @@ PUBLIC METHODS
     Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or
     Descending depending on requirements.
 
-    DESCENDING
-        Optional parameters. True for descending, False or absensent for
-        ascending.
+   DESCENDING
+    Optional parameters. True for descending, False or absent for ascending.
 
-    SORT_BY
-        A String of the field to sort by. Valid options at present are
+   SORT_BY
+    A String of the field to sort by. Valid options at present are
 
-        name  The Section Name
+   name
+    The Section Name
 
-        offset
-              The Sections offset relative to the start of the file.
+   offset
+    The Sections offset relative to the start of the file.
 
-        size  The Size of the section.
+   size
+    The Size of the section.
 
 PUBLIC ATTRIBUTE BUILDERS
-    These aren't really user servicable, but they make your front end work.
+    These aren't really user serviceable, but they make your front end work.
 
   -> _build_sections
 PRIVATE ATTRIBUTES
   -> _scanner_package
   -> _scanner_instance
 PRIVATE ATTRIBUTE BUILDERS
-  -> _build__scanner_package
+  _build__scanner_package
   -> _build__scanner_instance
 PRIVATE_METHODS
   -> _stash_record( HashRef, Str, Str )
@@ -99,8 +100,8 @@ DEBUGGING
         Log::Log4perl->easy_init($DEBUG);
 
     For convenience to make sure you don't happen to miss this fact, we
-    never initialize Log4perl ourself, so it will spit the following message
-    if you have not set it up:
+    never initialize Log4perl ourselves, so it will spit the following
+    message if you have not set it up:
 
         Log4perl: Seems like no initialization happened. Forgot to call init()?
 
@@ -110,36 +111,6 @@ DEBUGGING
 
     I request however you don't do that for modules intended to be consumed
     by others without good cause.
-
-BUGS
-    Please report any bugs or feature requests to "bug-elf-extract-sections
-    at rt.cpan.org", or through the web interface at
-    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ELF-Extract-Sections>. I
-    will be notified, and then you'll automatically be notified of progress
-    on your bug as I make changes.
-
-SUPPORT
-    You can find documentation for this module with the perldoc command.
-
-        perldoc ELF::Extract::Sections
-
-    You can also look for information at:
-
-    *   RT: CPAN's request tracker
-
-        <http://rt.cpan.org/NoAuth/Bugs.html?Dist=ELF-Extract-Sections>
-
-    *   AnnoCPAN: Annotated CPAN documentation
-
-        <http://annocpan.org/dist/ELF-Extract-Sections>
-
-    *   CPAN Ratings
-
-        <http://cpanratings.perl.org/d/ELF-Extract-Sections>
-
-    *   Search CPAN
-
-        <http://search.cpan.org/dist/ELF-Extract-Sections/>
 
 ACKNOWLEDGEMENTS
 AUTHOR

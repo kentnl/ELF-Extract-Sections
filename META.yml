@@ -2,7 +2,7 @@
 abstract: 'Extract Raw Chunks of data from identifiable ELF Sections'
 author:
   - 'Kent Fredric <kentnl@cpan.org>'
-generated_by: 'Dist::Zilla::Plugin::MetaYAML version 1.092310'
+generated_by: 'Dist::Zilla version 1.093140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -11,19 +11,19 @@ name: ELF-Extract-Sections
 provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
-    version: 0.0105
+    version: 0.02020308
   ELF::Extract::Sections::Meta::Scanner:
     file: lib/ELF/Extract/Sections/Meta/Scanner.pm
-    version: 0.0105
+    version: 0.02020308
   ELF::Extract::Sections::Meta::Types:
     file: lib/ELF/Extract/Sections/Meta/Types.pm
-    version: 0.0105
+    version: 0.02020308
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
-    version: 0.0105
+    version: 0.02020308
   ELF::Extract::Sections::Section:
     file: lib/ELF/Extract/Sections/Section.pm
-    version: 0.0105
+    version: 0.02020308
 requires:
   File::Find::Rule: 0
   FindBin: 0
@@ -42,5 +42,5 @@ requires:
   lib: 0
   overload: 0
 resources:
-  repository: git://github.com/kentfredric/ELF-Extract-Sections.git
-version: 0.0105
+  repository: http://github.com/kentfredric/ELF-Extract-Sections
+version: 0.02020308

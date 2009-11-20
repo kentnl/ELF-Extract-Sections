@@ -13,8 +13,8 @@ my $build = Module::Build->new(
 "Kent\ Fredric\ \<kentnl\@cpan\.org\>",
   ],
   requires      => {
-    "MooseX::Types::Moose" => '0.10',
     "MooseX::Has::Sugar" => '0.0300',
+    "MooseX::Types::Moose" => '0.10',
     "MooseX::Declare" => '0.20',
     "FindBin" => '0',
     "YAML::XS" => '0',

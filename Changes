@@ -1,6 +1,6 @@
 Revision history for ELF-Extract-Sections
 
-0.0105    2009-08-22 15:17:47 UTC
+0.02020308 2009-11-20 05:05:28 UTC
            Tweaked Authortests/Release tests bundling somewhat
             so they actually work.
 
@@ -10,6 +10,14 @@ Revision history for ELF-Extract-Sections
             scanner, partially to see how CPAN renders this 
             abuse. With a bit of luck, it will produce mean 
             as API breakdowns for me :)
+
+          Fixed t/ by using Compile Tests.
+            ( You can thank JAWNSY for bugging me about this )
+
+          Moved To AutoVersion::Relative
+
+          Dropped EUMM
+
 
 0.0104    2009-08-21 17:34:29 UTC
            Fixed Extrac typo which lead to dual indexing.

@@ -2,13 +2,13 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Types;
-our $VERSION = '0.0105';
+our $VERSION = '0.02020308';
 
 
-# ABSTRACT: Generic Type Contraints for E:E:S
+
+# ABSTRACT: Generic Type Constraints for E:E:S
 
 # $Id:$
-use Moose;
 
 use MooseX::Types::Moose (':all');
 use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
@@ -20,16 +20,15 @@ subtype ElfSection, as Object, where { $_->isa('ELF::Extract::Sections::Section'
 1;
 
 
-
 =pod
 
 =head1 NAME
 
-ELF::Extract::Sections::Meta::Types - Generic Type Contraints for E:E:S
+ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 0.0105
+version 0.02020308
 
 =head1 Types
 
@@ -39,7 +38,7 @@ ENUM: name, offset, size
 
 =head2 ElfSection
 
-An object that isa ELF::Extract::Sections::Section
+An object that is a ELF::Extract::Sections::Section
 
 =head1 AUTHOR
 
@@ -52,8 +51,7 @@ This software is copyright (c) 2009 by Kent Fredric.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut 
-
+=cut
 
 
 __END__

@@ -4,7 +4,6 @@ LICENSE
 MANIFEST
 META.json
 META.yml
-Makefile.PL
 README
 dist.ini
 examples/example1.pl
@@ -16,7 +15,7 @@ lib/ELF/Extract/Sections/Meta/Types.pm
 lib/ELF/Extract/Sections/Scanner/Objdump.pm
 lib/ELF/Extract/Sections/Section.pm
 perlcriticrc
-t/00-load.t
+t/00-compile.t
 t/01-elf-libs.t
 t/author-boilerplate.t
 t/author-critic.t
