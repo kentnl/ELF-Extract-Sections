@@ -16,12 +16,12 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 =item 1. Beta Software
 
 This code is relatively new. It exists only as a best attempt at present until further notice. It
-has proven practical for at least one application, and this is why the module exists. However, it can't be
+has proved as practical for at least one application, and this is why the module exists. However, it can't be
 guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
 
 =item 2. Feature Incomplete
 
-This only presently has a very barebones functionality, which should however prove practical for most purposes.
+This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
 If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
 
 =item 3. Humans
@@ -79,7 +79,7 @@ Returns a HashRef of the available sections.
 
 =head2 -> scanner
 
-Returns the name of the default scanner plugin
+Returns the name of the default scanner plug-in
 
 =cut
 
@@ -109,45 +109,37 @@ Creates A new Section Extractor object
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
-=over 4
+=head3 DESCENDING
 
-=item DESCENDING
+Optional parameters. True for descending, False or absent for ascending.
 
-Optional parameters. True for descending, False or absensent for ascending.
-
-=item SORT_BY
+=head3 SORT_BY
 
 A String of the field to sort by. Valid options at present are
 
-=over 6
-
-=item name
+=head4 name
 
 The Section Name
 
-=item offset
+=head4 offset
 
 The Sections offset relative to the start of the file.
 
-=item size
+=head4 size
 
 The Size of the section.
-
-=back
-
-=back
 
 =cut
 
   method sorted_sections(  FilterField :$field!, Bool :$descending? ) {
     my $m = 1;
-    $m = -1 if ($descending);
+    $m = 0 - 1 if ($descending);
     return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
   };
 
 =head1 PUBLIC ATTRIBUTE BUILDERS
 
-These aren't really user servicable, but they make your front end work.
+These aren't really user serviceable, but they make your front end work.
 
 =cut
 
@@ -182,13 +174,13 @@ These aren't really user servicable, but they make your front end work.
 =head1 PRIVATE ATTRIBUTE BUILDERS
 =cut
 
-=head2 -> _build__scanner_package
+=head2 _build__scanner_package
 =cut
 
   method _build__scanner_package {
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
     eval "use $pkg; 1;"
-      or $self->log->logconfess( "The Scanner " . $self->scanner . " could not be found as $pkg. >$! >$@ " );
+      or $self->log->logconfess( 'The Scanner ' . $self->scanner . " could not be found as $pkg. >$! >$@ " );
     return $pkg;
   };
 
@@ -240,14 +232,14 @@ These aren't really user servicable, but they make your front end work.
 =cut
 
   method _build_section_table ( HashRef $ob! ){
-    my %dataStash = ();
+    my %datastash = ();
     my @k       = sort { $a <=> $b } keys %{$ob};
     my $i       = 0;
     while ( $i < $#k ) {
-      $dataStash{ $ob->{ $k[$i] } } = $self->_build_section_section( $ob->{ $k[$i] }, $k[$i], $k[ $i + 1 ], $self->file );
+      $datastash{ $ob->{ $k[$i] } } = $self->_build_section_section( $ob->{ $k[$i] }, $k[$i], $k[ $i + 1 ], $self->file );
       $i++;
     }
-    return \%dataStash;
+    return \%datastash;
   };
 
 =head2 -> _scan_guess_size
@@ -268,16 +260,16 @@ These aren't really user servicable, but they make your front end work.
 =cut
 
   method _scan_with_size {
-    my %dataStash = ();
+    my %datastash = ();
     $self->_scanner_instance->open_file( file => $self->file );
     while ( $self->_scanner_instance->next_section() ) {
       my $name   = $self->_scanner_instance->section_name;
       my $offset = $self->_scanner_instance->section_offset;
       my $size   = $self->_scanner_instance->section_size;
 
-      $dataStash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
+      $datastash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
     }
-    return \%dataStash;
+    return \%datastash;
   };
 
 #<<<
@@ -295,7 +287,7 @@ This library uses L<Log::Log4perl>. To see more verbose processing notices, do t
     use Log::Log4perl qw( :easy );
     Log::Log4perl->easy_init($DEBUG);
 
-For convenience to make sure you don't happen to miss this fact, we never initialize Log4perl ourself, so it will
+For convenience to make sure you don't happen to miss this fact, we never initialize Log4perl ourselves, so it will
 spit the following message if you have not set it up:
 
     Log4perl: Seems like no initialization happened. Forgot to call init()?
@@ -305,44 +297,6 @@ To suppress this, just do
     use Log::Log4perl qw( :easy );
 
 I request however you B<don't> do that for modules intended to be consumed by others without good cause.
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-elf-extract-sections at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ELF-Extract-Sections>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc ELF::Extract::Sections
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=ELF-Extract-Sections>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/ELF-Extract-Sections>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/ELF-Extract-Sections>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/ELF-Extract-Sections/>
-
-=back
 
 =head1 ACKNOWLEDGEMENTS
 

@@ -10,10 +10,10 @@ use MooseX::Declare;
 
 =head1 SYNOPSIS
 
-This module is a model implementaiton of a Naive and system relaint ELF Section detector.
+This module is a model implementation of a Naive and system reliant ELF Section detector.
 Its currently highly inefficient due to having to run the entire ELF through a disassembly
 process to determine the section positions and only I<guesses> at section lengths by
-advertisng that it cant' compute sizes.
+advertising that it can't compute sizes.
 
 TO use this module, simply initialise L<ELF::Extract::Sections> as so
 
@@ -55,7 +55,7 @@ L<MooseX::Types::Moose>
 
 =cut
 
-    use MooseX::Types::Moose ( 'Bool', 'HashRef', 'RegexpRef', 'FileHandle', 'Undef','Str','Int');
+    use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
 
 =head2 MooseX::Types::Path::Class
 
@@ -202,7 +202,7 @@ They look like this:
 
 =head2 -> _section_header_identifier : RegexpRef
 
-A regular expression for exracting Headers and Offsets together
+A regular expression for extracting Headers and Offsets together
 
   <headername> File Offset: 0xdeadbeef
 
@@ -274,7 +274,7 @@ Calls the system C<objdump> instance for the currently processing file.
 =cut
 
     method _objdump returns (FileHandle|Undef){
-        if ( open my $fh, '-|', 'objdump', qw( -D -F ), $self->_file->cleanup->absolute ) {
+        if ( open my $fh, q{-|}, q{objdump}, qw( -D -F ), $self->_file->cleanup->absolute ) {
             return $fh;
         }
         $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });

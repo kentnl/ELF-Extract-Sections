@@ -13,7 +13,7 @@ role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {
 
   requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
 
-}
+};
 
 1;
 
@@ -23,7 +23,7 @@ __END__
 
 =head2 -> open_file file => FILE
 
-Must take a filename and assume a state reset.
+Must take a file name and assume a state reset.
 
 =head2 -> next_section
 
@@ -46,7 +46,7 @@ Returns the sections name
 
 =head2 -> can_compute_size
 
-This retuns wether or not this code is capable of discerning section sizes on its own.
-return 1 if true, return undef otherwise.
+This returns whether or not this code is capable of discerning section sizes on its own.
+return 1 if true, return C<undef> otherwise.
 
 This will make us try guessing how big sections are by sorting them.

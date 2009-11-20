@@ -110,11 +110,11 @@ returns C<Str> description of the object
 =cut
 
     method to_string ( Any $other?, Bool $polarity? ) {
-        return sprintf(
-            qq{[ Section %s of size %s in %s @ %x to %x ]},
-            $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
-            );
-    };
+        return sprintf
+          q{[ Section %s of size %s in %s @ %x to %x ]},
+          $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
+          ;
+      };
 
 =head2 -> compare ( other => $other, field => $field )
 
@@ -165,13 +165,13 @@ C<Str>|C<Path::Class::File>: File target to write section contents to.
 
     method write_to( File :$file does coerce  ){
         my $fh = $self->source->openr;
-        seek( $fh, $self->offset, 0 );
+        seek $fh, $self->offset, 0;
         my $output     = $file->openw;
         my $chunksize  = 1024;
         my $bytes_left = $self->size;
         my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read( $fh, my $buffer, $chunk ) ) {
-            print {$output} $buffer;
+        while ( read $fh, my $buffer, $chunk  ) {
+            print {$output} $buffer or Carp::croak("Write to $file failed");
             $bytes_left -= $chunksize;
             $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
         }
@@ -186,9 +186,9 @@ returns C<Str> of binary data read out of file.
 
     method contents {
         my $fh = $self->source->openr;
-        seek( $fh, $self->offset, 0 );
+        seek $fh, $self->offset, 0;
         my $b;
-        read( $fh, $b, $self->size );
+        read $fh, $b, $self->size;
         return $b;
     };
 };

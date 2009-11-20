@@ -3,10 +3,9 @@ use warnings;
 
 package ELF::Extract::Sections::Meta::Types;
 
-# ABSTRACT: Generic Type Contraints for E:E:S
+# ABSTRACT: Generic Type Constraints for E:E:S
 
 # $Id:$
-use Moose;
 
 use MooseX::Types::Moose (':all');
 use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
@@ -26,4 +25,4 @@ ENUM: name, offset, size
 
 =head2 ElfSection
 
-An object that isa ELF::Extract::Sections::Section
+An object that is a ELF::Extract::Sections::Section

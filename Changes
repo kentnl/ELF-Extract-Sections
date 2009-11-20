@@ -11,6 +11,14 @@ Revision history for {{$dist->name}}
             abuse. With a bit of luck, it will produce mean 
             as API breakdowns for me :)
 
+          Fixed t/ by using Compile Tests.
+            ( You can thank JAWNSY for bugging me about this )
+
+          Moved To AutoVersion::Relative
+
+          Dropped EUMM
+
+
 0.0104    2009-08-21 17:34:29 UTC
            Fixed Extrac typo which lead to dual indexing.
            Dist::Zilla automatic tests now included.
