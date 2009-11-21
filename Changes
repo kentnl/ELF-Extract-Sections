@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          Added license data for binary .so's used for testing.
+          ( See LICENSE.tests, and LICENSES/ )
 
 0.02020308 2009-11-20 05:05:28 UTC
           Fixed t/ by using Compile Tests.
