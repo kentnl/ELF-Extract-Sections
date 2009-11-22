@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections;
-our $VERSION = '0.02020308';
+our $VERSION = '0.02020505';
 
 
 
@@ -163,7 +163,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.02020308
+version 0.02020505
 
 =head1 SYNOPSIS
 

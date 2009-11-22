@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Section;
-our $VERSION = '0.02020308';
+our $VERSION = '0.02020505';
 
 
 
@@ -96,7 +96,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.02020308
+version 0.02020505
 
 =head1 SYNOPSIS
 
