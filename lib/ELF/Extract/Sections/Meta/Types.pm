@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Types;
-our $VERSION = '0.02020505';
+our $VERSION = '0.02021113';
 
 
 
@@ -28,7 +28,7 @@ ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 0.02020505
+version 0.02021113
 
 =head1 Types
 

@@ -3,7 +3,7 @@ NAME
     ELF Sections
 
 VERSION
-    version 0.02020505
+    version 0.02021113
 
 SYNOPSIS
         use ELF::Extract::Sections;

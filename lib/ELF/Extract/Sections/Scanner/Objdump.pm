@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Scanner::Objdump;
-our $VERSION = '0.02020505';
+our $VERSION = '0.02021113';
 
 
 
@@ -137,7 +137,7 @@ ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
 
 =head1 VERSION
 
-version 0.02020505
+version 0.02021113
 
 =head1 SYNOPSIS
 

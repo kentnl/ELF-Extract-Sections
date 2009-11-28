@@ -1,5 +1,9 @@
 Revision history for ELF-Extract-Sections
 
+0.02021113 2009-11-28 23:43:20 Pacific/Auckland
+          Hard Dep on Perl5.10 due to Advanced regex usage (
+            Thanks CPAN Testers )
+
 0.02020505 2009-11-22 02:28:46 UTC
           Added license data for binary .so's used for testing.
           ( See LICENSE.tests, and LICENSES/ )

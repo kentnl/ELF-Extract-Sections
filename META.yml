@@ -2,7 +2,11 @@
 abstract: 'Extract Raw Chunks of data from identifiable ELF Sections'
 author:
   - 'Kent Fredric <kentnl@cpan.org>'
-generated_by: 'Dist::Zilla version 1.093140'
+build_requires:
+  Module::Build: 0.35
+configure_requires:
+  Module::Build: 0.35
+generated_by: 'Dist::Zilla version 1.093280'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -11,19 +15,19 @@ name: ELF-Extract-Sections
 provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
-    version: 0.02020505
+    version: 0.02021113
   ELF::Extract::Sections::Meta::Scanner:
     file: lib/ELF/Extract/Sections/Meta/Scanner.pm
-    version: 0.02020505
+    version: 0.02021113
   ELF::Extract::Sections::Meta::Types:
     file: lib/ELF/Extract/Sections/Meta/Types.pm
-    version: 0.02020505
+    version: 0.02021113
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
-    version: 0.02020505
+    version: 0.02021113
   ELF::Extract::Sections::Section:
     file: lib/ELF/Extract/Sections/Section.pm
-    version: 0.02020505
+    version: 0.02021113
 requires:
   File::Find::Rule: 0
   FindBin: 0
@@ -33,7 +37,7 @@ requires:
   MooseX::Declare: 0.20
   MooseX::Has::Sugar: 0.0300
   MooseX::Log::Log4perl: 0.31
-  MooseX::Types: 0
+  MooseX::Types: 0.10
   MooseX::Types::Moose: 0.10
   MooseX::Types::Path::Class: 0.05
   Path::Class: 0
@@ -41,6 +45,7 @@ requires:
   YAML::XS: 0
   lib: 0
   overload: 0
+  perl: 5.010000
 resources:
   repository: http://github.com/kentfredric/ELF-Extract-Sections
-version: 0.02020505
+version: 0.02021113

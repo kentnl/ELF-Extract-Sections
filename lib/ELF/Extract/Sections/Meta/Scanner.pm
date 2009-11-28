@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Scanner;
-our $VERSION = '0.02020505';
+our $VERSION = '0.02021113';
 
 
 
@@ -30,7 +30,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.02020505
+version 0.02021113
 
 =head1 Required Methods for Applying Roles
 
