@@ -197,7 +197,8 @@ They look like this:
 =cut
 
     has _offset_regex => ( isa => RegexpRef, ro, default => sub {
-        return qr/\(File Offset:\s*(?<offset>0x[0-9a-f]+)\)/;
+        ## no critic (RegularExpressions::ProhibitEnumeratedClasses)
+        return qr/[(]File Offset:\s*(?<offset>0x[0-9a-f]+)[)]/;
     }, );
 
 =head2 -> _section_header_identifier : RegexpRef
