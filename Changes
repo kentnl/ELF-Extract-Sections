@@ -1,49 +1,59 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+ [Packaging]
+ - Rework Changelog to CPAN::Changes form.
+ - Move to @Author::KENTNL
 
-0.02021113 2009-11-28 23:43:20 Pacific/Auckland
-          Hard Dep on Perl5.10 due to Advanced regex usage (
-            Thanks CPAN Testers )
+ [BugFix]
+ - Add temporary hack for rt#67210 - methods with return types fail in void context.
 
-0.02020505 2009-11-22 02:28:46 UTC
-          Added license data for binary .so's used for testing.
-          ( See LICENSE.tests, and LICENSES/ )
+ [Dependencies]
+ - Added Class::Load
 
-0.02020308 2009-11-20 05:05:28 UTC
-          Fixed t/ by using Compile Tests.
-            ( You can thank JAWNSY for bugging me about this )
+ [Internals]
+ - Use Class::Load instead of eval for loading extensions.
 
-          Moved To AutoVersion::Relative
+ [Tests]
+ - Remove hand written boilerplate/kwalitee/critic tests.
 
-          Dropped EUMM
+0.02021113 2009-11-28T23:43:20Z
+ - Hard Dep on Perl5.10 due to Advanced regex usage ( Thanks CPAN Testers )
 
-0.0105    2009-08-22 15:17:47 UTC
-           Tweaked Authortests/Release tests bundling somewhat
-            so they actually work.
+0.02020505 2009-11-22T02:28:46Z
+ - Added license data for binary .so's used for testing. See LICENSE.tests, and LICENSES/
 
-           Added Perl Critic tests and satisfied criteria.
+0.02020308 2009-11-20T05:05:28Z
+ - Fixed t/ by using Compile Tests. ( You can thank JAWNSY for bugging me
+   about this )
+ - Moved To AutoVersion::Relative
+ - Dropped EUMM
 
-           Documenting the hell out of the Objdump default 
-            scanner, partially to see how CPAN renders this 
-            abuse. With a bit of luck, it will produce mean 
-            as API breakdowns for me :)
+0.0105 2009-08-22T15:17:47Z
+ - Tweaked Authortests/Release tests bundling somewhat so they actually
+   work.
+ - Added Perl Critic tests and satisfied criteria.
+ - Documenting the hell out of the Objdump default  scanner, partially to
+   see how CPAN renders this  abuse. With a bit of luck, it will produce
+   mean  as API breakdowns for me :)
 
-0.0104    2009-08-21 17:34:29 UTC
-           Fixed Extrac typo which lead to dual indexing.
-           Dist::Zilla automatic tests now included.
+0.0104 2009-08-21T17:34:29Z
+ - Fixed Extrac typo which lead to dual indexing.
+ - Dist::Zilla automatic tests now included.
 
-0.0103    2009-07-19 14:59:11 UTC
-           Muted warning in tests
-           Moved to Dist::Zilla instead of MI
-           Updated to MooseX::Has::Sugar 0.0300
+0.0103 2009-07-19T14:59:11Z
+ - Muted warning in tests
+ - Moved to Dist::Zilla instead of MI
+ - Updated to MooseX::Has::Sugar 0.0300
 
-0.0102     Dependancy Fixups, yes, more of them.
+0.0102 2009-05-16T04:19:31Z
+ - Dependancy Fixups, yes, more of them.
 
-0.0101     Re-Release with fixed inc/
-           using MX::Has::Sugar
-           dropped Hard dependancy on Perl 5.10
+0.0101 2009-05-16T03:46:44Z
+ - Re-Release with fixed inc/
+ - using MX::Has::Sugar
+ - dropped Hard dependancy on Perl 5.10
 
-0.01.00    Mon May 11 02:04:58 UTC 2009
-           First Version. Mostly working.
+0.01.00 2009-05-11T02:04:58Z
+ - First Version. Mostly working.
 

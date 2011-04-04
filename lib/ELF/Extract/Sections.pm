@@ -55,6 +55,7 @@ This code is written by a human, and like all human code, it sucks. There will b
   use MooseX::Types::Moose                ( ':all', );
   use MooseX::Types::Path::Class          ( 'File', );
   use ELF::Extract::Sections::Meta::Types ( ':all', );
+  use Class::Load                         ( 'try_load_class', );
 
   require ELF::Extract::Sections::Section;
 
@@ -179,8 +180,10 @@ These aren't really user serviceable, but they make your front end work.
 
   method _build__scanner_package {
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    eval "use $pkg; 1;"
-      or $self->log->logconfess( 'The Scanner ' . $self->scanner . " could not be found as $pkg. >$! >$@ " );
+    my ( $success, $error ) = try_load_class($pkg);
+    if( not $success ){
+      $self->log->logconfess( 'The Scanner ' . $self->scanner . " could not be found as $pkg. >$error" );
+    }
     return $pkg;
   };
 
@@ -246,7 +249,8 @@ These aren't really user serviceable, but they make your front end work.
 =cut
 
   method _scan_guess_size {
-    $self->_scanner_instance->open_file( file => $self->file );
+    # HACK: Temporary hack around rt#67210
+    scalar $self->_scanner_instance->open_file( file => $self->file );
     my %offsets = ();
     while ( $self->_scanner_instance->next_section() ) {
       my $name   = $self->_scanner_instance->section_name;
