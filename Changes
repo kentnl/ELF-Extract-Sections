@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.02071411 2011-04-04T08:40:21Z
  [BugFix]
  - Add temporary hack for rt#67210 - methods with return types fail in void
    context.
