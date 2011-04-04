@@ -7,15 +7,32 @@ Revision history for {{$dist->name}}
 
  [BugFix]
  - Add temporary hack for rt#67210 - methods with return types fail in void context.
+ - Fix some 'invalid' changelog entries.
 
  [Dependencies]
  - Added Class::Load
+ - FindBin moved to test deps.
+ - YAML::XS moved to test deps.
+ - explicit 'lib' dependency removed.
+ - removed Moose::Role dep.
+ - File::Find::Rule moved to test deps.
+ - Test::More moved to test deps.
+ - moved Path::Class to test deps.
+
+ [Dependencies::Test]
+ - Added English, File::Find, File::Temp.
+ - Stole FindBin, YAML::XS, Path::Class, File::Find::Rule, Test::More from Build Deps.
+
+ [Dependencies::Build]
+ - Added Module::Build 0.3601 as a mininum build/configure requirement.
+
 
  [Internals]
  - Use Class::Load instead of eval for loading extensions.
 
  [Tests]
  - Remove hand written boilerplate/kwalitee/critic tests.
+ - Ship new (generated) tests report-versions-tiny, cpan-changes, eol and kwalitee
 
 0.02021113 2009-11-28T23:43:20Z
  - Hard Dep on Perl5.10 due to Advanced regex usage ( Thanks CPAN Testers )
