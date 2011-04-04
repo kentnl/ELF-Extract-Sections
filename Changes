@@ -1,12 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
- [Packaging]
- - Rework Changelog to CPAN::Changes form.
- - Move to @Author::KENTNL
-
  [BugFix]
- - Add temporary hack for rt#67210 - methods with return types fail in void context.
+ - Add temporary hack for rt#67210 - methods with return types fail in void
+   context.
  - Fix some 'invalid' changelog entries.
 
  [Dependencies]
@@ -19,26 +16,32 @@ Revision history for {{$dist->name}}
  - Test::More moved to test deps.
  - moved Path::Class to test deps.
 
- [Dependencies::Test]
- - Added English, File::Find, File::Temp.
- - Stole FindBin, YAML::XS, Path::Class, File::Find::Rule, Test::More from Build Deps.
-
  [Dependencies::Build]
  - Added Module::Build 0.3601 as a mininum build/configure requirement.
 
+ [Dependencies::Test]
+ - Added English, File::Find, File::Temp.
+ - Stole FindBin, YAML::XS, Path::Class, File::Find::Rule, Test::More from
+   Build Deps.
 
  [Internals]
  - Use Class::Load instead of eval for loading extensions.
 
+ [Packaging]
+ - Rework Changelog to CPAN::Changes form.
+ - Move to @Author::KENTNL
+
  [Tests]
  - Remove hand written boilerplate/kwalitee/critic tests.
- - Ship new (generated) tests report-versions-tiny, cpan-changes, eol and kwalitee
+ - Ship new (generated) tests report-versions-tiny, cpan-changes, eol and
+   kwalitee
 
 0.02021113 2009-11-28T23:43:20Z
  - Hard Dep on Perl5.10 due to Advanced regex usage ( Thanks CPAN Testers )
 
 0.02020505 2009-11-22T02:28:46Z
- - Added license data for binary .so's used for testing. See LICENSE.tests, and LICENSES/
+ - Added license data for binary .so's used for testing. See LICENSE.tests,
+   and LICENSES/
 
 0.02020308 2009-11-20T05:05:28Z
  - Fixed t/ by using Compile Tests. ( You can thank JAWNSY for bugging me
