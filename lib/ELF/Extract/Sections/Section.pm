@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Section;
-our $VERSION = '0.02021113';
-
-
+BEGIN {
+  $ELF::Extract::Sections::Section::VERSION = '0.02071411';
+}
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
@@ -96,7 +96,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.02021113
+version 0.02071411
 
 =head1 SYNOPSIS
 
@@ -199,11 +199,11 @@ returns C<Str> of binary data read out of file.
 
 =head1 AUTHOR
 
-  Kent Fredric <kentnl@cpan.org>
+Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Kent Fredric.
+This software is copyright (c) 2011 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

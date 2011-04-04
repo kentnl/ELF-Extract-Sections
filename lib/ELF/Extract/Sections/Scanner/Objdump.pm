@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Scanner::Objdump;
-our $VERSION = '0.02021113';
-
-
+BEGIN {
+  $ELF::Extract::Sections::Scanner::Objdump::VERSION = '0.02071411';
+}
 
 # ABSTRACT: An C<objdump> based section scanner.
 
@@ -88,7 +88,8 @@ with ELF::Extract::Sections::Meta::Scanner {
 
 
     has _offset_regex => ( isa => RegexpRef, ro, default => sub {
-        return qr/\(File Offset:\s*(?<offset>0x[0-9a-f]+)\)/;
+        ## no critic (RegularExpressions::ProhibitEnumeratedClasses)
+        return qr/[(]File Offset:\s*(?<offset>0x[0-9a-f]+)[)]/;
     }, );
 
 
@@ -137,7 +138,7 @@ ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
 
 =head1 VERSION
 
-version 0.02021113
+version 0.02071411
 
 =head1 SYNOPSIS
 
@@ -279,11 +280,11 @@ Calls the system C<objdump> instance for the currently processing file.
 
 =head1 AUTHOR
 
-  Kent Fredric <kentnl@cpan.org>
+Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Kent Fredric.
+This software is copyright (c) 2011 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

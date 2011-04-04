@@ -3,10 +3,20 @@ abstract: 'Extract Raw Chunks of data from identifiable ELF Sections'
 author:
   - 'Kent Fredric <kentnl@cpan.org>'
 build_requires:
-  Module::Build: 0.35
+  English: 0
+  File::Find: 0
+  File::Find::Rule: 0
+  File::Temp: 0
+  FindBin: 0
+  Log::Log4perl: 0
+  Module::Build: 0.3601
+  Path::Class: 0
+  Test::More: 0.88
+  YAML::XS: 0
 configure_requires:
-  Module::Build: 0.35
-generated_by: 'Dist::Zilla version 1.093280'
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.200004, CPAN::Meta::Converter version 2.110930'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,37 +25,295 @@ name: ELF-Extract-Sections
 provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
-    version: 0.02021113
+    version: 0.02071411
   ELF::Extract::Sections::Meta::Scanner:
     file: lib/ELF/Extract/Sections/Meta/Scanner.pm
-    version: 0.02021113
+    version: 0.02071411
   ELF::Extract::Sections::Meta::Types:
     file: lib/ELF/Extract/Sections/Meta/Types.pm
-    version: 0.02021113
+    version: 0.02071411
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
-    version: 0.02021113
+    version: 0.02071411
   ELF::Extract::Sections::Section:
     file: lib/ELF/Extract/Sections/Section.pm
-    version: 0.02021113
+    version: 0.02071411
 requires:
-  File::Find::Rule: 0
-  FindBin: 0
+  Class::Load: 0
   Log::Log4perl: 1.21
   Moose: 0.76
-  Moose::Role: 0
   MooseX::Declare: 0.20
   MooseX::Has::Sugar: 0.0300
   MooseX::Log::Log4perl: 0.31
   MooseX::Types: 0.10
   MooseX::Types::Moose: 0.10
   MooseX::Types::Path::Class: 0.05
-  Path::Class: 0
-  Test::More: 0
-  YAML::XS: 0
-  lib: 0
   overload: 0
   perl: 5.010000
 resources:
-  repository: http://github.com/kentfredric/ELF-Extract-Sections
-version: 0.02021113
+  homepage: http://github.com/kentfredric/ELF-Extract-Sections/tree
+  repository: git://github.com/kentfredric/ELF-Extract-Sections.git
+version: 0.02071411
+x_BuiltWith:
+  modules:
+    Class::Load: 0.06
+    Dist::Zilla::PluginBundle::Author::KENTNL: 1.0.5
+    Dist::Zilla::PluginBundle::Author::KENTNL::Lite: 'NA(possibly not installed)'
+    File::Find::Rule: 0.32
+    File::Temp: 0.22
+    FindBin: 1.50
+    Log::Log4perl: 1.32
+    Module::Build: 0.38
+    Moose: 1.9905
+    MooseX::Declare: 0.34
+    MooseX::Has::Sugar: 0.05055616
+    MooseX::Log::Log4perl: 0.42
+    MooseX::Types: 0.25
+    MooseX::Types::Moose: 0.25
+    MooseX::Types::Path::Class: 0.05
+    Path::Class: 0.23
+    Test::More: 0.98
+    YAML::XS: 0.35
+    overload: 1.10
+    perl: 'NA(skipped: perl)'
+  perl:
+    original: v5.12.3
+    qv: 1
+    version:
+      - 5
+      - 12
+      - 3
+  platform: linux
+  uname: 'Linux 2.6.38-gentoo x86_64 GenuineIntel GNU/Linux'
+x_Dist_Zilla:
+  plugins:
+    -
+      class: Dist::Zilla::Plugin::AutoVersion::Relative
+      config:
+        Dist::Zilla::Plugin::AutoVersion::Relative:
+          format: "{{ sprintf('%d.%02d%04d%02d', $major, $minor, days, hours) }}"
+          major: 0
+          minor: 2
+          relative_to:
+            day: 03
+            hour: 09
+            minute: 0
+            month: 05
+            second: 0
+            time_zone: Pacific/Auckland
+            year: 2009
+      name: '@Author::KENTNL/AutoVersion::Relative'
+      version: 0.01037118
+    -
+      class: Dist::Zilla::Plugin::GatherDir
+      name: '@Author::KENTNL/GatherDir'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::MetaConfig
+      name: '@Author::KENTNL/MetaConfig'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::PruneCruft
+      name: '@Author::KENTNL/PruneCruft'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::GithubMeta
+      name: '@Author::KENTNL/GithubMeta'
+      version: 0.10
+    -
+      class: Dist::Zilla::Plugin::License
+      name: '@Author::KENTNL/License'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::PkgVersion
+      name: '@Author::KENTNL/PkgVersion'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::PodWeaver
+      name: '@Author::KENTNL/PodWeaver'
+      version: 3.101641
+    -
+      class: Dist::Zilla::Plugin::MetaProvides::Package
+      name: '@Author::KENTNL/MetaProvides::Package'
+      version: 1.12044908
+    -
+      class: Dist::Zilla::Plugin::MetaJSON
+      name: '@Author::KENTNL/MetaJSON'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::MetaYAML
+      name: '@Author::KENTNL/MetaYAML'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::ModuleBuild
+      name: '@Author::KENTNL/ModuleBuild'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::ReadmeFromPod
+      name: '@Author::KENTNL/ReadmeFromPod'
+      version: 0.14
+    -
+      class: Dist::Zilla::Plugin::ManifestSkip
+      name: '@Author::KENTNL/ManifestSkip'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Manifest
+      name: '@Author::KENTNL/Manifest'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::AutoPrereqs
+      name: '@Author::KENTNL/AutoPrereqs'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: requires
+      name: '@Author::KENTNL/Prereqs/BundleDevelNeeds'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: recommends
+      name: '@Author::KENTNL/Prereqs/BundleDevelRecommends'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: suggests
+      name: '@Author::KENTNL/Prereqs/BundleDevelSuggests'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::MetaData::BuiltWith
+      config:
+        Dist::Zilla::Plugin::MetaData::BuiltWith:
+          _stash_key: x_BuiltWith
+          show_uname: 1
+          uname:
+            uname_args:
+              - '-s'
+              - '-o'
+              - '-r'
+              - '-m'
+              - '-i'
+            uname_call: uname
+      name: '@Author::KENTNL/MetaData::BuiltWith'
+      version: 0.01018204
+    -
+      class: Dist::Zilla::Plugin::CPANChangesTests
+      name: '@Author::KENTNL/CPANChangesTests'
+      version: 1.001
+    -
+      class: Dist::Zilla::Plugin::CompileTests
+      name: '@Author::KENTNL/CompileTests'
+      version: 1.110930
+    -
+      class: Dist::Zilla::Plugin::CriticTests
+      name: '@Author::KENTNL/CriticTests'
+      version: 1.102280
+    -
+      class: Dist::Zilla::Plugin::MetaTests
+      name: '@Author::KENTNL/MetaTests'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::PodCoverageTests
+      name: '@Author::KENTNL/PodCoverageTests'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::PodSyntaxTests
+      name: '@Author::KENTNL/PodSyntaxTests'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::ReportVersions::Tiny
+      name: '@Author::KENTNL/ReportVersions::Tiny'
+      version: 1.03
+    -
+      class: Dist::Zilla::Plugin::KwaliteeTests
+      name: '@Author::KENTNL/KwaliteeTests'
+      version: 1.101420
+    -
+      class: Dist::Zilla::Plugin::EOLTests
+      name: '@Author::KENTNL/EOLTests'
+      version: 0.02
+    -
+      class: Dist::Zilla::Plugin::ExtraTests
+      name: '@Author::KENTNL/ExtraTests'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::TestRelease
+      name: '@Author::KENTNL/TestRelease'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::ConfirmRelease
+      name: '@Author::KENTNL/ConfirmRelease'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Git::Check
+      name: '@Author::KENTNL/Git::Check'
+      version: 1.110500
+    -
+      class: Dist::Zilla::Plugin::NextRelease
+      name: '@Author::KENTNL/NextRelease'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Git::Tag
+      name: '@Author::KENTNL/Git::Tag/tag_master'
+      version: 1.110500
+    -
+      class: Dist::Zilla::Plugin::Git::Commit
+      name: '@Author::KENTNL/Git::Commit'
+      version: 1.110500
+    -
+      class: Dist::Zilla::Plugin::Git::CommitBuild
+      name: '@Author::KENTNL/Git::CommitBuild'
+      version: 1.110500
+    -
+      class: Dist::Zilla::Plugin::Git::Tag
+      name: '@Author::KENTNL/Git::Tag/tag_release'
+      version: 1.110500
+    -
+      class: Dist::Zilla::Plugin::UploadToCPAN
+      name: '@Author::KENTNL/UploadToCPAN'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::Twitter
+      name: '@Author::KENTNL/Twitter'
+      version: 0.010
+    -
+      class: Dist::Zilla::Plugin::MetaProvides::Class
+      name: MetaProvides::Class
+      version: 1.12044911
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: runtime
+          type: requires
+      name: Prereqs
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':InstallModules'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':TestFiles'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':ExecFiles'
+      version: 4.200004
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':ShareFiles'
+      version: 4.200004
+  zilla:
+    class: Dist::Zilla::Dist::Builder
+    config:
+      is_trial: 0
+    version: 4.200004

@@ -8,6 +8,7 @@ use File::Find::Rule;
 use Path::Class qw( file dir );
 use YAML::XS;
 use Log::Log4perl qw( :easy );
+#Log::Log4perl->easy_init($DEBUG);
 
 my $filesdir = "$FindBin::Bin/test_files/";
 

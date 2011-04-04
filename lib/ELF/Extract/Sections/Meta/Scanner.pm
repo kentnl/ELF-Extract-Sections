@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Scanner;
-our $VERSION = '0.02021113';
-
-
+BEGIN {
+  $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.02071411';
+}
 
 # ABSTRACT: Interface Contract for Scanners
 
@@ -30,7 +30,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.02021113
+version 0.02071411
 
 =head1 Required Methods for Applying Roles
 
@@ -66,11 +66,11 @@ This will make us try guessing how big sections are by sorting them.
 
 =head1 AUTHOR
 
-  Kent Fredric <kentnl@cpan.org>
+Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Kent Fredric.
+This software is copyright (c) 2011 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

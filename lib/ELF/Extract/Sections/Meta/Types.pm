@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Types;
-our $VERSION = '0.02021113';
-
-
+BEGIN {
+  $ELF::Extract::Sections::Meta::Types::VERSION = '0.02071411';
+}
 
 # ABSTRACT: Generic Type Constraints for E:E:S
 
@@ -28,7 +28,7 @@ ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 0.02021113
+version 0.02071411
 
 =head1 Types
 
@@ -42,11 +42,11 @@ An object that is a ELF::Extract::Sections::Section
 
 =head1 AUTHOR
 
-  Kent Fredric <kentnl@cpan.org>
+Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Kent Fredric.
+This software is copyright (c) 2011 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

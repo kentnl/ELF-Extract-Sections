@@ -2,9 +2,9 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections;
-our $VERSION = '0.02021113';
-
-
+BEGIN {
+  $ELF::Extract::Sections::VERSION = '0.02071411';
+}
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
@@ -17,6 +17,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
   use MooseX::Types::Moose                ( ':all', );
   use MooseX::Types::Path::Class          ( 'File', );
   use ELF::Extract::Sections::Meta::Types ( ':all', );
+  use Class::Load                         ( 'try_load_class', );
 
   require ELF::Extract::Sections::Section;
 
@@ -69,8 +70,10 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
   method _build__scanner_package {
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    eval "use $pkg; 1;"
-      or $self->log->logconfess( 'The Scanner ' . $self->scanner . " could not be found as $pkg. >$! >$@ " );
+    my ( $success, $error ) = try_load_class($pkg);
+    if( not $success ){
+      $self->log->logconfess( 'The Scanner ' . $self->scanner . " could not be found as $pkg. >$error" );
+    }
     return $pkg;
   };
 
@@ -124,7 +127,8 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
   method _scan_guess_size {
-    $self->_scanner_instance->open_file( file => $self->file );
+    # HACK: Temporary hack around rt#67210
+    scalar $self->_scanner_instance->open_file( file => $self->file );
     my %offsets = ();
     while ( $self->_scanner_instance->next_section() ) {
       my $name   = $self->_scanner_instance->section_name;
@@ -163,7 +167,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.02021113
+version 0.02071411
 
 =head1 SYNOPSIS
 
@@ -305,11 +309,11 @@ I request however you B<don't> do that for modules intended to be consumed by ot
 
 =head1 AUTHOR
 
-  Kent Fredric <kentnl@cpan.org>
+Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Kent Fredric.
+This software is copyright (c) 2011 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
