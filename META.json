@@ -120,7 +120,7 @@
          "Moose" : "2.0801",
          "MooseX::Declare" : "0.35",
          "MooseX::Has::Sugar" : "0.05070421",
-         "MooseX::Log::Log4perl" : "NA(possibly not installed)",
+         "MooseX::Log::Log4perl" : "0.46",
          "MooseX::Types" : "0.35",
          "MooseX::Types::Moose" : "0.35",
          "MooseX::Types::Path::Class" : "0.06",
