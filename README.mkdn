@@ -1,0 +1,152 @@
+# NAME
+
+ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sections
+
+# VERSION
+
+version 0.02071412
+
+# SYNOPSIS
+
+    use ELF::Extract::Sections;
+
+    # Create an extractor object for foo.so
+    my $extractor = ELF::Extract::Sections->new( file => '/path/to/foo.so' );
+
+    # Scan file for section data, returns a hash
+    my %sections  = ${ $extractor->sections };
+
+    # Retreive the section object for the comment section
+    my $data      = $sections{.comment};
+
+    # Print the stringified explanation of the section
+    print "$data";
+
+    # Get the raw bytes out of the section.
+    print $data->contents  # returns bytes
+
+# CAVEATS
+
+1. Beta Software
+
+    This code is relatively new. It exists only as a best attempt at present until further notice. It
+    has proved as practical for at least one application, and this is why the module exists. However, it can't be
+    guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
+
+2. Feature Incomplete
+
+    This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
+    If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
+
+3. Humans
+
+    This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
+
+# PUBLIC ATTRIBUTES
+
+## \-> file
+
+Returns the file the section data is being created for.
+
+## \-> sections
+
+Returns a HashRef of the available sections.
+
+## \-> scanner
+
+Returns the name of the default scanner plug-in
+
+# PUBLIC METHODS
+
+## \-> new ( file => FILENAME )
+
+## \-> new ( file => FILENAME , scanner => 'Objdump' )
+
+Creates A new Section Extractor object
+
+## \-> sorted\_sections ( field => SORT\_BY )
+
+## \-> sorted\_sections ( field => SORT\_BY, descending => DESCENDING )
+
+Returns an ArrayRef sorted by the SORT\_BY field. May be Ascending or Descending depending on requirements.
+
+### DESCENDING
+
+Optional parameters. True for descending, False or absent for ascending.
+
+### SORT\_BY
+
+A String of the field to sort by. Valid options at present are
+
+#### name
+
+The Section Name
+
+#### offset
+
+The Sections offset relative to the start of the file.
+
+#### size
+
+The Size of the section.
+
+# PUBLIC ATTRIBUTE BUILDERS
+
+These aren't really user serviceable, but they make your front end work.
+
+## \-> \_build\_sections
+
+# PRIVATE ATTRIBUTES
+
+## \-> \_scanner\_package
+
+## \-> \_scanner\_instance
+
+# PRIVATE ATTRIBUTE BUILDERS
+
+## \_build\_\_scanner\_package
+
+## \-> \_build\_\_scanner\_instance
+
+# PRIVATE\_METHODS
+
+## \-> \_stash\_record( HashRef, Str, Str )
+
+## \-> \_build\_section\_section( Str, Int, Int, File )
+
+## \-> \_build\_section\_table( HashRef )
+
+## \-> \_scan\_guess\_size
+
+## \-> \_scan\_with\_size
+
+# DEBUGGING
+
+This library uses [Log::Log4perl](http://search.cpan.org/perldoc?Log::Log4perl). To see more verbose processing notices, do this:
+
+    use Log::Log4perl qw( :easy );
+    Log::Log4perl->easy_init($DEBUG);
+
+For convenience to make sure you don't happen to miss this fact, we never initialize Log4perl ourselves, so it will
+spit the following message if you have not set it up:
+
+    Log4perl: Seems like no initialization happened. Forgot to call init()?
+
+To suppress this, just do
+
+    use Log::Log4perl qw( :easy );
+
+I request however you __don't__ do that for modules intended to be consumed by others without good cause.
+
+# ACKNOWLEDGEMENTS
+
+# AUTHOR
+
+Kent Fredric <kentnl@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Kent Fredric.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
