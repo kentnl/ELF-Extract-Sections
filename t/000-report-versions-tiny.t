@@ -63,7 +63,6 @@ eval { $v .= pmver('MooseX::Has::Sugar','0.0300') };
 eval { $v .= pmver('MooseX::Log::Log4perl','0.31') };
 eval { $v .= pmver('MooseX::Types','0.10') };
 eval { $v .= pmver('MooseX::Types::Moose','0.10') };
-eval { $v .= pmver('MooseX::Types::Path::Class','0.05') };
 eval { $v .= pmver('MooseX::Types::Path::Tiny','any version') };
 eval { $v .= pmver('Path::Iterator::Rule','any version') };
 eval { $v .= pmver('Path::Tiny','any version') };

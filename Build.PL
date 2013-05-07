@@ -31,7 +31,6 @@ my %module_build_args = (
     "MooseX::Log::Log4perl" => "0.31",
     "MooseX::Types" => "0.10",
     "MooseX::Types::Moose" => "0.10",
-    "MooseX::Types::Path::Class" => "0.05",
     "MooseX::Types::Path::Tiny" => 0,
     "overload" => 0,
     "perl" => "5.010000",
