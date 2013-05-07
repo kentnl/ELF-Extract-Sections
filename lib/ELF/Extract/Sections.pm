@@ -53,7 +53,7 @@ This code is written by a human, and like all human code, it sucks. There will b
 
     use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose                ( ':all', );
-    use MooseX::Types::Path::Class          ( 'File', );
+    use MooseX::Types::Path::Tiny           ( 'File', );
     use ELF::Extract::Sections::Meta::Types ( ':all', );
     use Class::Load                         ( 'try_load_class', );
 
@@ -178,13 +178,18 @@ These aren't really user serviceable, but they make your front end work.
 =head2 _build__scanner_package
 =cut
 
+    method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
+        my $message = sprintf qq[The Scanner %s could not be found as %s\n.],
+          $scanner, $package;
+        $message .= '>' . $error;
+        $self->log->logconfess($message);
+    }
+
     method _build__scanner_package {
         my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
         my ( $success, $error ) = try_load_class($pkg);
         if ( not $success ) {
-            $self->log->logconfess( 'The Scanner '
-                  . $self->scanner
-                  . " could not be found as $pkg. >$error" );
+            $self->_error_scanner_missing( $self->scanner, $package, $error );
         }
         return $pkg;
     }
@@ -203,16 +208,18 @@ These aren't really user serviceable, but they make your front end work.
 =head2 -> _stash_record( HashRef, Str, Str )
 =cut
 
+    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+        my $message = qq[Warning, duplicate file offset reported by scanner.\n];
+        $message .= sprintf qq[%s and %s collide at %s.\n], $stashname,
+          $header, $offset;
+        $message .= sprintf qq[Assuming %s is empty and replacing it.],
+          $stashname;
+        $self->log->logcluck($message);
+    }
+
     method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
         if ( exists $stash->{$offset} ) {
-            $self->log->logcluck(
-                q{Warning, duplicate file offset reported by scanner. }
-                  . $stash->{$offset}
-                  . qq( and $header collide at $offset )
-                  . q( Assuming )
-                  . $stash->{$offset}
-                  . q( is empty and replacing it )
-            );
+            $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
         }
         $stash->{$offset} = $header;
     }
@@ -252,7 +259,7 @@ These aren't really user serviceable, but they make your front end work.
 =cut
 
     method _scan_guess_size {
-        # HACK: Temporary hack around rt#67210
+                              # HACK: Temporary hack around rt#67210
         scalar $self->_scanner_instance->open_file( file => $self->file );
         my %offsets = ();
         while ( $self->_scanner_instance->next_section() ) {
