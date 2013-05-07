@@ -11,13 +11,15 @@ BEGIN {
 
 # ABSTRACT: Interface Contract for Scanners
 
-# $Id:$
-
 use MooseX::Declare;
 
 role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {
 
-  requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
+    requires(
+        'open_file',      'next_section',
+        'section_offset', 'section_size',
+        'section_name',   'can_compute_size'
+    );
 
 };
 

@@ -11,22 +11,22 @@ BEGIN {
 
 # ABSTRACT: An C<objdump> based section scanner.
 
-# $Id:$
 use MooseX::Declare;
 
 
-class ELF::Extract::Sections::Scanner::Objdump
-with ELF::Extract::Sections::Meta::Scanner {
+class ELF::Extract::Sections::Scanner::Objdump with
+  ELF::Extract::Sections::Meta::Scanner {
 
 
 
     use MooseX::Has::Sugar 0.0300;
 
 
-    use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
+    use MooseX::Types::Moose (
+        qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
 
 
-    use MooseX::Types::Path::Class ('File');
+    use MooseX::Types::Path::Tiny ('File');
 
 
 
@@ -35,7 +35,7 @@ with ELF::Extract::Sections::Meta::Scanner {
         $self->_file($file);
         $self->_filehandle( $self->_objdump );
         return 1;
-    };
+    }
 
 
     method next_section returns (Bool) {
@@ -46,67 +46,81 @@ with ELF::Extract::Sections::Meta::Scanner {
             my ( $header, $offset ) = ( $+{header}, $+{offset} );
             $self->_state( { header => $header, offset => $offset } );
             $self->log->info("objdump -D -F : Section $header at $offset");
-
             return 1;
         }
         $self->_clear_file;
         $self->_clear_filehandle;
         $self->_clear_state;
         return 0;
-    };
+    }
 
 
     method section_offset returns (Int|Undef) {
         if ( not $self->_has_state ) {
-            $self->log->logcroak('Invalid call to section_offset outside of file scan');
+            $self->log->logcroak(
+                'Invalid call to section_offset outside of file scan');
             return;
         }
         return hex( $self->_state->{offset} );
-    };
+    }
 
 
     method section_size returns (Undef) {
-        $self->log->logcroak('Can\'t perform section_size on this type of object.');
+        $self->log->logcroak(
+            'Can\'t perform section_size on this type of object.');
         return;
-    };
+    }
 
 
     method section_name returns (Str|Undef) {
         if ( not $self->_has_state ) {
-            $self->log->logcroak('Invalid call to section_name outside of file scan');
+            $self->log->logcroak(
+                'Invalid call to section_name outside of file scan');
             return;
         }
         return $self->_state->{header};
-    };
+    }
 
 
-    method can_compute_size returns (Bool){
+    method can_compute_size returns (Bool) {
         return 0;
-    };
+    }
 
 
-    has _header_regex => ( isa => RegexpRef, ro, default => sub {
-        return qr/<(?<header>[^>]+)>/;
-    }, );
+    has _header_regex => (
+        isa => RegexpRef,
+        ro,
+        default => sub {
+            return qr/<(?<header>[^>]+)>/;
+        },
+    );
 
 
-    has _offset_regex => ( isa => RegexpRef, ro, default => sub {
-        ## no critic (RegularExpressions::ProhibitEnumeratedClasses)
-        return qr/[(]File Offset:\s*(?<offset>0x[0-9a-f]+)[)]/;
-    }, );
+    has _offset_regex => (
+        isa => RegexpRef,
+        ro,
+        default => sub {
+            ## no critic (RegularExpressions::ProhibitEnumeratedClasses)
+            return qr/[(]File Offset:\s*(?<offset>0x[0-9a-f]+)[)]/;
+        },
+    );
 
 
-    has _section_header_identifier => ( isa => RegexpRef,  ro, lazy_build, );
+    has _section_header_identifier => ( isa => RegexpRef, ro, lazy_build, );
 
 
-    has _file                      => ( isa => File,       rw, clearer => '_clear_file', );
+    has _file => ( isa => File, rw, clearer => '_clear_file', );
 
 
-    has _filehandle                => ( isa => FileHandle, rw, clearer => '_clear_filehandle', );
+    has _filehandle =>
+      ( isa => FileHandle, rw, clearer => '_clear_filehandle', );
 
 
-    has _state                     => ( isa => HashRef,    rw,
-      predicate => '_has_state', clearer => '_clear_state',
+    has _state => (
+        isa => HashRef,
+        rw,
+        predicate => '_has_state',
+        clearer   => '_clear_state',
     );
 
 
@@ -116,19 +130,22 @@ with ELF::Extract::Sections::Meta::Scanner {
         my $offset = $self->_offset_regex;
 
         return qr/${header}\s*${offset}:/;
-    };
+    }
 
 
 
-    method _objdump returns (FileHandle|Undef){
-        if ( open my $fh, q{-|}, q{objdump}, qw( -D -F ), $self->_file->cleanup->absolute ) {
+    method _objdump returns (FileHandle|Undef) {
+        if ( open my $fh,
+            q{-|}, q{objdump}, qw( -D -F ), $self->_file->realpath->absolute )
+        {
             return $fh;
         }
-        $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });
+        $self->log->logconfess(
+            qq{An error occured requesting section data from objdump $^ $@ });
         return;
-    };
+    }
 
-};
+  };
 1;
 
 __END__

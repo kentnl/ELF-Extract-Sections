@@ -11,14 +11,13 @@ BEGIN {
 
 # ABSTRACT: Generic Type Constraints for E:E:S
 
-# $Id:$
-
 use MooseX::Types::Moose (':all');
 use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
 
 subtype FilterField, as enum( [ 'name', 'offset', 'size', ] );
 
-subtype ElfSection, as Object, where { $_->isa('ELF::Extract::Sections::Section') };
+subtype ElfSection, as Object,
+  where { $_->isa('ELF::Extract::Sections::Section') };
 
 1;
 

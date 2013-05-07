@@ -8,7 +8,8 @@ use File::Find::Rule;
 use Path::Class qw( file dir );
 use YAML::XS;
 use Log::Log4perl qw( :easy );
-#Log::Log4perl->easy_init($DEBUG);
+
+#Log::Log4perl->easy_init($WARN);
 
 my $filesdir = "$FindBin::Bin/test_files/";
 
@@ -29,6 +30,7 @@ for my $file (@files) {
             offset => $_->offset,
         };
     }
-    is_deeply( $d, $data, "Analysis of " . $f->basename . " matches stored data in " . $yaml->basename );
+    is_deeply( $d, $data, sprintf 'Analysis of %s matches data stored in %s',
+        $f->basename, $yaml->basename );
 }
 

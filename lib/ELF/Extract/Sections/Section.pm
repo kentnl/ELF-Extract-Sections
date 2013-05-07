@@ -20,7 +20,7 @@ class ELF::Extract::Sections::Section {
     use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose                ( ':all', );
     use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use MooseX::Types::Path::Class          ( 'File', );
+    use MooseX::Types::Path::Tiny           ( 'File', );
 
     use overload '""' => \&to_string;
 
@@ -29,13 +29,13 @@ class ELF::Extract::Sections::Section {
     has source => ( isa => File, ro, required, coerce, );
 
 
-    has name   => ( isa => Str,  ro, required );
+    has name => ( isa => Str, ro, required );
 
 
-    has offset => ( isa => Int,  ro, required );
+    has offset => ( isa => Int, ro, required );
 
 
-    has size   => ( isa => Int,  ro, required );
+    has size => ( isa => Int, ro, required );
 
 
 
@@ -43,12 +43,13 @@ class ELF::Extract::Sections::Section {
     method to_string ( Any $other?, Bool $polarity? ) {
         return sprintf
           q{[ Section %s of size %s in %s @ %x to %x ]},
-          $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
+          $self->name, $self->size, $self->source, $self->offset,
+          $self->offset + $self->size,
           ;
-      };
+    }
 
 
-    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ){
+    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
         if ( $field eq 'name' ) {
             return ( $self->name cmp $other->name );
         }
@@ -59,23 +60,23 @@ class ELF::Extract::Sections::Section {
             return ( $self->size <=> $other->size );
         }
         return;
-    };
+    }
 
 
-    method write_to( File :$file does coerce  ){
+    method write_to ( File :$file does coerce  ) {
         my $fh = $self->source->openr;
         seek $fh, $self->offset, 0;
         my $output     = $file->openw;
         my $chunksize  = 1024;
         my $bytes_left = $self->size;
-        my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read $fh, my $buffer, $chunk  ) {
+        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+        while ( read $fh, my $buffer, $chunk ) {
             print {$output} $buffer or Carp::croak("Write to $file failed");
             $bytes_left -= $chunksize;
             $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
         }
         return 1;
-    };
+    }
 
 
     method contents {
@@ -84,7 +85,7 @@ class ELF::Extract::Sections::Section {
         my $b;
         read $fh, $b, $self->size;
         return $b;
-    };
+    }
 };
 
 1;
