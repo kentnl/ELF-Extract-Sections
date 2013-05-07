@@ -240,7 +240,7 @@ L<ELF::Extract::Sections::Meta::Scanner/can_compute_size>
 
 =head1 PRIVATE ATTRIBUTES
 
-=head2 -> _header_regex : RegexpRef
+=head2 _header_regex : RegexpRef
 
 A regular expression for identifying the
 
@@ -250,7 +250,7 @@ Style tokens that denote objdump header names.
 
 Note: This is not XML.
 
-=head2 -> _offset_regex : RegexpRef
+=head2 _offset_regex : RegexpRef
 
 A regular expression for identifying offset blocks in objdump's output.
 
@@ -258,25 +258,25 @@ They look like this:
 
   File Offset: 0xdeadbeef
 
-=head2 -> _section_header_identifier : RegexpRef
+=head2 _section_header_identifier : RegexpRef
 
 A regular expression for extracting Headers and Offsets together
 
   <headername> File Offset: 0xdeadbeef
 
-=head2 -> _file : File
+=head2 _file : File
 
 A L<Path::Tiny> reference to a file somewhere on a system
 
 =head3 clearer -> _clear_file
 
-=head2 -> _filehandle : FileHandle
+=head2 _filehandle : FileHandle
 
 A perl FileHandle that points to the output of objdump for L</_file>
 
 =head3 clearer -> _clear_file_handle
 
-=head2 -> _state : HashRef
+=head2 _state : HashRef
 
 Keeps track of what we're doing, and what the next header is to return.
 
