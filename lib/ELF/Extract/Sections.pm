@@ -62,7 +62,7 @@ This code is written by a human, and like all human code, it sucks. There will b
 =head1 PUBLIC ATTRIBUTES
 =cut
 
-=head2 -> file
+=head2 file
 
 Returns the file the section data is being created for.
 
@@ -70,7 +70,7 @@ Returns the file the section data is being created for.
 
     has 'file' => ( isa => File, ro, required, coerce, );
 
-=head2 -> sections
+=head2 sections
 
 Returns a HashRef of the available sections.
 
@@ -78,7 +78,7 @@ Returns a HashRef of the available sections.
 
     has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
-=head2 -> scanner
+=head2 scanner
 
 Returns the name of the default scanner plug-in
 
@@ -90,11 +90,13 @@ Returns the name of the default scanner plug-in
 
 =cut
 
-=head2 -> new ( file => FILENAME )
+=head2 new ( file => FILENAME )
 
-=head2 -> new ( file => FILENAME , scanner => 'Objdump' )
+Creates A new Section Extractor object with the default scanner
 
-Creates A new Section Extractor object
+=head2 new ( file => FILENAME , scanner => 'Objdump' )
+
+Creates A new Section Extractor object with the specified scanner
 
 =cut
 
@@ -104,9 +106,11 @@ Creates A new Section Extractor object
         }
     }
 
-=head2 -> sorted_sections ( field => SORT_BY )
+=head2 sorted_sections ( field => SORT_BY )
 
-=head2 -> sorted_sections ( field => SORT_BY, descending => DESCENDING )
+Returns an ArrayRef sorted by the SORT_BY field, in the default order.
+
+=head2 sorted_sections ( field => SORT_BY, descending => DESCENDING )
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
@@ -145,7 +149,9 @@ These aren't really user serviceable, but they make your front end work.
 
 =cut
 
-=head2 -> _build_sections
+=head2 _build_sections
+
+See L</sections>
 
 =cut
 
@@ -160,22 +166,27 @@ These aren't really user serviceable, but they make your front end work.
     }
 
 =head1 PRIVATE ATTRIBUTES
+
 =cut
 
-=head2 -> _scanner_package
+=head2 _scanner_package
+
+    isa => ClassName, ro, lazy_build
+
 =cut
 
     has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
 
-=head2 -> _scanner_instance
+=head2 _scanner_instance
+
+    isa => Object, ro, lazy_build
+
 =cut
 
     has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 =head1 PRIVATE ATTRIBUTE BUILDERS
-=cut
 
-=head2 _build__scanner_package
 =cut
 
     method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
@@ -184,6 +195,12 @@ These aren't really user serviceable, but they make your front end work.
         $message .= '>' . $error;
         $self->log->logconfess($message);
     }
+
+=head2 _build__scanner_package
+
+Builds L</_scanner_package>
+
+=cut
 
     method _build__scanner_package {
         my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
@@ -194,7 +211,10 @@ These aren't really user serviceable, but they make your front end work.
         return $pkg;
     }
 
-=head2 -> _build__scanner_instance
+=head2 _build__scanner_instance
+
+Builds L</_scanner_instance>
+
 =cut
 
     method _build__scanner_instance {
@@ -203,19 +223,32 @@ These aren't really user serviceable, but they make your front end work.
     }
 
 =head1 PRIVATE_METHODS
-=cut
 
-=head2 -> _stash_record( HashRef, Str, Str )
-=cut
+=head2 _warn_stash_collision
 
     method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
-        my $message = qq[Warning, duplicate file offset reported by scanner.];
-        $message .= sprintf qq[<%s> and <%s> collide at <%s>.], $stashname,
+
+    }
+
+=cut
+
+
+    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+        my $message = q[Warning, duplicate file offset reported by scanner.];
+        $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname,
           $header, $offset;
-        $message .= sprintf qq[Assuming <%s> is empty and replacing it.],
+        $message .= sprintf q[Assuming <%s> is empty and replacing it.],
           $stashname;
         $self->log->warn($message);
     }
+
+=head2 _stash_record( HashRef, Str, Str )
+
+    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+
+    }
+
+=cut
 
     method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
         if ( exists $stash->{$offset} ) {
@@ -224,7 +257,13 @@ These aren't really user serviceable, but they make your front end work.
         $stash->{$offset} = $header;
     }
 
-=head2 -> _build_section_section( Str, Int, Int, File )
+=head2 _build_section_section( Str, Int, Int, File )
+
+    method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+
+    }
+
+
 =cut
 
     method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
@@ -237,7 +276,11 @@ These aren't really user serviceable, but they make your front end work.
         );
     }
 
-=head2 -> _build_section_table( HashRef )
+=head2 _build_section_table( HashRef )
+
+    method _build_section_table ( HashRef $ob! ) {
+    }
+
 =cut
 
     method _build_section_table ( HashRef $ob! ) {
@@ -255,7 +298,12 @@ These aren't really user serviceable, but they make your front end work.
         return \%datastash;
     }
 
-=head2 -> _scan_guess_size
+=head2 _scan_guess_size
+
+    method _scan_guess_size {
+
+    }
+
 =cut
 
     method _scan_guess_size {
@@ -270,7 +318,11 @@ These aren't really user serviceable, but they make your front end work.
         return $self->_build_section_table( \%offsets );
     }
 
-=head2 -> _scan_with_size
+=head2 _scan_with_size
+
+    method _scan_with_size {
+    }
+
 =cut
 
     method _scan_with_size {
@@ -311,8 +363,6 @@ To suppress this, just do
     use Log::Log4perl qw( :easy );
 
 I request however you B<don't> do that for modules intended to be consumed by others without good cause.
-
-=head1 ACKNOWLEDGEMENTS
 
 =cut
 

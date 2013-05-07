@@ -53,6 +53,7 @@ Revision history for {{$dist->name}}
  - license copyright year update
  - license reindent
  - license address update
+ - add README.mkdn
 
  [Internals]
  - add $AUTHORITY to all packages

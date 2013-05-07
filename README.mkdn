@@ -4,7 +4,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 # VERSION
 
-version 0.02071412
+version 0.03000101
 
 # SYNOPSIS
 
@@ -44,29 +44,33 @@ version 0.02071412
 
 # PUBLIC ATTRIBUTES
 
-## \-> file
+## file
 
 Returns the file the section data is being created for.
 
-## \-> sections
+## sections
 
 Returns a HashRef of the available sections.
 
-## \-> scanner
+## scanner
 
 Returns the name of the default scanner plug-in
 
 # PUBLIC METHODS
 
-## \-> new ( file => FILENAME )
+## new ( file => FILENAME )
 
-## \-> new ( file => FILENAME , scanner => 'Objdump' )
+Creates A new Section Extractor object with the default scanner
 
-Creates A new Section Extractor object
+## new ( file => FILENAME , scanner => 'Objdump' )
 
-## \-> sorted\_sections ( field => SORT\_BY )
+Creates A new Section Extractor object with the specified scanner
 
-## \-> sorted\_sections ( field => SORT\_BY, descending => DESCENDING )
+## sorted\_sections ( field => SORT\_BY )
+
+Returns an ArrayRef sorted by the SORT\_BY field, in the default order.
+
+## sorted\_sections ( field => SORT\_BY, descending => DESCENDING )
 
 Returns an ArrayRef sorted by the SORT\_BY field. May be Ascending or Descending depending on requirements.
 
@@ -94,31 +98,65 @@ The Size of the section.
 
 These aren't really user serviceable, but they make your front end work.
 
-## \-> \_build\_sections
+## \_build\_sections
+
+See ["sections"](#sections)
 
 # PRIVATE ATTRIBUTES
 
-## \-> \_scanner\_package
+## \_scanner\_package
 
-## \-> \_scanner\_instance
+    isa => ClassName, ro, lazy_build
+
+## \_scanner\_instance
+
+    isa => Object, ro, lazy_build
 
 # PRIVATE ATTRIBUTE BUILDERS
 
 ## \_build\_\_scanner\_package
 
-## \-> \_build\_\_scanner\_instance
+Builds ["\_scanner\_package"](#\_scanner\_package)
+
+## \_build\_\_scanner\_instance
+
+Builds ["\_scanner\_instance"](#\_scanner\_instance)
 
 # PRIVATE\_METHODS
 
-## \-> \_stash\_record( HashRef, Str, Str )
+## \_warn\_stash\_collision
 
-## \-> \_build\_section\_section( Str, Int, Int, File )
+    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
 
-## \-> \_build\_section\_table( HashRef )
+    }
 
-## \-> \_scan\_guess\_size
+## \_stash\_record( HashRef, Str, Str )
 
-## \-> \_scan\_with\_size
+    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+
+    }
+
+## \_build\_section\_section( Str, Int, Int, File )
+
+    method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+
+    }
+
+## \_build\_section\_table( HashRef )
+
+    method _build_section_table ( HashRef $ob! ) {
+    }
+
+## \_scan\_guess\_size
+
+    method _scan_guess_size {
+
+    }
+
+## \_scan\_with\_size
+
+    method _scan_with_size {
+    }
 
 # DEBUGGING
 
@@ -137,8 +175,6 @@ To suppress this, just do
     use Log::Log4perl qw( :easy );
 
 I request however you __don't__ do that for modules intended to be consumed by others without good cause.
-
-# ACKNOWLEDGEMENTS
 
 # AUTHOR
 
