@@ -1,7 +1,10 @@
 Revision history for ELF-Extract-Sections
 
-0.02071412 2013-05-07T07:20:00Z
- - Minor Maintenance release
+0.02071412 2013-05-07T07:23:09Z
+ [!Major Changes]
+ - Path::Class replaced with Path::Tiny
+ - Tests/Utils use Path::Iterator::Rule instead of File::Find::Rule
+ - Packaging toolchain updated
 
  [Dependencies::Added / develop requires]
  - Pod::Coverage::TrustPod
@@ -11,8 +14,12 @@ Revision history for ELF-Extract-Sections
  - Test::Pod::Coverage 1.08
  - version 0.9901
  [Dependencies::Added / runtime requires]
+ - MooseX::Types::Path::Tiny
  - strict
  - warnings
+ [Dependencies::Added / test requires]
+ - Path::Iterator::Rule
+ - Path::Tiny
  [Dependencies::Changed / build requires]
  - Module::Build 0.3601 → 0.4004
  [Dependencies::Changed / configure requires]
@@ -25,6 +32,8 @@ Revision history for ELF-Extract-Sections
  - Test::More 0.88 → 0.98
  [Dependencies::Removed / test requires]
  - English
+ - File::Find::Rule
+ - Path::Class
  
  [Documentation]
  - license copyright year update

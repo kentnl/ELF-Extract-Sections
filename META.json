@@ -29,7 +29,9 @@
             "Dist::Zilla::PluginBundle::Author::KENTNL::Lite" : "v1.3.0"
          },
          "requires" : {
+            "Dist::Zilla::Plugin::PerlTidy" : "0.13",
             "Dist::Zilla::PluginBundle::Author::KENTNL::Lite" : "0",
+            "Perl::Tidy::Sweetened" : "0.20",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -110,6 +112,7 @@
    "x_BuiltWith" : {
       "modules" : {
          "Class::Load" : "0.20",
+         "Dist::Zilla::Plugin::PerlTidy" : "0.13",
          "Dist::Zilla::PluginBundle::Author::KENTNL" : "1.7.3",
          "Dist::Zilla::PluginBundle::Author::KENTNL::Lite" : "NA(possibly not installed)",
          "File::Find" : "1.23",
@@ -127,6 +130,7 @@
          "MooseX::Types::Path::Tiny" : "0.002",
          "Path::Iterator::Rule" : "1.005",
          "Path::Tiny" : "0.017",
+         "Perl::Tidy::Sweetened" : "0.20",
          "Pod::Coverage::TrustPod" : "0.100002",
          "Test::CPAN::Changes" : "0.19",
          "Test::CPAN::Meta" : "0.23",
@@ -429,6 +433,17 @@
             "class" : "Dist::Zilla::Plugin::MetaProvides::Class",
             "name" : "MetaProvides::Class",
             "version" : "1.14000001"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "develop",
+                  "type" : "requires"
+               }
+            },
+            "name" : "DevelopRequires",
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs",

@@ -49,6 +49,7 @@ sub pmver {
 }
 
 eval { $v .= pmver('Class::Load','any version') };
+eval { $v .= pmver('Dist::Zilla::Plugin::PerlTidy','0.13') };
 eval { $v .= pmver('Dist::Zilla::PluginBundle::Author::KENTNL','v1.7.3') };
 eval { $v .= pmver('Dist::Zilla::PluginBundle::Author::KENTNL::Lite','v1.3.0') };
 eval { $v .= pmver('File::Find','any version') };
@@ -66,6 +67,7 @@ eval { $v .= pmver('MooseX::Types::Path::Class','0.05') };
 eval { $v .= pmver('MooseX::Types::Path::Tiny','any version') };
 eval { $v .= pmver('Path::Iterator::Rule','any version') };
 eval { $v .= pmver('Path::Tiny','any version') };
+eval { $v .= pmver('Perl::Tidy::Sweetened','0.20') };
 eval { $v .= pmver('Pod::Coverage::TrustPod','any version') };
 eval { $v .= pmver('Test::CPAN::Changes','0.19') };
 eval { $v .= pmver('Test::CPAN::Meta','any version') };
