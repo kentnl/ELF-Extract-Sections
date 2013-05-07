@@ -241,11 +241,15 @@ Returns the name of the default scanner plug-in
 
 =head2 new ( file => FILENAME )
 
+Creates A new Section Extractor object with the default scanner
+
 =head2 new ( file => FILENAME , scanner => 'Objdump' )
 
-Creates A new Section Extractor object
+Creates A new Section Extractor object with the specified scanner
 
 =head2 sorted_sections ( field => SORT_BY )
+
+Returns an ArrayRef sorted by the SORT_BY field, in the default order.
 
 =head2 sorted_sections ( field => SORT_BY, descending => DESCENDING )
 

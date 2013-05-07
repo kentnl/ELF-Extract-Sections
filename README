@@ -53,10 +53,14 @@ PUBLIC ATTRIBUTES
 
 PUBLIC METHODS
   new ( file => FILENAME )
+    Creates A new Section Extractor object with the default scanner
+
   new ( file => FILENAME , scanner => 'Objdump' )
-    Creates A new Section Extractor object
+    Creates A new Section Extractor object with the specified scanner
 
   sorted_sections ( field => SORT_BY )
+    Returns an ArrayRef sorted by the SORT_BY field, in the default order.
+
   sorted_sections ( field => SORT_BY, descending => DESCENDING )
     Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or
     Descending depending on requirements.
