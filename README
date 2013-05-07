@@ -42,22 +42,22 @@ CAVEATS
         There will be bugs. Please report them.
 
 PUBLIC ATTRIBUTES
-  -> file
+  file
     Returns the file the section data is being created for.
 
-  -> sections
+  sections
     Returns a HashRef of the available sections.
 
-  -> scanner
+  scanner
     Returns the name of the default scanner plug-in
 
 PUBLIC METHODS
-  -> new ( file => FILENAME )
-  -> new ( file => FILENAME , scanner => 'Objdump' )
+  new ( file => FILENAME )
+  new ( file => FILENAME , scanner => 'Objdump' )
     Creates A new Section Extractor object
 
-  -> sorted_sections ( field => SORT_BY )
-  -> sorted_sections ( field => SORT_BY, descending => DESCENDING )
+  sorted_sections ( field => SORT_BY )
+  sorted_sections ( field => SORT_BY, descending => DESCENDING )
     Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or
     Descending depending on requirements.
 
@@ -79,18 +79,18 @@ PUBLIC METHODS
 PUBLIC ATTRIBUTE BUILDERS
     These aren't really user serviceable, but they make your front end work.
 
-  -> _build_sections
+  _build_sections
 PRIVATE ATTRIBUTES
-  -> _scanner_package
-  -> _scanner_instance
+  _scanner_package
+  _scanner_instance
 PRIVATE ATTRIBUTE BUILDERS
   _build__scanner_package
-  -> _build__scanner_instance
+  _build__scanner_instance
 PRIVATE_METHODS
-  -> _stash_record( HashRef, Str, Str )
-  -> _build_section_section( Str, Int, Int, File )
-  -> _build_section_table( HashRef )
-  -> _scan_guess_size
+  _stash_record( HashRef, Str, Str )
+  _build_section_section( Str, Int, Int, File )
+  _build_section_table( HashRef )
+  _scan_guess_size
   -> _scan_with_size
 DEBUGGING
     This library uses Log::Log4perl. To see more verbose processing notices,

@@ -224,29 +224,29 @@ This code is written by a human, and like all human code, it sucks. There will b
 
 =head1 PUBLIC ATTRIBUTES
 
-=head2 -> file
+=head2 file
 
 Returns the file the section data is being created for.
 
-=head2 -> sections
+=head2 sections
 
 Returns a HashRef of the available sections.
 
-=head2 -> scanner
+=head2 scanner
 
 Returns the name of the default scanner plug-in
 
 =head1 PUBLIC METHODS
 
-=head2 -> new ( file => FILENAME )
+=head2 new ( file => FILENAME )
 
-=head2 -> new ( file => FILENAME , scanner => 'Objdump' )
+=head2 new ( file => FILENAME , scanner => 'Objdump' )
 
 Creates A new Section Extractor object
 
-=head2 -> sorted_sections ( field => SORT_BY )
+=head2 sorted_sections ( field => SORT_BY )
 
-=head2 -> sorted_sections ( field => SORT_BY, descending => DESCENDING )
+=head2 sorted_sections ( field => SORT_BY, descending => DESCENDING )
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
@@ -274,29 +274,29 @@ The Size of the section.
 
 These aren't really user serviceable, but they make your front end work.
 
-=head2 -> _build_sections
+=head2 _build_sections
 
 =head1 PRIVATE ATTRIBUTES
 
-=head2 -> _scanner_package
+=head2 _scanner_package
 
-=head2 -> _scanner_instance
+=head2 _scanner_instance
 
 =head1 PRIVATE ATTRIBUTE BUILDERS
 
 =head2 _build__scanner_package
 
-=head2 -> _build__scanner_instance
+=head2 _build__scanner_instance
 
 =head1 PRIVATE_METHODS
 
-=head2 -> _stash_record( HashRef, Str, Str )
+=head2 _stash_record( HashRef, Str, Str )
 
-=head2 -> _build_section_section( Str, Int, Int, File )
+=head2 _build_section_section( Str, Int, Int, File )
 
-=head2 -> _build_section_table( HashRef )
+=head2 _build_section_table( HashRef )
 
-=head2 -> _scan_guess_size
+=head2 _scan_guess_size
 
 =head2 -> _scan_with_size
 
