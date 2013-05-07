@@ -21,6 +21,8 @@ for ( @{ $extractor->sorted_sections( field => 'size', descending => 1 ) }[ 0 ..
 
 __END__
 
+=endcoding utf8
+
 =head1 Sample Output
 
     5 Largest Sections:
