@@ -3,24 +3,29 @@ use warnings;
 
 package ELF::Extract::Sections::Meta::Scanner;
 BEGIN {
-  $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.02071411';
+  $ELF::Extract::Sections::Meta::Scanner::AUTHORITY = 'cpan:KENTNL';
+}
+{
+  $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.03000101';
 }
 
 # ABSTRACT: Interface Contract for Scanners
-
-# $Id:$
 
 use MooseX::Declare;
 
 role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {
 
-  requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
+    requires(
+        'open_file',      'next_section',
+        'section_offset', 'section_size',
+        'section_name',   'can_compute_size'
+    );
 
 };
 
 1;
 
-
+__END__
 
 =pod
 
@@ -30,7 +35,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.02071411
+version 0.03000101
 
 =head1 Required Methods for Applying Roles
 
@@ -70,13 +75,9 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Kent Fredric.
+This software is copyright (c) 2013 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

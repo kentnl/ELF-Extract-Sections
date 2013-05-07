@@ -3,7 +3,7 @@ NAME
     ELF Sections
 
 VERSION
-    version 0.02071411
+    version 0.03000101
 
 SYNOPSIS
         use ELF::Extract::Sections;
@@ -42,22 +42,26 @@ CAVEATS
         There will be bugs. Please report them.
 
 PUBLIC ATTRIBUTES
-  -> file
+  file
     Returns the file the section data is being created for.
 
-  -> sections
+  sections
     Returns a HashRef of the available sections.
 
-  -> scanner
+  scanner
     Returns the name of the default scanner plug-in
 
 PUBLIC METHODS
-  -> new ( file => FILENAME )
-  -> new ( file => FILENAME , scanner => 'Objdump' )
-    Creates A new Section Extractor object
+  new ( file => FILENAME )
+    Creates A new Section Extractor object with the default scanner
 
-  -> sorted_sections ( field => SORT_BY )
-  -> sorted_sections ( field => SORT_BY, descending => DESCENDING )
+  new ( file => FILENAME , scanner => 'Objdump' )
+    Creates A new Section Extractor object with the specified scanner
+
+  sorted_sections ( field => SORT_BY )
+    Returns an ArrayRef sorted by the SORT_BY field, in the default order.
+
+  sorted_sections ( field => SORT_BY, descending => DESCENDING )
     Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or
     Descending depending on requirements.
 
@@ -79,19 +83,52 @@ PUBLIC METHODS
 PUBLIC ATTRIBUTE BUILDERS
     These aren't really user serviceable, but they make your front end work.
 
-  -> _build_sections
+  _build_sections
+    See "sections"
+
 PRIVATE ATTRIBUTES
-  -> _scanner_package
-  -> _scanner_instance
+  _scanner_package
+        isa => ClassName, ro, lazy_build
+
+  _scanner_instance
+        isa => Object, ro, lazy_build
+
 PRIVATE ATTRIBUTE BUILDERS
   _build__scanner_package
-  -> _build__scanner_instance
+    Builds "_scanner_package"
+
+  _build__scanner_instance
+    Builds "_scanner_instance"
+
 PRIVATE_METHODS
-  -> _stash_record( HashRef, Str, Str )
-  -> _build_section_section( Str, Int, Int, File )
-  -> _build_section_table( HashRef )
-  -> _scan_guess_size
-  -> _scan_with_size
+  _warn_stash_collision
+        method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+
+        }
+
+  _stash_record( HashRef, Str, Str )
+        method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+
+        }
+
+  _build_section_section( Str, Int, Int, File )
+        method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+
+        }
+
+  _build_section_table( HashRef )
+        method _build_section_table ( HashRef $ob! ) {
+        }
+
+  _scan_guess_size
+        method _scan_guess_size {
+
+        }
+
+  _scan_with_size
+        method _scan_with_size {
+        }
+
 DEBUGGING
     This library uses Log::Log4perl. To see more verbose processing notices,
     do this:
@@ -112,12 +149,11 @@ DEBUGGING
     I request however you don't do that for modules intended to be consumed
     by others without good cause.
 
-ACKNOWLEDGEMENTS
 AUTHOR
     Kent Fredric <kentnl@cpan.org>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2011 by Kent Fredric.
+    This software is copyright (c) 2013 by Kent Fredric.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

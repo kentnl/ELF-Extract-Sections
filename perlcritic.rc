@@ -13,7 +13,7 @@ allow_includes = 1
 [CodeLayout::ProhibitTrailingWhitespace]
 
 [Documentation::PodSpelling]
-stop_words = HashRef ArrayRef Str Objdump perl FILENAME FilterField ElfSection ENUM disassembly Bool Undef RegexpRef objdump objdump's FileHandle
+stop_words = HashRef ArrayRef Str Objdump perl FILENAME FilterField ElfSection ENUM disassembly Bool Undef RegexpRef objdump objdump's FileHandle acknowledgements initialise
 
 [NamingConventions::ProhibitAmbiguousNames]
 forbid = abstract bases close contract last left no record right second

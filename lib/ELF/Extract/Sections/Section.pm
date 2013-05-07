@@ -3,7 +3,10 @@ use warnings;
 
 package ELF::Extract::Sections::Section;
 BEGIN {
-  $ELF::Extract::Sections::Section::VERSION = '0.02071411';
+  $ELF::Extract::Sections::Section::AUTHORITY = 'cpan:KENTNL';
+}
+{
+  $ELF::Extract::Sections::Section::VERSION = '0.03000101';
 }
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
@@ -17,7 +20,7 @@ class ELF::Extract::Sections::Section {
     use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose                ( ':all', );
     use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use MooseX::Types::Path::Class          ( 'File', );
+    use MooseX::Types::Path::Tiny           ( 'File', );
 
     use overload '""' => \&to_string;
 
@@ -26,13 +29,13 @@ class ELF::Extract::Sections::Section {
     has source => ( isa => File, ro, required, coerce, );
 
 
-    has name   => ( isa => Str,  ro, required );
+    has name => ( isa => Str, ro, required );
 
 
-    has offset => ( isa => Int,  ro, required );
+    has offset => ( isa => Int, ro, required );
 
 
-    has size   => ( isa => Int,  ro, required );
+    has size => ( isa => Int, ro, required );
 
 
 
@@ -40,12 +43,13 @@ class ELF::Extract::Sections::Section {
     method to_string ( Any $other?, Bool $polarity? ) {
         return sprintf
           q{[ Section %s of size %s in %s @ %x to %x ]},
-          $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
+          $self->name, $self->size, $self->source, $self->offset,
+          $self->offset + $self->size,
           ;
-      };
+    }
 
 
-    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ){
+    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
         if ( $field eq 'name' ) {
             return ( $self->name cmp $other->name );
         }
@@ -56,23 +60,23 @@ class ELF::Extract::Sections::Section {
             return ( $self->size <=> $other->size );
         }
         return;
-    };
+    }
 
 
-    method write_to( File :$file does coerce  ){
+    method write_to ( File :$file does coerce  ) {
         my $fh = $self->source->openr;
         seek $fh, $self->offset, 0;
         my $output     = $file->openw;
         my $chunksize  = 1024;
         my $bytes_left = $self->size;
-        my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read $fh, my $buffer, $chunk  ) {
+        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+        while ( read $fh, my $buffer, $chunk ) {
             print {$output} $buffer or Carp::croak("Write to $file failed");
             $bytes_left -= $chunksize;
             $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
         }
         return 1;
-    };
+    }
 
 
     method contents {
@@ -81,12 +85,12 @@ class ELF::Extract::Sections::Section {
         my $b;
         read $fh, $b, $self->size;
         return $b;
-    };
+    }
 };
 
 1;
 
-
+__END__
 
 =pod
 
@@ -96,7 +100,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.02071411
+version 0.03000101
 
 =head1 SYNOPSIS
 
@@ -135,7 +139,7 @@ but generated objects are returned to you for you to  deal with
 
 =head2 source
 
-C<Str>|C<Path::Class::File>: Either a String or a Path::Class instance pointing to the file in mention.
+C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
 
 =head2 name
 
@@ -189,7 +193,7 @@ B<UNIMPLEMENTED AS OF YET>
 
 =item file
 
-C<Str>|C<Path::Class::File>: File target to write section contents to.
+C<Str>|C<Path::Tiny>: File target to write section contents to.
 
 =back
 
@@ -203,14 +207,9 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Kent Fredric.
+This software is copyright (c) 2013 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-
-
