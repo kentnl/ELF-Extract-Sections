@@ -1,6 +1,6 @@
 Revision history for ELF-Extract-Sections
 
-0.03000101 2013-05-07T07:48:09Z
+0.03000101 2013-05-07T07:51:13Z
  [!Major Changes]
  - Path::Class replaced with Path::Tiny
  - Tests/Utils use Path::Iterator::Rule instead of File::Find::Rule

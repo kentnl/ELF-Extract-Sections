@@ -104,6 +104,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         $self->log->warn($message);
     }
 
+
     method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
         if ( exists $stash->{$offset} ) {
             $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
@@ -290,15 +291,39 @@ These aren't really user serviceable, but they make your front end work.
 
 =head1 PRIVATE_METHODS
 
+=head2 _warn_stash_collision
+
+    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+
+    }
+
 =head2 _stash_record( HashRef, Str, Str )
+
+    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+
+    }
 
 =head2 _build_section_section( Str, Int, Int, File )
 
+    method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+
+    }
+
 =head2 _build_section_table( HashRef )
+
+    method _build_section_table ( HashRef $ob! ) {
+    }
 
 =head2 _scan_guess_size
 
-=head2 -> _scan_with_size
+    method _scan_guess_size {
+
+    }
+
+=head2 _scan_with_size
+
+    method _scan_with_size {
+    }
 
 =head1 DEBUGGING
 

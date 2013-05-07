@@ -87,11 +87,34 @@ PRIVATE ATTRIBUTE BUILDERS
   _build__scanner_package
   _build__scanner_instance
 PRIVATE_METHODS
+  _warn_stash_collision
+        method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+
+        }
+
   _stash_record( HashRef, Str, Str )
+        method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+
+        }
+
   _build_section_section( Str, Int, Int, File )
+        method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+
+        }
+
   _build_section_table( HashRef )
+        method _build_section_table ( HashRef $ob! ) {
+        }
+
   _scan_guess_size
-  -> _scan_with_size
+        method _scan_guess_size {
+
+        }
+
+  _scan_with_size
+        method _scan_with_size {
+        }
+
 DEBUGGING
     This library uses Log::Log4perl. To see more verbose processing notices,
     do this:
