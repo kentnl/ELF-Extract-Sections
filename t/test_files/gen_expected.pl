@@ -4,17 +4,17 @@ use strict;
 use warnings;
 
 use FindBin;
-use File::Find::Rule;
+use Path::Iterator::Rule;
 use YAML::XS;
-use Path::Class qw( file dir );
+use Path::Tiny qw( path );
 use lib "$FindBin::Bin/../../lib";
 use ELF::Extract::Sections;
 
-my $exclude = File::Find::Rule->name( "*.pl", "*.yaml" );
-my @files = File::Find::Rule->file->not($exclude)->in("$FindBin::Bin");
-for my $file (@files) {
-    my $f        = file($file);
-    my $yamlfile = file( $file . ".yaml" );
+my $exclude = Path::Iterator::Rule->new->name( "*.pl", "*.yaml" );
+my $iter = Path::Iterator::Rule->new->file->not($exclude)->iter("$FindBin::Bin");
+while( my $file = $iter->() ) {
+    my $f        = path($file);
+    my $yamlfile = path( $file . ".yaml" );
 
     my $scanner = ELF::Extract::Sections->new( file => $f );
     my $d = {};

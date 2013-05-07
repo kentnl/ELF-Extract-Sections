@@ -62,11 +62,9 @@
       "test" : {
          "requires" : {
             "File::Find" : "0",
-            "File::Find::Rule" : "0",
             "File::Temp" : "0",
             "FindBin" : "0",
             "Log::Log4perl" : "0",
-            "Path::Class" : "0",
             "Path::Iterator::Rule" : "0",
             "Path::Tiny" : "0",
             "Test::More" : "0.98",
@@ -115,7 +113,6 @@
          "Dist::Zilla::PluginBundle::Author::KENTNL" : "1.7.3",
          "Dist::Zilla::PluginBundle::Author::KENTNL::Lite" : "NA(possibly not installed)",
          "File::Find" : "1.23",
-         "File::Find::Rule" : "0.33",
          "File::Temp" : "0.23",
          "FindBin" : "1.51",
          "Log::Log4perl" : "1.40",
@@ -128,7 +125,6 @@
          "MooseX::Types::Moose" : "0.35",
          "MooseX::Types::Path::Class" : "0.06",
          "MooseX::Types::Path::Tiny" : "0.002",
-         "Path::Class" : "0.32",
          "Path::Iterator::Rule" : "1.005",
          "Path::Tiny" : "0.017",
          "Pod::Coverage::TrustPod" : "0.100002",
