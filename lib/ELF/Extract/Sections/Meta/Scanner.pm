@@ -6,7 +6,7 @@ BEGIN {
   $ELF::Extract::Sections::Meta::Scanner::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.02071412';
+  $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.03000101';
 }
 
 # ABSTRACT: Interface Contract for Scanners
@@ -35,7 +35,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.02071412
+version 0.03000101
 
 =head1 Required Methods for Applying Roles
 

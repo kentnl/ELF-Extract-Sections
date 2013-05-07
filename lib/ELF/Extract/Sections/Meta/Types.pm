@@ -6,7 +6,7 @@ BEGIN {
   $ELF::Extract::Sections::Meta::Types::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $ELF::Extract::Sections::Meta::Types::VERSION = '0.02071412';
+  $ELF::Extract::Sections::Meta::Types::VERSION = '0.03000101';
 }
 
 # ABSTRACT: Generic Type Constraints for E:E:S
@@ -31,7 +31,7 @@ ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 0.02071412
+version 0.03000101
 
 =head1 Types
 

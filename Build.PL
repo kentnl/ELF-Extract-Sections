@@ -17,7 +17,7 @@ my %module_build_args = (
     "Kent Fredric <kentnl\@cpan.org>"
   ],
   "dist_name" => "ELF-Extract-Sections",
-  "dist_version" => "0.02071412",
+  "dist_version" => "0.03000101",
   "license" => "perl",
   "module_name" => "ELF::Extract::Sections",
   "recommends" => {},

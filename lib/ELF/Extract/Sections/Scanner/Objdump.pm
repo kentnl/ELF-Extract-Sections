@@ -6,7 +6,7 @@ BEGIN {
   $ELF::Extract::Sections::Scanner::Objdump::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $ELF::Extract::Sections::Scanner::Objdump::VERSION = '0.02071412';
+  $ELF::Extract::Sections::Scanner::Objdump::VERSION = '0.03000101';
 }
 
 # ABSTRACT: An C<objdump> based section scanner.
@@ -158,7 +158,7 @@ ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
 
 =head1 VERSION
 
-version 0.02071412
+version 0.03000101
 
 =head1 SYNOPSIS
 

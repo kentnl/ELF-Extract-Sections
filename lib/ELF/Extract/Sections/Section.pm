@@ -6,7 +6,7 @@ BEGIN {
   $ELF::Extract::Sections::Section::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $ELF::Extract::Sections::Section::VERSION = '0.02071412';
+  $ELF::Extract::Sections::Section::VERSION = '0.03000101';
 }
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
@@ -100,7 +100,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.02071412
+version 0.03000101
 
 =head1 SYNOPSIS
 

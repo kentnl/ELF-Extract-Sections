@@ -18,7 +18,7 @@ use ELF::Extract::Sections;
 my $exclude = Path::Iterator::Rule->new->name( "*.pl", "*.yaml" );
 my $iter = Path::Iterator::Rule->new->file->not($exclude)->iter($filesdir);
 
-while( my $file = $iter->() ) {
+while ( my $file = $iter->() ) {
     my $f       = path($file);
     my $yaml    = path( $file . '.yaml' );
     my $data    = YAML::XS::LoadFile( $yaml->stringify );

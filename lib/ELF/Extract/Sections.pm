@@ -6,7 +6,7 @@ BEGIN {
   $ELF::Extract::Sections::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $ELF::Extract::Sections::VERSION = '0.02071412';
+  $ELF::Extract::Sections::VERSION = '0.03000101';
 }
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
@@ -180,7 +180,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.02071412
+version 0.03000101
 
 =head1 SYNOPSIS
 
