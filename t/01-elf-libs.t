@@ -4,8 +4,8 @@ use warnings;
 use Test::More tests => 4;    # last test to print
 
 use FindBin;
-use File::Find::Rule;
-use Path::Class qw( file dir );
+use Path::Iterator::Rule;
+use Path::Tiny qw( path );
 use YAML::XS;
 use Log::Log4perl qw( :easy );
 
@@ -15,12 +15,12 @@ my $filesdir = "$FindBin::Bin/test_files/";
 
 use ELF::Extract::Sections;
 
-my $exclude = File::Find::Rule->name( "*.pl", "*.yaml" );
-my @files = File::Find::Rule->file->not($exclude)->in($filesdir);
+my $exclude = Path::Iterator::Rule->new->name( "*.pl", "*.yaml" );
+my $iter = Path::Iterator::Rule->new->file->not($exclude)->iter($filesdir);
 
-for my $file (@files) {
-    my $f       = file($file);
-    my $yaml    = file( $file . '.yaml' );
+while ( my $file = $iter->() ) {
+    my $f       = path($file);
+    my $yaml    = path( $file . '.yaml' );
     my $data    = YAML::XS::LoadFile( $yaml->stringify );
     my $scanner = ELF::Extract::Sections->new( file => $f );
     my $d       = {};
