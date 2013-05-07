@@ -96,10 +96,10 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
     method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
-        my $message = qq[Warning, duplicate file offset reported by scanner.];
-        $message .= sprintf qq[<%s> and <%s> collide at <%s>.], $stashname,
+        my $message = q[Warning, duplicate file offset reported by scanner.];
+        $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname,
           $header, $offset;
-        $message .= sprintf qq[Assuming <%s> is empty and replacing it.],
+        $message .= sprintf q[Assuming <%s> is empty and replacing it.],
           $stashname;
         $self->log->warn($message);
     }
