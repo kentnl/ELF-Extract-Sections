@@ -71,7 +71,7 @@ C<Str>: The ELF Section Name
 
 =cut
 
-    has name   => ( isa => Str,  ro, required );
+    has name => ( isa => Str, ro, required );
 
 =head2 offset
 
@@ -79,7 +79,7 @@ C<Int>: Position in bytes relative to the start of the file.
 
 =cut
 
-    has offset => ( isa => Int,  ro, required );
+    has offset => ( isa => Int, ro, required );
 
 =head2 size
 
@@ -87,7 +87,7 @@ C<Int>: The ELF Section Size
 
 =cut
 
-    has size   => ( isa => Int,  ro, required );
+    has size => ( isa => Int, ro, required );
 
 =head1 PUBLIC METHODS
 
@@ -112,9 +112,10 @@ returns C<Str> description of the object
     method to_string ( Any $other?, Bool $polarity? ) {
         return sprintf
           q{[ Section %s of size %s in %s @ %x to %x ]},
-          $self->name, $self->size, $self->source, $self->offset, $self->offset + $self->size,
+          $self->name, $self->size, $self->source, $self->offset,
+          $self->offset + $self->size,
           ;
-      };
+    }
 
 =head2 -> compare ( other => $other, field => $field )
 
@@ -136,7 +137,7 @@ returns C<Int> of comparison result, between -1 and 1
 
 =cut
 
-    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ){
+    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
         if ( $field eq 'name' ) {
             return ( $self->name cmp $other->name );
         }
@@ -147,7 +148,7 @@ returns C<Int> of comparison result, between -1 and 1
             return ( $self->size <=> $other->size );
         }
         return;
-    };
+    }
 
 =head2 -> write_to ( file => $file )
 
@@ -163,20 +164,20 @@ C<Str>|C<Path::Class::File>: File target to write section contents to.
 
 =cut
 
-    method write_to( File :$file does coerce  ){
+    method write_to ( File :$file does coerce  ) {
         my $fh = $self->source->openr;
         seek $fh, $self->offset, 0;
         my $output     = $file->openw;
         my $chunksize  = 1024;
         my $bytes_left = $self->size;
-        my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read $fh, my $buffer, $chunk  ) {
+        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+        while ( read $fh, my $buffer, $chunk ) {
             print {$output} $buffer or Carp::croak("Write to $file failed");
             $bytes_left -= $chunksize;
             $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
         }
         return 1;
-    };
+    }
 
 =head2 -> contents
 
@@ -190,7 +191,7 @@ returns C<Str> of binary data read out of file.
         my $b;
         read $fh, $b, $self->size;
         return $b;
-    };
+    }
 };
 
 1;
