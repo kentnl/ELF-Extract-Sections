@@ -86,10 +86,18 @@ PUBLIC ATTRIBUTE BUILDERS
   _build_sections
 PRIVATE ATTRIBUTES
   _scanner_package
+        isa => ClassName, ro, lazy_build
+
   _scanner_instance
+        isa => Object, ro, lazy_build
+
 PRIVATE ATTRIBUTE BUILDERS
   _build__scanner_package
+    Builds "_scanner_package"
+
   _build__scanner_instance
+    Builds "_scanner_instance"
+
 PRIVATE_METHODS
   _warn_stash_collision
         method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {

@@ -70,13 +70,13 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 
-
     method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
         my $message = sprintf qq[The Scanner %s could not be found as %s\n.],
           $scanner, $package;
         $message .= '>' . $error;
         $self->log->logconfess($message);
     }
+
 
     method _build__scanner_package {
         my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
@@ -285,13 +285,21 @@ These aren't really user serviceable, but they make your front end work.
 
 =head2 _scanner_package
 
+    isa => ClassName, ro, lazy_build
+
 =head2 _scanner_instance
+
+    isa => Object, ro, lazy_build
 
 =head1 PRIVATE ATTRIBUTE BUILDERS
 
 =head2 _build__scanner_package
 
+Builds L</_scanner_package>
+
 =head2 _build__scanner_instance
+
+Builds L</_scanner_instance>
 
 =head1 PRIVATE_METHODS
 
