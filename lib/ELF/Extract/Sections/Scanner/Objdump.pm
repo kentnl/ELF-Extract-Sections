@@ -268,21 +268,29 @@ A regular expression for extracting Headers and Offsets together
 
 A L<Path::Tiny> reference to a file somewhere on a system
 
-=head3 clearer -> _clear_file
+=head3 _clear_file : _file.clearer
+
+Clears L</_file>
 
 =head2 _filehandle : FileHandle
 
 A perl FileHandle that points to the output of objdump for L</_file>
 
-=head3 clearer -> _clear_file_handle
+=head3 _clear_file_handle : _filehandle.clearer
+
+Clears L</_filehandle>
 
 =head2 _state : HashRef
 
 Keeps track of what we're doing, and what the next header is to return.
 
-=head3 predicate -> _has_state
+=head3 _has_state : _state.predicate
 
-=head3 clearer   -> _clear_state
+Returns is-set of L</_state>
+
+=head3 _clear_state : _state.clearer
+
+Clears L<_state>
 
 =head1 PRIVATE ATTRIBUTE BUILDERS
 
