@@ -46,16 +46,13 @@
       "runtime" : {
          "requires" : {
             "Class::Load" : "0",
-            "Log::Log4perl" : "1.21",
-            "Moose" : "0.76",
-            "MooseX::Declare" : "0.20",
+            "MooseX::Declare" : "0",
             "MooseX::Has::Sugar" : "0.0300",
-            "MooseX::Log::Log4perl" : "0.31",
-            "MooseX::Types" : "0.10",
-            "MooseX::Types::Moose" : "0.10",
+            "MooseX::Types" : "0",
+            "MooseX::Types::Moose" : "0",
             "MooseX::Types::Path::Tiny" : "0",
             "overload" : "0",
-            "perl" : "5.010000",
+            "perl" : "5.010",
             "strict" : "0",
             "warnings" : "0"
          }
@@ -119,10 +116,8 @@
          "FindBin" : "1.51",
          "Log::Log4perl" : "1.40",
          "Module::Build" : "0.4004",
-         "Moose" : "2.0801",
          "MooseX::Declare" : "0.35",
          "MooseX::Has::Sugar" : "0.05070421",
-         "MooseX::Log::Log4perl" : "0.46",
          "MooseX::Types" : "0.35",
          "MooseX::Types::Moose" : "0.35",
          "MooseX::Types::Path::Tiny" : "0.002",
