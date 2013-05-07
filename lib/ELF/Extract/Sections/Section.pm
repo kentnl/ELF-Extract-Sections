@@ -49,7 +49,7 @@ but generated objects are returned to you for you to  deal with
     use MooseX::Has::Sugar 0.0300;
     use MooseX::Types::Moose                ( ':all', );
     use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use MooseX::Types::Path::Class          ( 'File', );
+    use MooseX::Types::Path::Tiny           ( 'File', );
 
     use overload '""' => \&to_string;
 

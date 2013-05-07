@@ -5,7 +5,6 @@ package ELF::Extract::Sections::Scanner::Objdump;
 
 # ABSTRACT: An C<objdump> based section scanner.
 
-# $Id:$
 use MooseX::Declare;
 
 =head1 SYNOPSIS
@@ -66,7 +65,7 @@ L<MooseX::Types::Path::Class>
 
 =cut
 
-    use MooseX::Types::Path::Class ('File');
+    use MooseX::Types::Path::Tiny ('File');
 
 =head1 PUBLIC METHODS
 
@@ -103,7 +102,6 @@ L<ELF::Extract::Sections::Meta::Scanner/next_section>
             my ( $header, $offset ) = ( $+{header}, $+{offset} );
             $self->_state( { header => $header, offset => $offset } );
             $self->log->info("objdump -D -F : Section $header at $offset");
-
             return 1;
         }
         $self->_clear_file;
@@ -292,7 +290,7 @@ Calls the system C<objdump> instance for the currently processing file.
 
     method _objdump returns (FileHandle|Undef) {
         if ( open my $fh,
-            q{-|}, q{objdump}, qw( -D -F ), $self->_file->cleanup->absolute )
+            q{-|}, q{objdump}, qw( -D -F ), $self->_file->realpath->absolute )
         {
             return $fh;
         }
