@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.03000101 2013-05-07T08:56:28Z
  [!Major Changes]
  - Path::Class replaced with Path::Tiny
  - Tests/Utils use Path::Iterator::Rule instead of File::Find::Rule
