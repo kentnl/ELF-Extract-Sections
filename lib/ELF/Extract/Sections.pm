@@ -281,6 +281,8 @@ These aren't really user serviceable, but they make your front end work.
 
 =head2 _build_sections
 
+See L</sections>
+
 =head1 PRIVATE ATTRIBUTES
 
 =head2 _scanner_package
@@ -354,8 +356,6 @@ To suppress this, just do
     use Log::Log4perl qw( :easy );
 
 I request however you B<don't> do that for modules intended to be consumed by others without good cause.
-
-=head1 ACKNOWLEDGEMENTS
 
 =head1 AUTHOR
 

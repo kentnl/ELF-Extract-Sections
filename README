@@ -84,6 +84,8 @@ PUBLIC ATTRIBUTE BUILDERS
     These aren't really user serviceable, but they make your front end work.
 
   _build_sections
+    See "sections"
+
 PRIVATE ATTRIBUTES
   _scanner_package
         isa => ClassName, ro, lazy_build
@@ -147,7 +149,6 @@ DEBUGGING
     I request however you don't do that for modules intended to be consumed
     by others without good cause.
 
-ACKNOWLEDGEMENTS
 AUTHOR
     Kent Fredric <kentnl@cpan.org>
 
