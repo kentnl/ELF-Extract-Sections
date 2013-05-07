@@ -46,6 +46,8 @@ my %module_build_args = (
     "FindBin" => 0,
     "Log::Log4perl" => 0,
     "Path::Class" => 0,
+    "Path::Iterator::Rule" => 0,
+    "Path::Tiny" => 0,
     "Test::More" => "0.98",
     "YAML::XS" => 0
   }

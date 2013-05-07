@@ -139,7 +139,7 @@ but generated objects are returned to you for you to  deal with
 
 =head2 source
 
-C<Str>|C<Path::Class::File>: Either a String or a Path::Class instance pointing to the file in mention.
+C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
 
 =head2 name
 
@@ -193,7 +193,7 @@ B<UNIMPLEMENTED AS OF YET>
 
 =item file
 
-C<Str>|C<Path::Class::File>: File target to write section contents to.
+C<Str>|C<Path::Tiny>: File target to write section contents to.
 
 =back
 

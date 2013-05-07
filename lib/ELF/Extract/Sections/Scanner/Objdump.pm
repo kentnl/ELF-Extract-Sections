@@ -194,11 +194,11 @@ Type Constraining Keywords.
 
 L<MooseX::Types::Moose>
 
-=head2 MooseX::Types::Path::Class
+=head2 MooseX::Types::Path::Tiny
 
-File Type Constraints w/ Path::Class
+File Type Constraints w/ Path::Tiny
 
-L<MooseX::Types::Path::Class>
+L<MooseX::Types::Path::Tiny>
 
 =head1 PUBLIC METHODS
 
@@ -266,7 +266,7 @@ A regular expression for extracting Headers and Offsets together
 
 =head2 -> _file : File
 
-A L<Path::Class::File> reference to a file somewhere on a system
+A L<Path::Tiny> reference to a file somewhere on a system
 
 =head3 clearer -> _clear_file
 
