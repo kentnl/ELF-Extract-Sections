@@ -189,7 +189,7 @@ These aren't really user serviceable, but they make your front end work.
         my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
         my ( $success, $error ) = try_load_class($pkg);
         if ( not $success ) {
-            $self->_error_scanner_missing( $self->scanner, $package, $error );
+            $self->_error_scanner_missing( $self->scanner, $pkg, $error );
         }
         return $pkg;
     }
@@ -209,12 +209,12 @@ These aren't really user serviceable, but they make your front end work.
 =cut
 
     method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
-        my $message = qq[Warning, duplicate file offset reported by scanner.\n];
-        $message .= sprintf qq[%s and %s collide at %s.\n], $stashname,
+        my $message = qq[Warning, duplicate file offset reported by scanner.];
+        $message .= sprintf qq[<%s> and <%s> collide at <%s>.], $stashname,
           $header, $offset;
-        $message .= sprintf qq[Assuming %s is empty and replacing it.],
+        $message .= sprintf qq[Assuming <%s> is empty and replacing it.],
           $stashname;
-        $self->log->logcluck($message);
+        $self->log->warn($message);
     }
 
     method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
