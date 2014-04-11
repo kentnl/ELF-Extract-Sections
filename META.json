@@ -156,7 +156,6 @@
    "version" : "0.03000102",
    "x_BuiltWith" : {
       "failures" : {
-         "MooseX::Log::Log4perl" : "module was not found in INC",
          "Perl::Tidy::Sweetened" : "module was not found in INC"
       },
       "modules" : {
@@ -216,6 +215,7 @@
          "Moose" : "2.1204",
          "MooseX::Declare" : "0.38",
          "MooseX::Has::Sugar" : "1.000000",
+         "MooseX::Log::Log4perl" : "0.46",
          "MooseX::Types" : "0.44",
          "MooseX::Types::Moose" : "0.44",
          "MooseX::Types::Path::Tiny" : "0.010",
