@@ -14,15 +14,13 @@
    },
    "name" : "ELF-Extract-Sections",
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "Module::Build" : "0.4205"
-         }
-      },
       "configure" : {
+         "recommends" : {
+            "ExtUtils::MakeMaker" : "6.94"
+         },
          "requires" : {
             "Devel::CheckBin" : "0",
-            "Module::Build" : "0.4205"
+            "ExtUtils::MakeMaker" : "6.30"
          }
       },
       "develop" : {
@@ -40,6 +38,7 @@
             "Dist::Zilla::Plugin::Git::Tag" : "0",
             "Dist::Zilla::Plugin::GithubMeta" : "0",
             "Dist::Zilla::Plugin::License" : "0",
+            "Dist::Zilla::Plugin::MakeMaker" : "0",
             "Dist::Zilla::Plugin::Manifest" : "0",
             "Dist::Zilla::Plugin::ManifestSkip" : "0",
             "Dist::Zilla::Plugin::MetaConfig" : "0",
@@ -49,14 +48,12 @@
             "Dist::Zilla::Plugin::MetaTests" : "0",
             "Dist::Zilla::Plugin::MetaYAML" : "0",
             "Dist::Zilla::Plugin::MinimumPerl" : "0",
-            "Dist::Zilla::Plugin::ModuleBuild" : "0",
             "Dist::Zilla::Plugin::PerlTidy" : "0.13",
             "Dist::Zilla::Plugin::PkgVersion" : "0",
             "Dist::Zilla::Plugin::PodCoverageTests" : "0",
             "Dist::Zilla::Plugin::PodSyntaxTests" : "0",
             "Dist::Zilla::Plugin::PodWeaver" : "0",
             "Dist::Zilla::Plugin::Prereqs" : "0",
-            "Dist::Zilla::Plugin::Prereqs::MatchInstalled" : "0",
             "Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled" : "0",
             "Dist::Zilla::Plugin::ReadmeAnyFromPod" : "0",
             "Dist::Zilla::Plugin::ReadmeFromPod" : "0",
@@ -103,7 +100,9 @@
       "test" : {
          "recommends" : {
             "CPAN::Meta" : "0",
-            "CPAN::Meta::Requirements" : "2.120900"
+            "CPAN::Meta::Requirements" : "2.120900",
+            "ExtUtils::MakeMaker" : "6.94",
+            "Test::More" : "1.001003"
          },
          "requires" : {
             "ExtUtils::MakeMaker" : "0",
@@ -113,7 +112,7 @@
             "Log::Log4perl" : "1.21",
             "Path::Iterator::Rule" : "0",
             "Path::Tiny" : "0",
-            "Test::More" : "1.001003",
+            "Test::More" : "0.89",
             "YAML::XS" : "0",
             "lib" : "0",
             "version" : "0"
@@ -178,6 +177,7 @@
          "Dist::Zilla::Plugin::Git::Tag" : "2.020",
          "Dist::Zilla::Plugin::GithubMeta" : "0.42",
          "Dist::Zilla::Plugin::License" : "5.015",
+         "Dist::Zilla::Plugin::MakeMaker" : "5.015",
          "Dist::Zilla::Plugin::Manifest" : "5.015",
          "Dist::Zilla::Plugin::ManifestSkip" : "5.015",
          "Dist::Zilla::Plugin::MetaConfig" : "5.015",
@@ -187,14 +187,12 @@
          "Dist::Zilla::Plugin::MetaTests" : "5.015",
          "Dist::Zilla::Plugin::MetaYAML" : "5.015",
          "Dist::Zilla::Plugin::MinimumPerl" : "1.003",
-         "Dist::Zilla::Plugin::ModuleBuild" : "5.015",
          "Dist::Zilla::Plugin::PerlTidy" : "0.16",
          "Dist::Zilla::Plugin::PkgVersion" : "5.015",
          "Dist::Zilla::Plugin::PodCoverageTests" : "5.015",
          "Dist::Zilla::Plugin::PodSyntaxTests" : "5.015",
          "Dist::Zilla::Plugin::PodWeaver" : "4.005",
          "Dist::Zilla::Plugin::Prereqs" : "5.015",
-         "Dist::Zilla::Plugin::Prereqs::MatchInstalled" : "0.1.6",
          "Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled" : "0.001000",
          "Dist::Zilla::Plugin::ReadmeAnyFromPod" : "0.133360",
          "Dist::Zilla::Plugin::ReadmeFromPod" : "0.21",
@@ -215,7 +213,6 @@
          "FindBin" : "1.51",
          "List::Util" : "1.38",
          "Log::Log4perl" : "1.43",
-         "Module::Build" : "0.4205",
          "Moose" : "2.1204",
          "MooseX::Declare" : "0.38",
          "MooseX::Has::Sugar" : "1.000000",
@@ -583,13 +580,13 @@
             "version" : "1.006"
          },
          {
-            "class" : "Dist::Zilla::Plugin::ModuleBuild",
+            "class" : "Dist::Zilla::Plugin::MakeMaker",
             "config" : {
                "Dist::Zilla::Role::TestRunner" : {
                   "default_jobs" : 10
                }
             },
-            "name" : "@Author::KENTNL/ModuleBuild",
+            "name" : "@Author::KENTNL/MakeMaker",
             "version" : "5.015"
          },
          {
@@ -663,25 +660,15 @@
             "version" : "0.025"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Prereqs::MatchInstalled",
+            "class" : "Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled",
             "config" : {
-               "Dist::Zilla::Plugin::Prereqs::MatchInstalled" : {
-                  "applyto" : [
-                     "build.requires",
-                     "build.recommends",
-                     "build.suggests",
-                     "test.requires",
-                     "test.recommends",
-                     "test.suggests",
-                     "runtime.requires",
-                     "runtime.recommends",
-                     "runtime.suggests",
-                     "configure.requires",
-                     "configure.recommends",
-                     "configure.suggests",
-                     "develop.requires",
-                     "develop.recommends",
-                     "develop.suggests"
+               "Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled" : {
+                  "applyto_map" : [
+                     "build.requires = build.recommends",
+                     "test.requires = test.recommends",
+                     "runtime.requires = runtime.recommends",
+                     "configure.requires = configure.recommends",
+                     "develop.requires = develop.recommends"
                   ],
                   "applyto_phase" : [
                      "build",
@@ -690,19 +677,14 @@
                      "configure",
                      "develop"
                   ],
-                  "applyto_relation" : [
-                     "requires",
-                     "recommends",
-                     "suggests"
-                  ],
                   "modules" : [
-                     "Module::Build",
+                     "ExtUtils::MakeMaker",
                      "Test::More"
                   ]
                }
             },
-            "name" : "@Author::KENTNL/Prereqs::MatchInstalled",
-            "version" : "0.1.6"
+            "name" : "@Author::KENTNL/Prereqs::Recommend::MatchInstalled",
+            "version" : "0.001000"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled",

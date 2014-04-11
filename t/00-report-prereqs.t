@@ -43,15 +43,13 @@ my %exclude = map {; $_ => 1 } qw(
 
 # Add static prereqs to the included modules list
 my $static_prereqs = do { my $x = {
-       'build' => {
-                    'requires' => {
-                                    'Module::Build' => '0.4205'
-                                  }
-                  },
        'configure' => {
+                        'recommends' => {
+                                          'ExtUtils::MakeMaker' => '6.94'
+                                        },
                         'requires' => {
                                         'Devel::CheckBin' => '0',
-                                        'Module::Build' => '0.4205'
+                                        'ExtUtils::MakeMaker' => '6.30'
                                       }
                       },
        'develop' => {
@@ -69,6 +67,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::Git::Tag' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
                                       'Dist::Zilla::Plugin::License' => '0',
+                                      'Dist::Zilla::Plugin::MakeMaker' => '0',
                                       'Dist::Zilla::Plugin::Manifest' => '0',
                                       'Dist::Zilla::Plugin::ManifestSkip' => '0',
                                       'Dist::Zilla::Plugin::MetaConfig' => '0',
@@ -78,14 +77,12 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Plugin::MetaTests' => '0',
                                       'Dist::Zilla::Plugin::MetaYAML' => '0',
                                       'Dist::Zilla::Plugin::MinimumPerl' => '0',
-                                      'Dist::Zilla::Plugin::ModuleBuild' => '0',
                                       'Dist::Zilla::Plugin::PerlTidy' => '0.13',
                                       'Dist::Zilla::Plugin::PkgVersion' => '0',
                                       'Dist::Zilla::Plugin::PodCoverageTests' => '0',
                                       'Dist::Zilla::Plugin::PodSyntaxTests' => '0',
                                       'Dist::Zilla::Plugin::PodWeaver' => '0',
                                       'Dist::Zilla::Plugin::Prereqs' => '0',
-                                      'Dist::Zilla::Plugin::Prereqs::MatchInstalled' => '0',
                                       'Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled' => '0',
                                       'Dist::Zilla::Plugin::ReadmeAnyFromPod' => '0',
                                       'Dist::Zilla::Plugin::ReadmeFromPod' => '0',
@@ -132,7 +129,9 @@ my $static_prereqs = do { my $x = {
        'test' => {
                    'recommends' => {
                                      'CPAN::Meta' => '0',
-                                     'CPAN::Meta::Requirements' => '2.120900'
+                                     'CPAN::Meta::Requirements' => '2.120900',
+                                     'ExtUtils::MakeMaker' => '6.94',
+                                     'Test::More' => '1.001003'
                                    },
                    'requires' => {
                                    'ExtUtils::MakeMaker' => '0',
@@ -142,7 +141,7 @@ my $static_prereqs = do { my $x = {
                                    'Log::Log4perl' => '1.21',
                                    'Path::Iterator::Rule' => '0',
                                    'Path::Tiny' => '0',
-                                   'Test::More' => '1.001003',
+                                   'Test::More' => '0.89',
                                    'YAML::XS' => '0',
                                    'lib' => '0',
                                    'version' => '0'
