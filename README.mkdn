@@ -4,7 +4,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 # VERSION
 
-version 0.03000101
+version 0.03000102
 
 # SYNOPSIS
 
@@ -27,18 +27,18 @@ version 0.03000101
 
 # CAVEATS
 
-1. Beta Software
+- 1. Beta Software
 
     This code is relatively new. It exists only as a best attempt at present until further notice. It
     has proved as practical for at least one application, and this is why the module exists. However, it can't be
     guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
 
-2. Feature Incomplete
+- 2. Feature Incomplete
 
     This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
     If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
 
-3. Humans
+- 3. Humans
 
     This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
 
@@ -116,11 +116,11 @@ See ["sections"](#sections)
 
 ## \_build\_\_scanner\_package
 
-Builds ["\_scanner\_package"](#\_scanner\_package)
+Builds ["\_scanner\_package"](#_scanner_package)
 
 ## \_build\_\_scanner\_instance
 
-Builds ["\_scanner\_instance"](#\_scanner\_instance)
+Builds ["\_scanner\_instance"](#_scanner_instance)
 
 # PRIVATE\_METHODS
 
@@ -160,7 +160,7 @@ Builds ["\_scanner\_instance"](#\_scanner\_instance)
 
 # DEBUGGING
 
-This library uses [Log::Log4perl](http://search.cpan.org/perldoc?Log::Log4perl). To see more verbose processing notices, do this:
+This library uses [Log::Log4perl](https://metacpan.org/pod/Log::Log4perl). To see more verbose processing notices, do this:
 
     use Log::Log4perl qw( :easy );
     Log::Log4perl->easy_init($DEBUG);
@@ -182,7 +182,7 @@ Kent Fredric <kentnl@cpan.org>
 
 # COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric.
+This software is copyright (c) 2014 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
