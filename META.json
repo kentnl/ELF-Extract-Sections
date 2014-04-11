@@ -21,6 +21,7 @@
       },
       "configure" : {
          "requires" : {
+            "Devel::CheckBin" : "0",
             "Module::Build" : "0.4205"
          }
       },
@@ -163,6 +164,7 @@
          "CPAN::Meta" : "2.140640",
          "CPAN::Meta::Requirements" : "2.125",
          "Class::Load" : "0.21",
+         "Devel::CheckBin" : "0.02",
          "Dist::Zilla::Plugin::Authority" : "1.006",
          "Dist::Zilla::Plugin::AutoPrereqs" : "5.015",
          "Dist::Zilla::Plugin::ConfirmRelease" : "5.015",
@@ -742,6 +744,11 @@
             },
             "name" : "MetaProvides::Class",
             "version" : "1.14000001"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::CheckBin",
+            "name" : "CheckBin",
+            "version" : "0.002"
          },
          {
             "class" : "Dist::Zilla::Plugin::Encoding",

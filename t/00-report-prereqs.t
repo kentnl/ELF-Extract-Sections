@@ -50,6 +50,7 @@ my $static_prereqs = do { my $x = {
                   },
        'configure' => {
                         'requires' => {
+                                        'Devel::CheckBin' => '0',
                                         'Module::Build' => '0.4205'
                                       }
                       },
