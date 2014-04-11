@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Section;
 $ELF::Extract::Sections::Section::VERSION = '0.03000102';
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {

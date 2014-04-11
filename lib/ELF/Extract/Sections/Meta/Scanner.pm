@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Meta::Scanner;
 $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.03000102';
 # ABSTRACT: Interface Contract for Scanners
 
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
 use MooseX::Declare;
 
 role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {

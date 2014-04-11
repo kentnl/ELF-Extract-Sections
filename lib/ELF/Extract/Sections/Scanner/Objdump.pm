@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Scanner::Objdump;
 $ELF::Extract::Sections::Scanner::Objdump::VERSION = '0.03000102';
 # ABSTRACT: An C<objdump> based section scanner.
 
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
 use MooseX::Declare;
 
 

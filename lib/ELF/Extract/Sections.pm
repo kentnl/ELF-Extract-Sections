@@ -5,9 +5,12 @@ package ELF::Extract::Sections;
 $ELF::Extract::Sections::VERSION = '0.03000102';
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
 use MooseX::Declare;
 
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
+
 
 
 
