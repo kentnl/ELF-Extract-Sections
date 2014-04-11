@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Meta::Scanner;
 
 # ABSTRACT: Interface Contract for Scanners
 
+# AUTHORITY
+
 use MooseX::Declare;
 
 role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {

@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Section;
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
+# AUTHORITY
+
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {

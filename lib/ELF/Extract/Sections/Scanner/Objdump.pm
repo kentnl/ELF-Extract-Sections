@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Scanner::Objdump;
 
 # ABSTRACT: An C<objdump> based section scanner.
 
+# AUTHORITY
+
 use MooseX::Declare;
 
 =head1 SYNOPSIS

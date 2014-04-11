@@ -5,9 +5,12 @@ package ELF::Extract::Sections;
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
+# AUTHORITY
+
 use MooseX::Declare;
 
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
+
 
 =head1 CAVEATS
 

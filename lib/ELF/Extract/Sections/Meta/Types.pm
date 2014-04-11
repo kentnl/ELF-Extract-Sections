@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Meta::Types;
 
 # ABSTRACT: Generic Type Constraints for E:E:S
 
+# AUTHORITY
+
 use MooseX::Types::Moose (':all');
 use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
 
