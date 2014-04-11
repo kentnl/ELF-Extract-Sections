@@ -2,16 +2,25 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Scanner::Objdump;
-BEGIN {
-  $ELF::Extract::Sections::Scanner::Objdump::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $ELF::Extract::Sections::Scanner::Objdump::VERSION = '0.03000101';
-}
-
+$ELF::Extract::Sections::Scanner::Objdump::VERSION = '0.03000102';
 # ABSTRACT: An C<objdump> based section scanner.
 
 use MooseX::Declare;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class ELF::Extract::Sections::Scanner::Objdump with
@@ -19,14 +28,54 @@ class ELF::Extract::Sections::Scanner::Objdump with
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     use MooseX::Has::Sugar 0.0300;
+
+
+
+
+
+
+
 
 
     use MooseX::Types::Moose (
         qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
 
 
+
+
+
+
+
+
+
     use MooseX::Types::Path::Tiny ('File');
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -36,6 +85,13 @@ class ELF::Extract::Sections::Scanner::Objdump with
         $self->_filehandle( $self->_objdump );
         return 1;
     }
+
+
+
+
+
+
+
 
 
     method next_section returns (Bool) {
@@ -55,6 +111,13 @@ class ELF::Extract::Sections::Scanner::Objdump with
     }
 
 
+
+
+
+
+
+
+
     method section_offset returns (Int|Undef) {
         if ( not $self->_has_state ) {
             $self->log->logcroak(
@@ -65,11 +128,25 @@ class ELF::Extract::Sections::Scanner::Objdump with
     }
 
 
+
+
+
+
+
+
+
     method section_size returns (Undef) {
         $self->log->logcroak(
             'Can\'t perform section_size on this type of object.');
         return;
     }
+
+
+
+
+
+
+
 
 
     method section_name returns (Str|Undef) {
@@ -82,9 +159,29 @@ class ELF::Extract::Sections::Scanner::Objdump with
     }
 
 
+
+
+
+
+
+
+
     method can_compute_size returns (Bool) {
         return 0;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     has _header_regex => (
@@ -94,6 +191,15 @@ class ELF::Extract::Sections::Scanner::Objdump with
             return qr/<(?<header>[^>]+)>/;
         },
     );
+
+
+
+
+
+
+
+
+
 
 
     has _offset_regex => (
@@ -106,14 +212,52 @@ class ELF::Extract::Sections::Scanner::Objdump with
     );
 
 
+
+
+
+
+
+
+
     has _section_header_identifier => ( isa => RegexpRef, ro, lazy_build, );
+
+
+
+
+
+
+
+
+
 
 
     has _file => ( isa => File, rw, clearer => '_clear_file', );
 
 
+
+
+
+
+
+
+
+
+
     has _filehandle =>
       ( isa => FileHandle, rw, clearer => '_clear_filehandle', );
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     has _state => (
@@ -125,12 +269,30 @@ class ELF::Extract::Sections::Scanner::Objdump with
 
 
 
+
+
+
+
+
+
+
+
+
+
     method _build__section_header_identifier returns (RegexpRef) {
         my $header = $self->_header_regex;
         my $offset = $self->_offset_regex;
 
         return qr/${header}\s*${offset}:/;
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -158,7 +320,7 @@ ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
 
 =head1 VERSION
 
-version 0.03000101
+version 0.03000102
 
 =head1 SYNOPSIS
 
@@ -312,7 +474,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric.
+This software is copyright (c) 2014 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

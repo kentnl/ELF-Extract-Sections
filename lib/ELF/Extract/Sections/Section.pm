@@ -2,18 +2,47 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Section;
-BEGIN {
-  $ELF::Extract::Sections::Section::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $ELF::Extract::Sections::Section::VERSION = '0.03000101';
-}
-
+$ELF::Extract::Sections::Section::VERSION = '0.03000102';
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
 use MooseX::Declare;
 
 class ELF::Extract::Sections::Section {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -26,16 +55,56 @@ class ELF::Extract::Sections::Section {
 
 
 
+
+
+
+
+
+
+
+
     has source => ( isa => File, ro, required, coerce, );
+
+
+
+
+
 
 
     has name => ( isa => Str, ro, required );
 
 
+
+
+
+
+
     has offset => ( isa => Int, ro, required );
 
 
+
+
+
+
+
     has size => ( isa => Int, ro, required );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -47,6 +116,25 @@ class ELF::Extract::Sections::Section {
           $self->offset + $self->size,
           ;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
@@ -63,6 +151,19 @@ class ELF::Extract::Sections::Section {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     method write_to ( File :$file does coerce  ) {
         my $fh = $self->source->openr;
         seek $fh, $self->offset, 0;
@@ -77,6 +178,11 @@ class ELF::Extract::Sections::Section {
         }
         return 1;
     }
+
+
+
+
+
 
 
     method contents {
@@ -100,7 +206,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.03000101
+version 0.03000102
 
 =head1 SYNOPSIS
 
@@ -207,7 +313,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric.
+This software is copyright (c) 2014 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

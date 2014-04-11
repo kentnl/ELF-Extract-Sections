@@ -2,18 +2,53 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections;
-BEGIN {
-  $ELF::Extract::Sections::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $ELF::Extract::Sections::VERSION = '0.03000101';
-}
-
+$ELF::Extract::Sections::VERSION = '0.03000102';
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
 use MooseX::Declare;
 
 class ELF::Extract::Sections with MooseX::Log::Log4perl {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     use MooseX::Has::Sugar 0.0300;
@@ -26,13 +61,42 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
+
+
+
+
+
+
+
     has 'file' => ( isa => File, ro, required, coerce, );
+
+
+
+
+
 
 
     has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
 
+
+
+
+
+
     has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -43,12 +107,51 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     method sorted_sections (  FilterField :$field!, Bool :$descending? ) {
         my $m = 1;
         $m = 0 - 1 if ($descending);
         return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) }
               values %{ $self->sections } ];
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -64,10 +167,26 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
+
+
+
+
+
+
+
+
     has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
 
 
+
+
+
+
+
     has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
+
+
+
 
 
     method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
@@ -76,6 +195,11 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         $message .= '>' . $error;
         $self->log->logconfess($message);
     }
+
+
+
+
+
 
 
     method _build__scanner_package {
@@ -88,10 +212,24 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     }
 
 
+
+
+
+
+
     method _build__scanner_instance {
         my $instance = $self->_scanner_package->new();
         return $instance;
     }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -105,12 +243,27 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     }
 
 
+
+
+
+
+
+
+
     method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
         if ( exists $stash->{$offset} ) {
             $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
         }
         $stash->{$offset} = $header;
     }
+
+
+
+
+
+
+
+
 
 
     method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
@@ -122,6 +275,12 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
             source => $file,
         );
     }
+
+
+
+
+
+
 
 
     method _build_section_table ( HashRef $ob! ) {
@@ -140,6 +299,13 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
     }
 
 
+
+
+
+
+
+
+
     method _scan_guess_size {
                               # HACK: Temporary hack around rt#67210
         scalar $self->_scanner_instance->open_file( file => $self->file );
@@ -151,6 +317,12 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
         }
         return $self->_build_section_table( \%offsets );
     }
+
+
+
+
+
+
 
 
     method _scan_with_size {
@@ -181,7 +353,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.03000101
+version 0.03000102
 
 =head1 SYNOPSIS
 
@@ -363,7 +535,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric.
+This software is copyright (c) 2014 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
