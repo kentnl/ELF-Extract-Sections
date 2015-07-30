@@ -18,13 +18,14 @@ Revision history for {{$dist->name}}
  [03 Internals Overhaul]
  - MooseX::Declare is too pesky to use with perltidy (even sweetened)
  - So everything has been entirely rewritten in pure Moose with simple type checks.
+ - Class::Load has been replaced with Module::Runtime
 
  [Dependencies::Stats]
  - Dependencies changed since 0.03000101, see misc/*.deps* for details
  - build: -1
  - configure: +3 -1 (recommends: +1)
  - develop: +55 -4 (recommends: +1 -1, suggests: +1 ↑1)
- - runtime: +2 -1 (recommends: +1)
+ - runtime: +3 -2 (recommends: +1)
  - test: +4 ↑1 ↓1 -2 (recommends: +4)
 
 0.03000101 2013-05-07T08:56:28Z
