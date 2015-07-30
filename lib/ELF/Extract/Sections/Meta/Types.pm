@@ -1,23 +1,22 @@
+use 5.006;
 use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Types;
-BEGIN {
-  $ELF::Extract::Sections::Meta::Types::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $ELF::Extract::Sections::Meta::Types::VERSION = '0.03000101';
-}
 
 # ABSTRACT: Generic Type Constraints for E:E:S
 
-use MooseX::Types::Moose (':all');
+our $VERSION = '1.000000';
+
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
+use MooseX::Types::Moose (qw( Object ));
 use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
 
+## no critic (ProhibitCallsToUndeclaredSubs)
 subtype FilterField, as enum( [ 'name', 'offset', 'size', ] );
 
-subtype ElfSection, as Object,
-  where { $_->isa('ELF::Extract::Sections::Section') };
+subtype ElfSection, as Object, where { $_->isa('ELF::Extract::Sections::Section') };
 
 1;
 
@@ -25,13 +24,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 0.03000101
+version 1.000000
 
 =head1 Types
 
@@ -49,7 +50,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric.
+This software is copyright (c) 2015 by Kent Fredric <kentfredric@gmail.com>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

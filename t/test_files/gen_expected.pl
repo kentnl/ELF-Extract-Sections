@@ -11,8 +11,7 @@ use lib "$FindBin::Bin/../../lib";
 use ELF::Extract::Sections;
 
 my $exclude = Path::Iterator::Rule->new->name( "*.pl", "*.yaml" );
-my $iter =
-  Path::Iterator::Rule->new->file->not($exclude)->iter("$FindBin::Bin");
+my $iter = Path::Iterator::Rule->new->file->not($exclude)->iter("$FindBin::Bin");
 while ( my $file = $iter->() ) {
     my $f        = path($file);
     my $yamlfile = path( $file . ".yaml" );

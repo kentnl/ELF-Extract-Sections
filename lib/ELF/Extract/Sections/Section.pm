@@ -1,92 +1,252 @@
+use 5.006;
 use strict;
 use warnings;
 
 package ELF::Extract::Sections::Section;
-BEGIN {
-  $ELF::Extract::Sections::Section::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $ELF::Extract::Sections::Section::VERSION = '0.03000101';
-}
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
-use MooseX::Declare;
+our $VERSION = '1.000000';
 
-class ELF::Extract::Sections::Section {
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-
-
-    use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose                ( ':all', );
-    use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use MooseX::Types::Path::Tiny           ( 'File', );
-
-    use overload '""' => \&to_string;
-
-
-
-    has source => ( isa => File, ro, required, coerce, );
-
-
-    has name => ( isa => Str, ro, required );
-
-
-    has offset => ( isa => Int, ro, required );
-
-
-    has size => ( isa => Int, ro, required );
+use Moose;
 
 
 
 
-    method to_string ( Any $other?, Bool $polarity? ) {
-        return sprintf
-          q{[ Section %s of size %s in %s @ %x to %x ]},
-          $self->name, $self->size, $self->source, $self->offset,
-          $self->offset + $self->size,
-          ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use Carp qw( croak );
+use MooseX::Has::Sugar 0.0300;
+use MooseX::Types::Moose                ( ':all', );
+use ELF::Extract::Sections::Meta::Types ( ':all', );
+use MooseX::Types::Path::Tiny           ( 'File', );
+
+use overload '""' => \&to_string;
+
+sub _argument {
+    my ( $args, $number, $type, %flags ) = @_;
+    return if not $flags{required} and @{$args} < $number + 1;
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+
+    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->[$number] ) and return $args->[$number];
+    }
+    else {
+        my $value = $type->coerce( $args->[$number] );
+        return $value if $value;
+    }
+    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
+
+}
+
+sub _parameter {
+    my ( $args, $name, $type, %flags ) = @_;
+    return if not $flags{required} and not exists $args->{$name};
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->{$name} ) and return delete $args->{$name};
+    }
+    else {
+        my $value = $type->coerce( delete $args->{$name} );
+        return $value if $value;
+    }
+    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+}
+
+
+
+
+
+
+
+
+
+
+
+has source => ( isa => File, ro, required, coerce, );
+
+
+
+
+
+
+
+has name => ( isa => Str, ro, required );
+
+
+
+
+
+
+
+has offset => ( isa => Int, ro, required );
+
+
+
+
+
+
+
+has size => ( isa => Int, ro, required );
+
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sub to_string {
+    my ( $self, ) = @_;
+    return sprintf
+      q{[ Section %s of size %s in %s @ %x to %x ]},
+      $self->name, $self->size, $self->source, $self->offset,
+      $self->offset + $self->size,
+      ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sub compare {
+    my ( $self, %args ) = @_;
+    my $other = _parameter( \%args, 'other', class_type('ELF::Extract::Sections::Section'), required => 1 );
+    my $field = _parameter( \%args, 'field', FilterField, required => 1 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
     }
 
-
-    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
-        if ( $field eq 'name' ) {
-            return ( $self->name cmp $other->name );
-        }
-        if ( $field eq 'offset' ) {
-            return ( $self->offset <=> $other->offset );
-        }
-        if ( $field eq 'size' ) {
-            return ( $self->size <=> $other->size );
-        }
-        return;
+    if ( 'name' eq $field ) {
+        return ( $self->name cmp $other->name );
     }
-
-
-    method write_to ( File :$file does coerce  ) {
-        my $fh = $self->source->openr;
-        seek $fh, $self->offset, 0;
-        my $output     = $file->openw;
-        my $chunksize  = 1024;
-        my $bytes_left = $self->size;
-        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read $fh, my $buffer, $chunk ) {
-            print {$output} $buffer or Carp::croak("Write to $file failed");
-            $bytes_left -= $chunksize;
-            $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        }
-        return 1;
+    if ( 'offset' eq $field ) {
+        return ( $self->offset <=> $other->offset );
     }
-
-
-    method contents {
-        my $fh = $self->source->openr;
-        seek $fh, $self->offset, 0;
-        my $b;
-        read $fh, $b, $self->size;
-        return $b;
+    if ( 'size' eq $field ) {
+        return ( $self->size <=> $other->size );
     }
-};
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sub write_to {
+    my ( $self, %args ) = @_;
+    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
+    my $fh = $self->source->openr;
+    seek $fh, $self->offset, 0;
+    my $output     = $file->openw;
+    my $chunksize  = 1024;
+    my $bytes_left = $self->size;
+    my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+    while ( read $fh, my $buffer, $chunk ) {
+        print {$output} $buffer or Carp::croak("Write to $file failed");
+        $bytes_left -= $chunksize;
+        $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+    }
+    return 1;
+}
+
+
+
+
+
+
+
+sub contents {
+    my ($self) = @_;
+    my $fh = $self->source->openr;
+    seek $fh, $self->offset, 0;
+    my $b;
+    read $fh, $b, $self->size;
+    return $b;
+}
 
 1;
 
@@ -94,13 +254,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 ELF::Extract::Sections::Section - An Objective reference to a section in an ELF file.
 
 =head1 VERSION
 
-version 0.03000101
+version 1.000000
 
 =head1 SYNOPSIS
 
@@ -207,7 +369,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric.
+This software is copyright (c) 2015 by Kent Fredric <kentfredric@gmail.com>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
