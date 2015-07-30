@@ -5,9 +5,9 @@ Revision history for {{$dist->name}}
  - Dependencies changed since 0.03000101, see misc/*.deps* for details
  - build: -1
  - configure: +3 -1 (recommends: +1)
- - develop: +45 -2 (recommends: +1 -1, suggests: +1 -1)
- - runtime: +2
- - test: +4 ↑1 ↓1 -2 (recommends: +3)
+ - develop: +56 -2 (recommends: +1 -1, suggests: +1 ↑1)
+ - runtime: +2 (recommends: +1)
+ - test: +4 ↑1 ↓1 -2 (recommends: +4)
 
 0.03000101 2013-05-07T08:56:28Z
  [!Major Changes]
