@@ -7,9 +7,8 @@ package ELF::Extract::Sections::Section;
 
 # AUTHORITY
 
-use MooseX::Declare;
-
-class ELF::Extract::Sections::Section {
+use Moose;
+use MooseX::Method::Signatures;
 
 =head1 DESCRIPTION
 
@@ -48,12 +47,12 @@ but generated objects are returned to you for you to  deal with
 
 =cut
 
-    use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose                ( ':all', );
-    use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use MooseX::Types::Path::Tiny           ( 'File', );
+use MooseX::Has::Sugar 0.0300;
+use MooseX::Types::Moose                ( ':all', );
+use ELF::Extract::Sections::Meta::Types ( ':all', );
+use MooseX::Types::Path::Tiny           ( 'File', );
 
-    use overload '""' => \&to_string;
+use overload '""' => \&to_string;
 
 =head1 PUBLIC ATTRIBUTES
 
@@ -65,7 +64,7 @@ C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the f
 
 =cut
 
-    has source => ( isa => File, ro, required, coerce, );
+has source => ( isa => File, ro, required, coerce, );
 
 =head2 name
 
@@ -73,7 +72,7 @@ C<Str>: The ELF Section Name
 
 =cut
 
-    has name => ( isa => Str, ro, required );
+has name => ( isa => Str, ro, required );
 
 =head2 offset
 
@@ -81,7 +80,7 @@ C<Int>: Position in bytes relative to the start of the file.
 
 =cut
 
-    has offset => ( isa => Int, ro, required );
+has offset => ( isa => Int, ro, required );
 
 =head2 size
 
@@ -89,7 +88,7 @@ C<Int>: The ELF Section Size
 
 =cut
 
-    has size => ( isa => Int, ro, required );
+has size => ( isa => Int, ro, required );
 
 =head1 PUBLIC METHODS
 
@@ -111,13 +110,13 @@ returns C<Str> description of the object
 
 =cut
 
-    method to_string ( Any $other?, Bool $polarity? ) {
-        return sprintf
-          q{[ Section %s of size %s in %s @ %x to %x ]},
-          $self->name, $self->size, $self->source, $self->offset,
-          $self->offset + $self->size,
-          ;
-    }
+method to_string ( Any $other?, Bool $polarity? ) {
+    return sprintf
+      q{[ Section %s of size %s in %s @ %x to %x ]},
+      $self->name, $self->size, $self->source, $self->offset,
+      $self->offset + $self->size,
+      ;
+}
 
 =head2 -> compare ( other => $other, field => $field )
 
@@ -139,18 +138,18 @@ returns C<Int> of comparison result, between -1 and 1
 
 =cut
 
-    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
-        if ( $field eq 'name' ) {
-            return ( $self->name cmp $other->name );
-        }
-        if ( $field eq 'offset' ) {
-            return ( $self->offset <=> $other->offset );
-        }
-        if ( $field eq 'size' ) {
-            return ( $self->size <=> $other->size );
-        }
-        return;
+method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
+    if ( $field eq 'name' ) {
+        return ( $self->name cmp $other->name );
     }
+    if ( $field eq 'offset' ) {
+        return ( $self->offset <=> $other->offset );
+    }
+    if ( $field eq 'size' ) {
+        return ( $self->size <=> $other->size );
+    }
+    return;
+}
 
 =head2 -> write_to ( file => $file )
 
@@ -166,20 +165,20 @@ C<Str>|C<Path::Tiny>: File target to write section contents to.
 
 =cut
 
-    method write_to ( File :$file does coerce  ) {
-        my $fh = $self->source->openr;
-        seek $fh, $self->offset, 0;
-        my $output     = $file->openw;
-        my $chunksize  = 1024;
-        my $bytes_left = $self->size;
-        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read $fh, my $buffer, $chunk ) {
-            print {$output} $buffer or Carp::croak("Write to $file failed");
-            $bytes_left -= $chunksize;
-            $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        }
-        return 1;
+method write_to ( File :$file does coerce  ) {
+    my $fh = $self->source->openr;
+    seek $fh, $self->offset, 0;
+    my $output     = $file->openw;
+    my $chunksize  = 1024;
+    my $bytes_left = $self->size;
+    my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+    while ( read $fh, my $buffer, $chunk ) {
+        print {$output} $buffer or Carp::croak("Write to $file failed");
+        $bytes_left -= $chunksize;
+        $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
     }
+    return 1;
+}
 
 =head2 -> contents
 
@@ -187,14 +186,13 @@ returns C<Str> of binary data read out of file.
 
 =cut
 
-    method contents {
-        my $fh = $self->source->openr;
-        seek $fh, $self->offset, 0;
-        my $b;
-        read $fh, $b, $self->size;
-        return $b;
-    }
-};
+method contents {
+    my $fh = $self->source->openr;
+    seek $fh, $self->offset, 0;
+    my $b;
+    read $fh, $b, $self->size;
+    return $b;
+}
 
 1;
 
