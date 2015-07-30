@@ -166,11 +166,11 @@ stop_words = HashRef ArrayRef Str Objdump perl FILENAME FilterField ElfSection E
 
 [-Editor::RequireEmacsFileVariables]
 
-[-ErrorHandling::RequireCarping]
+[ErrorHandling::RequireCarping]
 
 [ErrorHandling::RequireCheckingReturnValueOfEval]
 
-[ErrorHandling::RequireUseOfExceptions]
+[-ErrorHandling::RequireUseOfExceptions]
 
 [InputOutput::ProhibitBacktickOperators]
 
