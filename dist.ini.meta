@@ -22,8 +22,6 @@ srcreadme        = mkdn
 ; version_rel_time_zone = Pacific/Auckland
 twitter_hash_tags = #perl #cpan
 
-[MetaProvides::Class]
-
 [CheckBin]
 command = objdump
 
@@ -34,18 +32,11 @@ filename = t/test_files/libreadline.so.6.0.debug
 filename = t/test_files/libz.so
 filename = t/test_files/libz.so.1.2.3.debug
 
-
-
-[Prereqs / DevelopRequires]
-Perl::Tidy::Sweetened      = 0.20
-Dist::Zilla::Plugin::PerlTidy = 0.13
-
 [Prereqs / RuntimeRequires]
 perl                       = 5.010000
 Log::Log4perl              = 1.21
 Moose                      = 0.76
 ;Moose::Role                = 0
-MooseX::Declare            = 0.20
 ;MooseX::Has::Sugar         = 0.0300
 MooseX::Log::Log4perl      = 0.31
 MooseX::Types              = 0.10

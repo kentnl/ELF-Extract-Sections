@@ -55,12 +55,10 @@
             "Dist::Zilla::Plugin::MetaConfig" : "0",
             "Dist::Zilla::Plugin::MetaData::BuiltWith" : "1.004000",
             "Dist::Zilla::Plugin::MetaJSON" : "0",
-            "Dist::Zilla::Plugin::MetaProvides::Class" : "0",
             "Dist::Zilla::Plugin::MetaProvides::Package" : "1.14000001",
             "Dist::Zilla::Plugin::MetaTests" : "0",
             "Dist::Zilla::Plugin::MetaYAML::Minimal" : "0",
             "Dist::Zilla::Plugin::MinimumPerl" : "0",
-            "Dist::Zilla::Plugin::PerlTidy" : "0.13",
             "Dist::Zilla::Plugin::PodCoverageTests" : "0",
             "Dist::Zilla::Plugin::PodSyntaxTests" : "0",
             "Dist::Zilla::Plugin::PodWeaver" : "0",
@@ -83,7 +81,6 @@
             "Dist::Zilla::Plugin::TestRelease" : "0",
             "Dist::Zilla::Plugin::Twitter" : "0",
             "Dist::Zilla::Plugin::UploadToCPAN" : "0",
-            "Perl::Tidy::Sweetened" : "0.20",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -108,7 +105,6 @@
             "Log::Log4perl" : "1.21",
             "Moose" : "0.76",
             "Moose::Role" : "0",
-            "MooseX::Declare" : "0.20",
             "MooseX::Has::Sugar" : "0.0300",
             "MooseX::Log::Log4perl" : "0.31",
             "MooseX::Types" : "0.10",
@@ -843,18 +839,6 @@
             "version" : "5.037"
          },
          {
-            "class" : "Dist::Zilla::Plugin::MetaProvides::Class",
-            "config" : {
-               "Dist::Zilla::Role::MetaProvider::Provider" : {
-                  "inherit_missing" : "1",
-                  "inherit_version" : "1",
-                  "meta_noindex" : "1"
-               }
-            },
-            "name" : "MetaProvides::Class",
-            "version" : "2.001000"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::CheckBin",
             "config" : {
                "Dist::Zilla::Plugin::CheckBin" : {
@@ -869,17 +853,6 @@
          {
             "class" : "Dist::Zilla::Plugin::Encoding",
             "name" : "BinaryFiles",
-            "version" : "5.037"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Prereqs",
-            "config" : {
-               "Dist::Zilla::Plugin::Prereqs" : {
-                  "phase" : "develop",
-                  "type" : "requires"
-               }
-            },
-            "name" : "DevelopRequires",
             "version" : "5.037"
          },
          {
