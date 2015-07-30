@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -10,7 +11,6 @@ our $VERSION = '1.000000';
 # AUTHORITY
 
 use Moose;
-use MooseX::Method::Signatures;
 
 =head1 DESCRIPTION
 
@@ -49,12 +49,47 @@ but generated objects are returned to you for you to  deal with
 
 =cut
 
+use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
 
 use overload '""' => \&to_string;
+
+sub _argument {
+    my ( $args, $number, $type, %flags ) = @_;
+    return if not $flags{required} and @{$args} < $number + 1;
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+
+    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->[$number] ) and return $args->[$number];
+    }
+    else {
+        my $value = $type->coerce( $args->[$number] );
+        return $value if $value;
+    }
+    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
+
+}
+
+sub _parameter {
+    my ( $args, $name, $type, %flags ) = @_;
+    return if not $flags{required} and not exists $args->{$name};
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->{$name} ) and return delete $args->{$name};
+    }
+    else {
+        my $value = $type->coerce( delete $args->{$name} );
+        return $value if $value;
+    }
+    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+}
 
 =head1 PUBLIC ATTRIBUTES
 
@@ -92,6 +127,9 @@ C<Int>: The ELF Section Size
 
 has size => ( isa => Int, ro, required );
 
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
 =head1 PUBLIC METHODS
 
 =cut
@@ -112,7 +150,8 @@ returns C<Str> description of the object
 
 =cut
 
-method to_string ( Any $other?, Bool $polarity? ) {
+sub to_string {
+    my ( $self, ) = @_;
     return sprintf
       q{[ Section %s of size %s in %s @ %x to %x ]},
       $self->name, $self->size, $self->source, $self->offset,
@@ -140,14 +179,21 @@ returns C<Int> of comparison result, between -1 and 1
 
 =cut
 
-method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
-    if ( $field eq 'name' ) {
+sub compare {
+    my ( $self, %args ) = @_;
+    my $other = _parameter( \%args, 'other', class_type('ELF::Extract::Sections::Section'), required => 1 );
+    my $field = _parameter( \%args, 'field', FilterField, required => 1 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
+
+    if ( 'name' eq $field ) {
         return ( $self->name cmp $other->name );
     }
-    if ( $field eq 'offset' ) {
+    if ( 'offset' eq $field ) {
         return ( $self->offset <=> $other->offset );
     }
-    if ( $field eq 'size' ) {
+    if ( 'size' eq $field ) {
         return ( $self->size <=> $other->size );
     }
     return;
@@ -167,7 +213,12 @@ C<Str>|C<Path::Tiny>: File target to write section contents to.
 
 =cut
 
-method write_to ( File :$file does coerce  ) {
+sub write_to {
+    my ( $self, %args ) = @_;
+    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
     my $fh = $self->source->openr;
     seek $fh, $self->offset, 0;
     my $output     = $file->openw;
@@ -188,7 +239,8 @@ returns C<Str> of binary data read out of file.
 
 =cut
 
-method contents {
+sub contents {
+    my ($self) = @_;
     my $fh = $self->source->openr;
     seek $fh, $self->offset, 0;
     my $b;
