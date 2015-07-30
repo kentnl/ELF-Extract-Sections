@@ -329,6 +329,7 @@ sub _stash_record {
         $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
     }
     $stash->{$offset} = $header;
+    return;
 }
 
 
@@ -342,25 +343,25 @@ sub _stash_record {
 
 sub _build_section_section {
     my ( $self, @args ) = @_;
-    @args < 5 or croak "Too many arguments";
+    @args < 5 or croak 'Too many arguments';
     my $stashName = do {
-        @args >= 1 or croak "Argument 0 of type Str was not specified";
-        is_Str( $args[0] ) or croak "Argument 0 was not of type Str";
+        @args >= 1 or croak 'Argument 0 of type Str was not specified';
+        is_Str( $args[0] ) or croak 'Argument 0 was not of type Str';
         $args[0];
     };
     my $start = do {
-        @args >= 2 or croak "Argument 1 of type Int was not specified";
-        is_Int( $args[1] ) or croak "Argument 1 was not of type Int";
+        @args >= 2 or croak 'Argument 1 of type Int was not specified';
+        is_Int( $args[1] ) or croak 'Argument 1 was not of type Int';
         $args[1];
     };
     my $stop = do {
-        @args >= 3 or croak "Argument 2 of type Int was not specified";
-        is_Int( $args[2] ) or croak "Argument 2 was not of type Int";
+        @args >= 3 or croak 'Argument 2 of type Int was not specified';
+        is_Int( $args[2] ) or croak 'Argument 2 was not of type Int';
         $args[2];
     };
     my $file = do {
-        @args >= 4 or croak "Argument 3 of type File was not specified";
-        is_File( $args[3] ) or croak "Argument 3 was not of type File";
+        @args >= 4 or croak 'Argument 3 of type File was not specified';
+        is_File( $args[3] ) or croak 'Argument 3 was not of type File';
         $args[3];
     };
 
