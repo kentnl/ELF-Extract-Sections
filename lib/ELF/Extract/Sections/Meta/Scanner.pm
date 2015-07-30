@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -13,6 +14,8 @@ use Moose::Role qw( with requires );
 with 'MooseX::Log::Log4perl';
 
 requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
+
+no Moose::Role;
 
 1;
 

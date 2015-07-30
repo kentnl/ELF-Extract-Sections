@@ -9,8 +9,8 @@ our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-use MooseX::Types::Moose (':all');
-use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
+use MooseX::Types::Moose (qw( Object ));
+use MooseX::Types qw( subtype enum ) -declare => [ 'FilterField', 'ElfSection' ];
 
 subtype FilterField, as enum( [ 'name', 'offset', 'size', ] );
 
