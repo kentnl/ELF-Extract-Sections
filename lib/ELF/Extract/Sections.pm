@@ -2,8 +2,10 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections;
-$ELF::Extract::Sections::VERSION = '0.03000102';
+
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
+
+our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -344,7 +346,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 0.03000102
+version 1.000000
 
 =head1 SYNOPSIS
 

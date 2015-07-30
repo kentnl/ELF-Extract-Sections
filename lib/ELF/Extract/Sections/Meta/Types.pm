@@ -2,8 +2,10 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Types;
-$ELF::Extract::Sections::Meta::Types::VERSION = '0.03000102';
+
 # ABSTRACT: Generic Type Constraints for E:E:S
+
+our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -28,7 +30,7 @@ ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 0.03000102
+version 1.000000
 
 =head1 Types
 

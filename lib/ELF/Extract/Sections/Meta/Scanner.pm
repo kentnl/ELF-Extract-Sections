@@ -2,8 +2,10 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Meta::Scanner;
-$ELF::Extract::Sections::Meta::Scanner::VERSION = '0.03000102';
+
 # ABSTRACT: Interface Contract for Scanners
+
+our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -26,7 +28,7 @@ ELF::Extract::Sections::Meta::Scanner - Interface Contract for Scanners
 
 =head1 VERSION
 
-version 0.03000102
+version 1.000000
 
 =head1 Required Methods for Applying Roles
 

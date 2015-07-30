@@ -2,8 +2,10 @@ use strict;
 use warnings;
 
 package ELF::Extract::Sections::Section;
-$ELF::Extract::Sections::Section::VERSION = '0.03000102';
+
 # ABSTRACT:  An Objective reference to a section in an ELF file.
+
+our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -208,7 +210,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 0.03000102
+version 1.000000
 
 =head1 SYNOPSIS
 
