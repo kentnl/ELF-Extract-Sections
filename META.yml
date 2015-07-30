@@ -44,8 +44,8 @@ recommends:
   Moose: '2.000'
 requires:
   Carp: '0'
-  Class::Load: '0'
   Log::Log4perl: '1.21'
+  Module::Runtime: '0'
   Moose: '0.76'
   Moose::Role: '0'
   MooseX::Has::Sugar: '0.0300'

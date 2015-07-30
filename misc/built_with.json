@@ -2,7 +2,6 @@
    "modules" : {
       "CPAN::Meta" : "2.150005",
       "Carp" : "1.36",
-      "Class::Load" : "0.23",
       "Devel::CheckBin" : "0.03",
       "Dist::Zilla" : "5.037",
       "Dist::Zilla::App::Command::bakeini" : "0.002005",
@@ -62,6 +61,7 @@
       "File::Spec" : "3.56",
       "FindBin" : "1.51",
       "Log::Log4perl" : "1.46",
+      "Module::Runtime" : "0.014",
       "Moose" : "2.1500",
       "Moose::Role" : "2.1500",
       "MooseX::Has::Sugar" : "1.000004",

@@ -39,7 +39,6 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::Plugin::MetaConfig
  - Dist::Zilla::Plugin::MetaData::BuiltWith 1.004000
  - Dist::Zilla::Plugin::MetaJSON
- - Dist::Zilla::Plugin::MetaProvides::Class
  - Dist::Zilla::Plugin::MetaProvides::Package 1.14000001
  - Dist::Zilla::Plugin::MetaTests
  - Dist::Zilla::Plugin::MetaYAML::Minimal
@@ -77,8 +76,8 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Moose 2.000
 
  [Added / runtime requires]
+ - Carp
  - Moose::Role
- - MooseX::Method::Signatures
 
  [Added / test recommends]
  - CPAN::Meta 2.120900
@@ -109,8 +108,13 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite v1.3.0
 
  [Removed / develop requires]
+ - Dist::Zilla::Plugin::PerlTidy 0.13
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
+ - Perl::Tidy::Sweetened 0.20
  - version 0.9901
+
+ [Removed / runtime requires]
+ - MooseX::Declare 0.20
 
  [Removed / test requires]
  - File::Find

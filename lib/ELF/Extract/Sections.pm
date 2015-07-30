@@ -60,7 +60,7 @@ use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
-use Class::Load                         ( 'try_load_class', );
+use Module::Runtime                     ( 'require_module', );
 
 require ELF::Extract::Sections::Section;
 
@@ -260,9 +260,9 @@ sub _error_scanner_missing {
 sub _build__scanner_package {
     my ($self) = @_;
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    my ( $success, $error ) = try_load_class($pkg);
-    if ( not $success ) {
-        $self->_error_scanner_missing( $self->scanner, $pkg, $error );
+    local $@;
+    if ( not eval { require_module($pkg); 1 } ) {
+        return $self->_error_scanner_missing( $self->scanner, $pkg, $@ );
     }
     return $pkg;
 }

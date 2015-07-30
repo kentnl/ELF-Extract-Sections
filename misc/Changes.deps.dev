@@ -31,7 +31,6 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::Plugin::MetaConfig
  - Dist::Zilla::Plugin::MetaData::BuiltWith 1.004000
  - Dist::Zilla::Plugin::MetaJSON
- - Dist::Zilla::Plugin::MetaProvides::Class
  - Dist::Zilla::Plugin::MetaProvides::Package 1.14000001
  - Dist::Zilla::Plugin::MetaTests
  - Dist::Zilla::Plugin::MetaYAML::Minimal
@@ -72,7 +71,9 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite v1.3.0
 
  [Removed / develop requires]
+ - Dist::Zilla::Plugin::PerlTidy 0.13
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
+ - Perl::Tidy::Sweetened 0.20
  - version 0.9901
 
 0.03000101 2013-05-07T08:56:28Z
