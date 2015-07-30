@@ -9,14 +9,14 @@ use utf8;
 use Carp qw(croak);
 
 sub _git_config {
-  my $key = shift;
-  chomp( my $value = `git config --get $key` );
-  croak "Unknown $key" unless $value;
-  return $value;
+    my $key = shift;
+    chomp( my $value = `git config --get $key` );
+    croak "Unknown $key" unless $value;
+    return $value;
 }
 
 if ( not @ARGV == 2 ) {
-  die "$0 Repo-Name-Here \"Some Description\"";
+    die "$0 Repo-Name-Here \"Some Description\"";
 }
 
 my $github_user  = _git_config('github.user');
@@ -28,10 +28,10 @@ my $reponame = "git\@github.com:" . $github_user . "/" . $ARGV[0] . ".git";
 print "Creating $reponame \n";
 
 my $rp = $gh->repos->create(
-  {
-    name        => $ARGV[0],
-    description => $ARGV[1],
-  }
+    {
+        name        => $ARGV[0],
+        description => $ARGV[1],
+    }
 );
 
 system( 'git', 'remote', 'add', 'origin', $reponame );

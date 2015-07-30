@@ -12,16 +12,16 @@ my $template = find_dev('./')->child('.travis-template.yml');
 my $target   = find_dev('./')->child('.travis.yml');
 
 if ( -f -e $template ) {
-  require YAML::Loader;
-  my $loader = YAML::Loader->new();
-  $hashref = $loader->load( $template->slurp );
+    require YAML::Loader;
+    my $loader = YAML::Loader->new();
+    $hashref = $loader->load( $template->slurp );
 }
 
 if ( not exists $hashref->{language} ) {
-  $hashref->{language} = 'perl';
+    $hashref->{language} = 'perl';
 }
 if ( not exists $hashref->{perl} ) {
-  $hashref->{perl} = [ '5.18', '5.19' ];
+    $hashref->{perl} = [ '5.18', '5.19' ];
 }
 
 use Data::Dump qw(pp);
