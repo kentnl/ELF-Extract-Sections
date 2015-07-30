@@ -59,7 +59,7 @@ requires:
   strict: '0'
   warnings: '0'
 resources:
-  bugtracker: https://github.com/kentfredric/ELF-Extract-Sections/issues
-  homepage: https://github.com/kentfredric/ELF-Extract-Sections
-  repository: https://github.com/kentfredric/ELF-Extract-Sections.git
+  bugtracker: https://github.com/kentnl/ELF-Extract-Sections/issues
+  homepage: https://github.com/kentnl/ELF-Extract-Sections
+  repository: https://github.com/kentnl/ELF-Extract-Sections.git
 version: '0.03000102'

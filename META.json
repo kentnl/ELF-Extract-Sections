@@ -166,13 +166,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/kentfredric/ELF-Extract-Sections/issues"
+         "web" : "https://github.com/kentnl/ELF-Extract-Sections/issues"
       },
-      "homepage" : "https://github.com/kentfredric/ELF-Extract-Sections",
+      "homepage" : "https://github.com/kentnl/ELF-Extract-Sections",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/kentfredric/ELF-Extract-Sections.git",
-         "web" : "https://github.com/kentfredric/ELF-Extract-Sections"
+         "url" : "https://github.com/kentnl/ELF-Extract-Sections.git",
+         "web" : "https://github.com/kentnl/ELF-Extract-Sections"
       }
    },
    "version" : "0.03000102",
