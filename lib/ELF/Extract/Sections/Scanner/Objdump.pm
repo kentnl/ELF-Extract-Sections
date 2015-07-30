@@ -1,15 +1,17 @@
+use 5.010;    # $+{}
 use strict;
 use warnings;
 
 package ELF::Extract::Sections::Scanner::Objdump;
 
-# ABSTRACT: An C<objdump> based section scanner.
+# ABSTRACT: An objdump based section scanner.
 
 our $VERSION = '1.000000';
 
 # AUTHORITY
 
 use Moose qw( with has );
+with 'ELF::Extract::Sections::Meta::Scanner';
 
 =head1 SYNOPSIS
 
@@ -45,8 +47,8 @@ L<MooseX::Has::Sugar>
 
 =cut
 
+use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
-use MooseX::Method::Signatures;
 
 =head2 MooseX::Types::Moose
 
@@ -80,7 +82,46 @@ L<ELF::Extract::Sections::Meta::Scanner/open_file>
 
 =cut
 
-method open_file ( File :$file! ) returns (Bool) {
+sub _argument {
+    my ( $args, $number, $type, %flags ) = @_;
+    return if not $flags{required} and @{$args} < $number + 1;
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+
+    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->[$number] ) and return $args->[$number];
+    }
+    else {
+        my $value = $type->coerce( $args->[$number] );
+        return $value if $value;
+    }
+    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
+
+}
+
+sub _parameter {
+    my ( $args, $name, $type, %flags ) = @_;
+    return if not $flags{required} and not exists $args->{$name};
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->{$name} ) and return delete $args->{$name};
+    }
+    else {
+        my $value = $type->coerce( delete $args->{$name} );
+        return $value if $value;
+    }
+    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+}
+
+sub open_file {
+    my ( $self, %args ) = @_;
+    my $file = _parameter( \%args, 'file', File, required => 1 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
     $self->log->debug("Opening $file");
     $self->_file($file);
     $self->_filehandle( $self->_objdump );
@@ -95,9 +136,10 @@ L<ELF::Extract::Sections::Meta::Scanner/next_section>
 
 =cut
 
-method next_section returns (Bool) {
-    my $re = $self->_section_header_identifier;
-    my $fh = $self->_filehandle;
+sub next_section {
+    my ($self) = @_;
+    my $re     = $self->_section_header_identifier;
+    my $fh     = $self->_filehandle;
     while ( my $line = <$fh> ) {
         next if $line !~ $re;
         my ( $header, $offset ) = ( $+{header}, $+{offset} );
@@ -119,7 +161,8 @@ L<ELF::Extract::Sections::Meta::Scanner/section_offset>
 
 =cut
 
-method section_offset returns (Int|Undef) {
+sub section_offset {
+    my ($self) = @_;
     if ( not $self->_has_state ) {
         $self->log->logcroak('Invalid call to section_offset outside of file scan');
         return;
@@ -135,7 +178,8 @@ L<ELF::Extract::Sections::Meta::Scanner/section_size>
 
 =cut
 
-method section_size returns (Undef) {
+sub section_size {
+    my ($self) = @_;
     $self->log->logcroak('Can\'t perform section_size on this type of object.');
     return;
 }
@@ -148,7 +192,8 @@ L<ELF::Extract::Sections::Meta::Scanner/section_name>
 
 =cut
 
-method section_name returns (Str|Undef) {
+sub section_name {
+    my ($self) = @_;
     if ( not $self->_has_state ) {
         $self->log->logcroak('Invalid call to section_name outside of file scan');
         return;
@@ -164,7 +209,7 @@ L<ELF::Extract::Sections::Meta::Scanner/can_compute_size>
 
 =cut
 
-method can_compute_size returns (Bool) {
+sub can_compute_size {
     return 0;
 }
 
@@ -263,6 +308,8 @@ has _state => (
     predicate => '_has_state',
     clearer   => '_clear_state',
 );
+__PACKAGE__->meta->make_immutable;
+no Moose;
 
 =head1 PRIVATE ATTRIBUTE BUILDERS
 
@@ -276,7 +323,8 @@ L</_section_header_identifier>
 
 =cut
 
-method _build__section_header_identifier returns (RegexpRef) {
+sub _build__section_header_identifier {
+    my ($self) = @_;
     my $header = $self->_header_regex;
     my $offset = $self->_offset_regex;
 
@@ -293,15 +341,14 @@ Calls the system C<objdump> instance for the currently processing file.
 
 =cut
 
-method _objdump returns (FileHandle|Undef) {
+sub _objdump {
+    my ($self) = @_;
     if ( open my $fh, q{-|}, q{objdump}, qw( -D -F ), $self->_file->realpath->absolute ) {
         return $fh;
     }
     $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });
     return;
 }
-
-with "ELF::Extract::Sections::Meta::Scanner";
 
 1;
 
