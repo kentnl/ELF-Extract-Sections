@@ -6,7 +6,7 @@ package ELF::Extract::Sections;
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
-our $VERSION = '1.000000';
+our $VERSION = '1.000001';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -432,7 +432,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 1.000000
+version 1.000001
 
 =head1 SYNOPSIS
 
