@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -10,7 +11,7 @@ our $VERSION = '1.000000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose qw( with has );
-with "MooseX::Log::Log4perl";
+with 'MooseX::Log::Log4perl';
 
 
 
@@ -331,6 +332,8 @@ method _scan_with_size {
     }
     return \%datastash;
 }
+__PACKAGE__->meta->make_immutable;
+no Moose;
 
 1;
 
