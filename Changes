@@ -1,6 +1,6 @@
 Revision history for ELF-Extract-Sections
 
-1.000000 2015-07-30T16:15:57Z f75ab5c
+1.000000 2015-07-30T16:20:36Z 394a26f
  [!Major]
  - This release includes some respectably significant changes.
 
@@ -17,6 +17,7 @@ Revision history for ELF-Extract-Sections
  [03 Internals Overhaul]
  - MooseX::Declare is too pesky to use with perltidy (even sweetened)
  - So everything has been entirely rewritten in pure Moose with simple type checks.
+ - Class::Load has been replaced with Module::Runtime
 
  [Dependencies::Stats]
  - Dependencies changed since 0.03000101, see misc/*.deps* for details

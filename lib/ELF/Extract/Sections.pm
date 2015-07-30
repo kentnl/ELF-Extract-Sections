@@ -260,7 +260,7 @@ sub _error_scanner_missing {
 sub _build__scanner_package {
     my ($self) = @_;
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-    local $@;
+    local $@ = undef;
     if ( not eval { require_module($pkg); 1 } ) {
         return $self->_error_scanner_missing( $self->scanner, $pkg, $@ );
     }
