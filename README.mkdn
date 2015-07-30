@@ -174,7 +174,7 @@ To suppress this, just do
 
     use Log::Log4perl qw( :easy );
 
-I request however you __don't__ do that for modules intended to be consumed by others without good cause.
+I request however you **don't** do that for modules intended to be consumed by others without good cause.
 
 # AUTHOR
 
@@ -182,7 +182,7 @@ Kent Fredric <kentnl@cpan.org>
 
 # COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Kent Fredric.
+This software is copyright (c) 2015 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
