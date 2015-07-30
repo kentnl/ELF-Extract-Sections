@@ -58,7 +58,7 @@ with 'MooseX::Log::Log4perl';
 
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
-use MooseX::Types::Path::Tiny           ( 'File', 'is_File', );
+use MooseX::Types::Path::Tiny           ( 'File', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
 use Class::Load                         ( 'try_load_class', );
 
@@ -106,10 +106,11 @@ has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
 
 sub BUILD {
-    my ( $self, $args ) = @_;
+    my ( $self, ) = @_;
     if ( not $self->file->stat ) {
         $self->log->logconfess(q{File Specifed could not be found.});
     }
+    return;
 }
 
 
@@ -145,13 +146,13 @@ sub BUILD {
 sub sorted_sections {
     my ( $self, %args ) = @_;
     my $field = do {
-        exists $args{field} or croak "parameter 'field' of type FilterField was not specified";
-        is_FilterField( $args{field} ) or croak "parameter 'field' was not of type FilterField";
+        exists $args{field} or croak q[parameter 'field' of type FilterField was not specified];
+        is_FilterField( $args{field} ) or croak q[parameter 'field' was not of type FilterField];
         delete $args{field};
     };
     my $descending = do {
-        return undef if not exists $args{descending};
-        is_Bool( $args{descending} ) or croak "parameter 'descending' was not of type Bool";
+        return if not exists $args{descending};
+        is_Bool( $args{descending} ) or croak q[parameter 'descending' was not of type Bool];
         delete $args{descending};
     };
     if ( keys %args ) {
