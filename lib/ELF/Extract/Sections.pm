@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -10,7 +11,8 @@ our $VERSION = '1.000000';
 # AUTHORITY
 
 use Moose qw( with has );
-with "MooseX::Log::Log4perl";
+use Carp qw( croak );
+with 'MooseX::Log::Log4perl';
 
 =head1 CAVEATS
 
@@ -55,7 +57,6 @@ This code is written by a human, and like all human code, it sucks. There will b
 =cut
 
 use MooseX::Has::Sugar 0.0300;
-use MooseX::Method::Signatures;
 use MooseX::Types::Moose                ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
@@ -104,10 +105,12 @@ Creates A new Section Extractor object with the specified scanner
 
 =cut
 
-method BUILD ( $args ) {
+sub BUILD {
+    my ( $self, ) = @_;
     if ( not $self->file->stat ) {
         $self->log->logconfess(q{File Specifed could not be found.});
     }
+    return;
 }
 
 =head2 sorted_sections ( field => SORT_BY )
@@ -140,7 +143,47 @@ The Size of the section.
 
 =cut
 
-method sorted_sections (  FilterField :$field!, Bool :$descending? ) {
+sub _argument {
+    my ( $args, $number, $type, %flags ) = @_;
+    return if not $flags{required} and @{$args} < $number + 1;
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+
+    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->[$number] ) and return $args->[$number];
+    }
+    else {
+        my $value = $type->coerce( $args->[$number] );
+        return $value if $value;
+    }
+    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
+
+}
+
+sub _parameter {
+    my ( $args, $name, $type, %flags ) = @_;
+    return if not $flags{required} and not exists $args->{$name};
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
+    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->{$name} ) and return delete $args->{$name};
+    }
+    else {
+        my $value = $type->coerce( delete $args->{$name} );
+        return $value if $value;
+    }
+    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+}
+
+sub sorted_sections {
+    my ( $self, %args ) = @_;
+    my $field      = _parameter( \%args, 'field',      FilterField, required => 0 );
+    my $descending = _parameter( \%args, 'descending', Bool,        required => 0 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
     my $m = 1;
     $m = 0 - 1 if ($descending);
     return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
@@ -158,7 +201,8 @@ See L</sections>
 
 =cut
 
-method _build_sections {
+sub _build_sections {
+    my ($self) = @_;
     $self->log->debug('Building Section List');
     if ( $self->_scanner_instance->can_compute_size ) {
         return $self->_scan_with_size;
@@ -188,14 +232,23 @@ has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
 
 has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
 =head1 PRIVATE ATTRIBUTE BUILDERS
 
 =cut
 
-method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
+sub _error_scanner_missing {
+    my ( $self, @args ) = @_;
+    @args < 4 or croak 'Too many arguments';
+    my $scanner = _argument( \@args, 0, Str, required => 1 );
+    my $package = _argument( \@args, 1, Str, required => 1 );
+    my $error   = _argument( \@args, 2, Str, required => 1 );
     my $message = sprintf qq[The Scanner %s could not be found as %s\n.], $scanner, $package;
     $message .= '>' . $error;
     $self->log->logconfess($message);
+    return;
 }
 
 =head2 _build__scanner_package
@@ -204,7 +257,8 @@ Builds L</_scanner_package>
 
 =cut
 
-method _build__scanner_package {
+sub _build__scanner_package {
+    my ($self) = @_;
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
     my ( $success, $error ) = try_load_class($pkg);
     if ( not $success ) {
@@ -219,7 +273,8 @@ Builds L</_scanner_instance>
 
 =cut
 
-method _build__scanner_instance {
+sub _build__scanner_instance {
+    my ($self) = @_;
     my $instance = $self->_scanner_package->new();
     return $instance;
 }
@@ -234,11 +289,18 @@ method _build__scanner_instance {
 
 =cut
 
-method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+sub _warn_stash_collision {
+    my ( $self, @args ) = @_;
+    @args < 4 or croak 'Too many arguments';
+    my $stashname = _argument( \@args, 0, Str, required => 1 );
+    my $header    = _argument( \@args, 1, Str, required => 1 );
+    my $offset    = _argument( \@args, 2, Str, required => 1 );
+
     my $message = q[Warning, duplicate file offset reported by scanner.];
     $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname, $header, $offset;
     $message .= sprintf q[Assuming <%s> is empty and replacing it.], $stashname;
     $self->log->warn($message);
+    return;
 }
 
 =head2 _stash_record( HashRef, Str, Str )
@@ -249,11 +311,18 @@ method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
 
 =cut
 
-method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+sub _stash_record {
+    my ( $self, @args ) = @_;
+    @args < 4 or croak 'Too many arguments';
+    my $stash  = _argument( \@args, 0, HashRef, required => 1 );
+    my $header = _argument( \@args, 1, Str,     required => 1 );
+    my $offset = _argument( \@args, 2, Str,     required => 1 );
+
     if ( exists $stash->{$offset} ) {
         $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
     }
     $stash->{$offset} = $header;
+    return;
 }
 
 =head2 _build_section_section( Str, Int, Int, File )
@@ -265,7 +334,14 @@ method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
 
 =cut
 
-method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+sub _build_section_section {
+    my ( $self, @args ) = @_;
+    @args < 5 or croak 'Too many arguments';
+    my $stashName = _argument( \@args, 0, Str,  required => 1 );
+    my $start     = _argument( \@args, 1, Int,  required => 1 );
+    my $stop      = _argument( \@args, 2, Int,  required => 1 );
+    my $file      = _argument( \@args, 3, File, required => 1 );
+
     $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
     return ELF::Extract::Sections::Section->new(
         offset => $start,
@@ -282,7 +358,10 @@ method _build_section_section ( Str $stashName, Int $start, Int $stop , File $fi
 
 =cut
 
-method _build_section_table ( HashRef $ob! ) {
+sub _build_section_table {
+    my ( $self, @args ) = @_;
+    @args < 2 or croak 'Too many arguments';
+    my $ob        = _argument( \@args, 0, HashRef, required => 1 );
     my %datastash = ();
     my @k         = sort { $a <=> $b } keys %{$ob};
     my $i         = 0;
@@ -301,8 +380,10 @@ method _build_section_table ( HashRef $ob! ) {
 
 =cut
 
-method _scan_guess_size {
-                          # HACK: Temporary hack around rt#67210
+sub _scan_guess_size {
+    my ($self) = @_;
+
+    # HACK: Temporary hack around rt#67210
     scalar $self->_scanner_instance->open_file( file => $self->file );
     my %offsets = ();
     while ( $self->_scanner_instance->next_section() ) {
@@ -320,7 +401,8 @@ method _scan_guess_size {
 
 =cut
 
-method _scan_with_size {
+sub _scan_with_size {
+    my ($self) = @_;
     my %datastash = ();
     $self->_scanner_instance->open_file( file => $self->file );
     while ( $self->_scanner_instance->next_section() ) {
