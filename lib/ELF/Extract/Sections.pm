@@ -383,10 +383,10 @@ sub _build_section_section {
 
 sub _build_section_table {
     my ( $self, @args ) = @_;
-    @args < 2 or croak "Too many arguments";
+    @args < 2 or croak 'Too many arguments';
     my $ob = do {
-        @args >= 1 or croak "Argument 0 of type HashRef was not specified";
-        is_HashRef( $args[0] ) or croak "Argument 0 was not of type HashRef";
+        @args >= 1 or croak 'Argument 0 of type HashRef was not specified';
+        is_HashRef( $args[0] ) or croak 'Argument 0 was not of type HashRef';
         $args[0];
     };
 
