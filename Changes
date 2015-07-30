@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+1.000000 2015-07-30T16:49:16Z 1c37bc4
  [!Major]
  - This release includes some respectably significant changes.
 
