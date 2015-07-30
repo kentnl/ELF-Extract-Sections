@@ -8,6 +8,7 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
 
  [Added / runtime requires]
  - Carp
+ - Module::Runtime
  - Moose::Role
 
  [Added / test requires]
@@ -27,6 +28,7 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  - Module::Build 0.4004
 
  [Removed / runtime requires]
+ - Class::Load
  - MooseX::Declare 0.20
 
  [Removed / test requires]

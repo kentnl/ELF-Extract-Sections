@@ -77,6 +77,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
 
  [Added / runtime requires]
  - Carp
+ - Module::Runtime
  - Moose::Role
 
  [Added / test recommends]
@@ -114,6 +115,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - version 0.9901
 
  [Removed / runtime requires]
+ - Class::Load
  - MooseX::Declare 0.20
 
  [Removed / test requires]
