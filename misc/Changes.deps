@@ -7,8 +7,8 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  - perl 5.010
 
  [Added / runtime requires]
+ - Carp
  - Moose::Role
- - MooseX::Method::Signatures
 
  [Added / test requires]
  - ExtUtils::MakeMaker
@@ -25,6 +25,9 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
 
  [Removed / configure requires]
  - Module::Build 0.4004
+
+ [Removed / runtime requires]
+ - MooseX::Declare 0.20
 
  [Removed / test requires]
  - File::Find
