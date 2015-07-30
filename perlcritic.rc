@@ -160,7 +160,7 @@ stop_words = HashRef ArrayRef Str Objdump perl FILENAME FilterField ElfSection E
 
 [Documentation::RequirePodAtEnd]
 
-[Documentation::RequirePodLinksIncludeText]
+[-Documentation::RequirePodLinksIncludeText]
 
 [-Documentation::RequirePodSections]
 
@@ -269,13 +269,13 @@ allowed_pragmata = diagnostics feature perlversion strict warnings utf8
 
 [Moose::RequireMakeImmutable]
 
-[NamingConventions::Capitalization]
+[-NamingConventions::Capitalization]
 
 [NamingConventions::ProhibitAmbiguousNames]
 
 [NamingConventions::ProhibitMixedCaseSubs]
 
-[NamingConventions::ProhibitMixedCaseVars]
+[-NamingConventions::ProhibitMixedCaseVars]
 
 [Objects::ProhibitIndirectSyntax]
 
@@ -301,9 +301,9 @@ allowed_pragmata = diagnostics feature perlversion strict warnings utf8
 
 [RegularExpressions::RequireBracesForMultiline]
 
-[RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireDotMatchAnything]
 
-[RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireExtendedFormatting]
 
 [-RegularExpressions::RequireLineBoundaryMatching]
 
