@@ -1,17 +1,17 @@
-use 5.010; # $+{}
+use 5.010;    # $+{}
 use strict;
 use warnings;
 
 package ELF::Extract::Sections::Scanner::Objdump;
 
-# ABSTRACT: An C<objdump> based section scanner.
+# ABSTRACT: An objdump based section scanner.
 
 our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose qw( with has );
-with "ELF::Extract::Sections::Meta::Scanner";
+with 'ELF::Extract::Sections::Meta::Scanner';
 
 
 
@@ -85,7 +85,7 @@ use MooseX::Types::Path::Tiny ('File');
 sub _argument {
     my ( $args, $number, $type, %flags ) = @_;
     return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ?  '(coerceable)': q[];
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
 
     @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
 
@@ -103,7 +103,7 @@ sub _argument {
 sub _parameter {
     my ( $args, $name, $type, %flags ) = @_;
     return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
     exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
 
     if ( not $flags{coerce} ) {
@@ -308,6 +308,8 @@ has _state => (
     predicate => '_has_state',
     clearer   => '_clear_state',
 );
+__PACKAGE__->meta->make_immutable;
+no Moose;
 
 
 
@@ -358,7 +360,7 @@ __END__
 
 =head1 NAME
 
-ELF::Extract::Sections::Scanner::Objdump - An C<objdump> based section scanner.
+ELF::Extract::Sections::Scanner::Objdump - An objdump based section scanner.
 
 =head1 VERSION
 
