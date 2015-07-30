@@ -105,6 +105,10 @@ Creates A new Section Extractor object with the specified scanner
 
 =cut
 
+=for Pod::Coverage BUILD
+
+=cut
+
 sub BUILD {
     my ( $self, ) = @_;
     if ( not $self->file->stat ) {
