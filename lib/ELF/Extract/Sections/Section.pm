@@ -190,7 +190,7 @@ sub compare {
     if ( 'name' eq $field ) {
         return ( $self->name cmp $other->name );
     }
-    if ( 'offset' eq $field  ) {
+    if ( 'offset' eq $field ) {
         return ( $self->offset <=> $other->offset );
     }
     if ( 'size' eq $field ) {
