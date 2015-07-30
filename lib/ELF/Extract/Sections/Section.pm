@@ -151,10 +151,7 @@ no Moose;
 
 
 sub to_string {
-    my ( $self, @args ) = @_;
-    @args < 3 or croak 'Too many arguments';
-    my $other    = _argument( \@args, 0, Any,  required => 0 );
-    my $polarity = _argument( \@args, 1, Bool, required => 0 );
+    my ( $self, ) = @_;
     return sprintf
       q{[ Section %s of size %s in %s @ %x to %x ]},
       $self->name, $self->size, $self->source, $self->offset,
