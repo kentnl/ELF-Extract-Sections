@@ -212,25 +212,26 @@ has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 sub _error_scanner_missing {
     my ( $self, @args ) = @_;
-    @args < 4 or croak "Too many arguments";
+    @args < 4 or croak 'Too many arguments';
     my $scanner = do {
-        @args >= 1 or croak "Argument 0 of type Str was not specified";
-        is_Str( $args[0] ) or croak "Argument 0 was not of type Str";
+        @args >= 1 or croak 'Argument 0 of type Str was not specified';
+        is_Str( $args[0] ) or croak 'Argument 0 was not of type Str';
         $args[0];
     };
     my $package = do {
-        @args >= 2 or croak "Argument 1 of type Str was not specified";
-        is_Str( $args[1] ) or croak "Argument 1 was not of type Str";
+        @args >= 2 or croak 'Argument 1 of type Str was not specified';
+        is_Str( $args[1] ) or croak 'Argument 1 was not of type Str';
         $args[1];
     };
     my $error = do {
-        @args >= 3 or croak "Argument 2 of type Str was not specified";
-        is_Str( $args[2] ) or croak "Argument 2 was not of type Str";
+        @args >= 3 or croak 'Argument 2 of type Str was not specified';
+        is_Str( $args[2] ) or croak 'Argument 2 was not of type Str';
         $args[2];
     };
     my $message = sprintf qq[The Scanner %s could not be found as %s\n.], $scanner, $package;
     $message .= '>' . $error;
     $self->log->logconfess($message);
+    return;
 }
 
 
@@ -273,20 +274,20 @@ sub _build__scanner_instance {
 
 sub _warn_stash_collision {
     my ( $self, @args ) = @_;
-    @args < 4 or croak "Too many arguments";
+    @args < 4 or croak 'Too many arguments';
     my $stashname = do {
-        @args >= 1 or croak "Argument 0 of type Str was not specified";
-        is_Str( $args[0] ) or croak "Argument 0 was not of type Str";
+        @args >= 1 or croak 'Argument 0 of type Str was not specified';
+        is_Str( $args[0] ) or croak 'Argument 0 was not of type Str';
         $args[0];
     };
     my $header = do {
-        @args >= 2 or croak "Argument 1 of type Str was not specified";
-        is_Str( $args[1] ) or croak "Argument 1 was not of type Str";
+        @args >= 2 or croak 'Argument 1 of type Str was not specified';
+        is_Str( $args[1] ) or croak 'Argument 1 was not of type Str';
         $args[1];
     };
     my $offset = do {
-        @args >= 3 or croak "Argument 2 of type Str was not specified";
-        is_Str( $args[2] ) or croak "Argument 2 was not of type Str";
+        @args >= 3 or croak 'Argument 2 of type Str was not specified';
+        is_Str( $args[2] ) or croak 'Argument 2 was not of type Str';
         $args[2];
     };
 
@@ -294,6 +295,7 @@ sub _warn_stash_collision {
     $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname, $header, $offset;
     $message .= sprintf q[Assuming <%s> is empty and replacing it.], $stashname;
     $self->log->warn($message);
+    return;
 }
 
 
@@ -306,20 +308,20 @@ sub _warn_stash_collision {
 
 sub _stash_record {
     my ( $self, @args ) = @_;
-    @args < 4 or croak "Too many arguments";
+    @args < 4 or croak 'Too many arguments';
     my $stash = do {
-        @args >= 1 or croak "Argument 0 of type HashRef was not specified";
-        is_HashRef( $args[0] ) or croak "Argument 0 was not of type HashRef";
+        @args >= 1 or croak 'Argument 0 of type HashRef was not specified';
+        is_HashRef( $args[0] ) or croak 'Argument 0 was not of type HashRef';
         $args[0];
     };
     my $header = do {
-        @args >= 2 or croak "Argument 1 of type Str was not specified";
-        is_Str( $args[1] ) or croak "Argument 1 was not of type Str";
+        @args >= 2 or croak 'Argument 1 of type Str was not specified';
+        is_Str( $args[1] ) or croak 'Argument 1 was not of type Str';
         $args[1];
     };
     my $offset = do {
-        @args >= 3 or croak "Argument 2 of type Str was not specified";
-        is_Str( $args[2] ) or croak "Argument 2 was not of type Str";
+        @args >= 3 or croak 'Argument 2 of type Str was not specified';
+        is_Str( $args[2] ) or croak 'Argument 2 was not of type Str';
         $args[2];
     };
 
