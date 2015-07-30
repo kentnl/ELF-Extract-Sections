@@ -331,7 +331,8 @@ method _scan_with_size {
         $datastash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
     }
     return \%datastash;
-}
+};
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
