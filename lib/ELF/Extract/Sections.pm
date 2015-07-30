@@ -105,6 +105,10 @@ has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
 
 
+
+
+
+
 sub BUILD {
     my ( $self, ) = @_;
     if ( not $self->file->stat ) {
@@ -493,6 +497,8 @@ Creates A new Section Extractor object with the default scanner
 =head2 new ( file => FILENAME , scanner => 'Objdump' )
 
 Creates A new Section Extractor object with the specified scanner
+
+=for Pod::Coverage BUILD
 
 =head2 sorted_sections ( field => SORT_BY )
 
