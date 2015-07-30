@@ -27,11 +27,14 @@ for my $var (@stopwords) {
     $bundle->add_or_append_policy_field( 'Documentation::PodSpelling' => ( 'stop_words' => $var ) );
 }
 $bundle->remove_policy('Subroutines::ProhibitCallsToUndeclaredSubs');
+$bundle->remove_policy('Documentation::RequirePodLinksIncludeText');
+$bundle->remove_policy('RegularExpressions::RequireExtendedFormatting');
+$bundle->remove_policy('RegularExpressions::RequireDotMatchAnything');
 
 #$bundle->remove_policy('ErrorHandling::RequireCarping');
 $bundle->remove_policy('ErrorHandling::RequireUseOfExceptions');
-
-#$bundle->remove_policy('NamingConventions::Capitalization');
+$bundle->remove_policy('NamingConventions::Capitalization');
+$bundle->remove_policy('NamingConventions::ProhibitMixedCaseVars');
 
 my $inf = $bundle->actionlist->get_inflated;
 
