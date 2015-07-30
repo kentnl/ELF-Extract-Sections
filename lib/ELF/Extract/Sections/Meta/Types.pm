@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -9,9 +10,10 @@ our $VERSION = '1.000000';
 
 # AUTHORITY
 
-use MooseX::Types::Moose (':all');
+use MooseX::Types::Moose (qw( Object ));
 use MooseX::Types -declare => [ 'FilterField', 'ElfSection' ];
 
+## no critic (ProhibitCallsToUndeclaredSubs)
 subtype FilterField, as enum( [ 'name', 'offset', 'size', ] );
 
 subtype ElfSection, as Object, where { $_->isa('ELF::Extract::Sections::Section') };
