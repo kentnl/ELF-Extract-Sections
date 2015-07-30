@@ -1,3 +1,4 @@
+use 5.010; # $+{}
 use strict;
 use warnings;
 
@@ -80,6 +81,7 @@ use MooseX::Types::Path::Tiny ('File');
 
 
 
+
 sub _argument {
     my ( $args, $number, $type, %flags ) = @_;
     return if not $flags{required} and @{$args} < $number + 1;
@@ -134,10 +136,10 @@ sub open_file {
 
 
 
-sub next_section  {
-    my ( $self ) = @_;
-    my $re = $self->_section_header_identifier;
-    my $fh = $self->_filehandle;
+sub next_section {
+    my ($self) = @_;
+    my $re     = $self->_section_header_identifier;
+    my $fh     = $self->_filehandle;
     while ( my $line = <$fh> ) {
         next if $line !~ $re;
         my ( $header, $offset ) = ( $+{header}, $+{offset} );
@@ -160,7 +162,7 @@ sub next_section  {
 
 
 sub section_offset {
-  my ( $self ) = @_;
+    my ($self) = @_;
     if ( not $self->_has_state ) {
         $self->log->logcroak('Invalid call to section_offset outside of file scan');
         return;
@@ -177,7 +179,7 @@ sub section_offset {
 
 
 sub section_size {
-    my ( $self  ) = @_;
+    my ($self) = @_;
     $self->log->logcroak('Can\'t perform section_size on this type of object.');
     return;
 }
@@ -191,7 +193,7 @@ sub section_size {
 
 
 sub section_name {
-    my ( $self ) = @_;
+    my ($self) = @_;
     if ( not $self->_has_state ) {
         $self->log->logcroak('Invalid call to section_name outside of file scan');
         return;
@@ -320,7 +322,7 @@ has _state => (
 
 
 sub _build__section_header_identifier {
-    my ( $self ) = @_;
+    my ($self) = @_;
     my $header = $self->_header_regex;
     my $offset = $self->_offset_regex;
 
@@ -338,14 +340,13 @@ sub _build__section_header_identifier {
 
 
 sub _objdump {
-    my ( $self ) = @_;
+    my ($self) = @_;
     if ( open my $fh, q{-|}, q{objdump}, qw( -D -F ), $self->_file->realpath->absolute ) {
         return $fh;
     }
     $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });
     return;
 }
-
 
 1;
 

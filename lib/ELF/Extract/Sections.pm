@@ -146,7 +146,7 @@ sub BUILD {
 sub _argument {
     my ( $args, $number, $type, %flags ) = @_;
     return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
+    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
 
     @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
 
@@ -164,8 +164,8 @@ sub _argument {
 sub _parameter {
     my ( $args, $name, $type, %flags ) = @_;
     return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
-    exists $args->{$name} or croak "Parameter \'$name\' of type $type$can_coerce was not specified";
+    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
+    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
 
     if ( not $flags{coerce} ) {
         $type->check( $args->{$name} ) and return delete $args->{$name};
@@ -361,7 +361,7 @@ sub _build_section_section {
 sub _build_section_table {
     my ( $self, @args ) = @_;
     @args < 2 or croak 'Too many arguments';
-    my $ob = _argument( \@args, 0, HashRef, required => 1 );
+    my $ob        = _argument( \@args, 0, HashRef, required => 1 );
     my %datastash = ();
     my @k         = sort { $a <=> $b } keys %{$ob};
     my $i         = 0;
@@ -413,7 +413,6 @@ sub _scan_with_size {
     }
     return \%datastash;
 }
-
 
 1;
 

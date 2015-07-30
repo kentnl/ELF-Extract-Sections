@@ -60,7 +60,7 @@ use overload '""' => \&to_string;
 sub _argument {
     my ( $args, $number, $type, %flags ) = @_;
     return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
+    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
 
     @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
 
@@ -78,8 +78,8 @@ sub _argument {
 sub _parameter {
     my ( $args, $name, $type, %flags ) = @_;
     return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
-    exists $args->{$name} or croak "Parameter \'$name\' of type $type$can_coerce was not specified";
+    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
+    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
 
     if ( not $flags{coerce} ) {
         $type->check( $args->{$name} ) and return delete $args->{$name};
