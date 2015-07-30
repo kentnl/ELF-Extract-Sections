@@ -10,7 +10,6 @@ our $VERSION = '1.000000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose qw( with has );
-with "ELF::Extract::Sections::Meta::Scanner";
 
 
 
@@ -301,6 +300,8 @@ method _objdump returns (FileHandle|Undef) {
     $self->log->logconfess(qq{An error occured requesting section data from objdump $^ $@ });
     return;
 }
+
+with "ELF::Extract::Sections::Meta::Scanner";
 
 1;
 

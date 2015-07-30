@@ -1,6 +1,24 @@
 Revision history for ELF-Extract-Sections
 
-1.000000 2015-07-30T06:31:48Z 245e144
+1.000000 2015-07-30T06:59:13Z 345e7b4
+ [!Major]
+ - This release includes some respectably significant changes.
+
+ [01 Install Side Tooling change]
+ - Previously, Module::Build was used as the installer.
+ - This is now ExtUtils::MakeMaker
+ - See https://questhub.io/realm/perl/quest/5388cc12bbd0be5b2500011f
+
+ [02 Version Scheme Change]
+ - Previously used a lengthy 0.{'0' x '8'} scheme.
+ - Now uses a 0.{'0' x 6} scheme for clarity.
+ - The 1.x on the box is due in part to this change.
+
+ [03 Internals Overhaul]
+ - MooseX::Declare is too pesky to use with perltidy (even sweetened)
+ - So its been simplified in terms of MooseX::Method::Signatures directly instead (which incindentally works better
+   sweetend).
+
  [Dependencies::Stats]
  - Dependencies changed since 0.03000101, see misc/*.deps* for details
  - build: -1
