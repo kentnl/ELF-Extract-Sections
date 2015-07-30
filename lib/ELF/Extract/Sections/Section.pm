@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -55,6 +56,40 @@ use ELF::Extract::Sections::Meta::Types ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
 
 use overload '""' => \&to_string;
+
+sub _argument {
+    my ( $args, $number, $type, %flags ) = @_;
+    return if not $flags{required} and @{$args} < $number + 1;
+    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
+
+    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->[$number] ) and return $args->[$number];
+    }
+    else {
+        my $value = $type->coerce( $args->[$number] );
+        return $value if $value;
+    }
+    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
+
+}
+
+sub _parameter {
+    my ( $args, $name, $type, %flags ) = @_;
+    return if not $flags{required} and not exists $args->{$name};
+    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
+    exists $args->{$name} or croak "Parameter \'$name\' of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->{$name} ) and return delete $args->{$name};
+    }
+    else {
+        my $value = $type->coerce( delete $args->{$name} );
+        return $value if $value;
+    }
+    return croak "Parameter \'$name\' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+}
 
 
 
@@ -117,17 +152,9 @@ no Moose;
 
 sub to_string {
     my ( $self, @args ) = @_;
-    @args < 3 or croak "Too many arguments";
-    my $other = do {
-        return unless @args >= 1;
-        is_Any( $args[0] ) or croak "Argument 0 was not of type Any";
-        $args[0];
-    };
-    my $polarity = do {
-        return unless @args >= 2;
-        is_Bool( $args[1] ) or croak "Argument 1 was not of type Bool";
-        $args[1];
-    };
+    @args < 3 or croak 'Too many arguments';
+    my $other    = _argument( \@args, 0, Any,  required => 0 );
+    my $polarity = _argument( \@args, 1, Bool, required => 0 );
     return sprintf
       q{[ Section %s of size %s in %s @ %x to %x ]},
       $self->name, $self->size, $self->source, $self->offset,
@@ -157,17 +184,8 @@ sub to_string {
 
 sub compare {
     my ( $self, %args ) = @_;
-    my $other = do {
-        exists $args{other} or croak "parameter 'other' of type ELF::Extract::Sections::Section was not specified";
-        is_Object( $args{other} ) and $args{other}->isa('ELF::Extract::Sections::Section')
-          or croak "parameter 'other' was not of type ELF::Extract::Sections::Section";
-        delete $args{other};
-    };
-    my $field = do {
-        exists $args{field} or croak "parameter 'field' of type FilterField was not specified";
-        is_FilterField( $args{field} or croak "parameter 'field' was not of type FilterField" );
-        delete $args{field};
-    };
+    my $other = _parameter( \%args, 'other', class_type('ELF::Extract::Sections::Section'), required => 1 );
+    my $field = _parameter( \%args, 'field', FilterField, required => 1 );
     if ( keys %args ) {
         croak "Unknown parameters @{[ keys %args ]}";
     }
@@ -200,11 +218,7 @@ sub compare {
 
 sub write_to {
     my ( $self, %args ) = @_;
-    my $file = do {
-        exists $args{file} or croak "parameter 'file' of type File(coercable) was not specified";
-        my $cval = to_File( delete $args{file} ) or croak "parameter 'file' could not coerce to type File";
-        $cval;
-    };
+    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1  );
     if ( keys %args ) {
         croak "Unknown parameters @{[ keys %args ]}";
     }
@@ -236,7 +250,6 @@ sub contents {
     read $fh, $b, $self->size;
     return $b;
 }
-
 
 1;
 

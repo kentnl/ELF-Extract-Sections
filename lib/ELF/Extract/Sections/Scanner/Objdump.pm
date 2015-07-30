@@ -10,6 +10,7 @@ our $VERSION = '1.000000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose qw( with has );
+with "ELF::Extract::Sections::Meta::Scanner";
 
 
 
@@ -45,8 +46,8 @@ use Moose qw( with has );
 
 
 
+use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
-use MooseX::Method::Signatures;
 
 
 
@@ -79,8 +80,46 @@ use MooseX::Types::Path::Tiny ('File');
 
 
 
+sub _argument {
+    my ( $args, $number, $type, %flags ) = @_;
+    return if not $flags{required} and @{$args} < $number + 1;
+    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
 
-method open_file ( File :$file! ) returns (Bool) {
+    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->[$number] ) and return $args->[$number];
+    }
+    else {
+        my $value = $type->coerce( $args->[$number] );
+        return $value if $value;
+    }
+    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
+
+}
+
+sub _parameter {
+    my ( $args, $name, $type, %flags ) = @_;
+    return if not $flags{required} and not exists $args->{$name};
+    my $can_coerce = $flags{coerce} ? '' : '(coerceable)';
+    exists $args->{$name} or croak "Parameter \'$name\' of type $type$can_coerce was not specified";
+
+    if ( not $flags{coerce} ) {
+        $type->check( $args->{$name} ) and return delete $args->{$name};
+    }
+    else {
+        my $value = $type->coerce( delete $args->{$name} );
+        return $value if $value;
+    }
+    return croak "Parameter \'$name\' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+}
+
+sub open_file {
+    my ( $self, %args ) = @_;
+    my $file = _parameter( \%args, 'file', File, required => 1 );
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
     $self->log->debug("Opening $file");
     $self->_file($file);
     $self->_filehandle( $self->_objdump );
@@ -95,7 +134,8 @@ method open_file ( File :$file! ) returns (Bool) {
 
 
 
-method next_section returns (Bool) {
+sub next_section  {
+    my ( $self ) = @_;
     my $re = $self->_section_header_identifier;
     my $fh = $self->_filehandle;
     while ( my $line = <$fh> ) {
@@ -119,7 +159,8 @@ method next_section returns (Bool) {
 
 
 
-method section_offset returns (Int|Undef) {
+sub section_offset {
+  my ( $self ) = @_;
     if ( not $self->_has_state ) {
         $self->log->logcroak('Invalid call to section_offset outside of file scan');
         return;
@@ -135,7 +176,8 @@ method section_offset returns (Int|Undef) {
 
 
 
-method section_size returns (Undef) {
+sub section_size {
+    my ( $self  ) = @_;
     $self->log->logcroak('Can\'t perform section_size on this type of object.');
     return;
 }
@@ -148,7 +190,8 @@ method section_size returns (Undef) {
 
 
 
-method section_name returns (Str|Undef) {
+sub section_name {
+    my ( $self ) = @_;
     if ( not $self->_has_state ) {
         $self->log->logcroak('Invalid call to section_name outside of file scan');
         return;
@@ -164,7 +207,7 @@ method section_name returns (Str|Undef) {
 
 
 
-method can_compute_size returns (Bool) {
+sub can_compute_size {
     return 0;
 }
 
@@ -276,7 +319,8 @@ has _state => (
 
 
 
-method _build__section_header_identifier returns (RegexpRef) {
+sub _build__section_header_identifier {
+    my ( $self ) = @_;
     my $header = $self->_header_regex;
     my $offset = $self->_offset_regex;
 
@@ -293,7 +337,8 @@ method _build__section_header_identifier returns (RegexpRef) {
 
 
 
-method _objdump returns (FileHandle|Undef) {
+sub _objdump {
+    my ( $self ) = @_;
     if ( open my $fh, q{-|}, q{objdump}, qw( -D -F ), $self->_file->realpath->absolute ) {
         return $fh;
     }
@@ -301,7 +346,6 @@ method _objdump returns (FileHandle|Undef) {
     return;
 }
 
-with "ELF::Extract::Sections::Meta::Scanner";
 
 1;
 
