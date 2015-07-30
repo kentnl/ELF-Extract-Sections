@@ -1,6 +1,5 @@
 Perl::Critic::Policy::Documentation::PodSpelling~0
 Perl::Critic::Policy::Lax::RequireExplicitPackage::ExceptForPragmata~0
-Perl::Critic::Policy::Subroutines::ProhibitCallsToUndeclaredSubs~0
 Perl::Critic::Policy::Variables::ProhibitUnusedVarsStricter~0
 Perl::Critic::ProfileCompiler::Bundle::Bangs~0
 Perl::Critic::ProfileCompiler::Bundle::Compatibility~0
