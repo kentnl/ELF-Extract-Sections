@@ -1,6 +1,7 @@
 {
    "modules" : {
       "CPAN::Meta" : "2.150005",
+      "Carp" : "1.36",
       "Class::Load" : "0.23",
       "Devel::CheckBin" : "0.03",
       "Dist::Zilla" : "5.037",

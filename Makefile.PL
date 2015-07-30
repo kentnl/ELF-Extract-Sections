@@ -23,6 +23,7 @@ my %WriteMakefileArgs = (
   "MIN_PERL_VERSION" => "5.010000",
   "NAME" => "ELF::Extract::Sections",
   "PREREQ_PM" => {
+    "Carp" => 0,
     "Class::Load" => 0,
     "Log::Log4perl" => "1.21",
     "Moose" => "0.76",
@@ -57,6 +58,7 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Carp" => 0,
   "Class::Load" => 0,
   "Devel::CheckBin" => 0,
   "ExtUtils::MakeMaker" => 0,

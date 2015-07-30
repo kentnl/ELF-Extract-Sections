@@ -11,6 +11,7 @@ our $VERSION = '1.000000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose qw( with has );
+use Carp qw( croak );
 with 'MooseX::Log::Log4perl';
 
 
@@ -56,9 +57,8 @@ with 'MooseX::Log::Log4perl';
 
 
 use MooseX::Has::Sugar 0.0300;
-use MooseX::Method::Signatures;
 use MooseX::Types::Moose                ( ':all', );
-use MooseX::Types::Path::Tiny           ( 'File', );
+use MooseX::Types::Path::Tiny           ( 'File', 'is_File', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
 use Class::Load                         ( 'try_load_class', );
 
@@ -105,7 +105,8 @@ has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
 
 
-method BUILD ( $args ) {
+sub BUILD {
+    my ( $self, $args ) = @_;
     if ( not $self->file->stat ) {
         $self->log->logconfess(q{File Specifed could not be found.});
     }
@@ -141,7 +142,21 @@ method BUILD ( $args ) {
 
 
 
-method sorted_sections (  FilterField :$field!, Bool :$descending? ) {
+sub sorted_sections {
+    my ( $self, %args ) = @_;
+    my $field = do {
+        exists $args{field} or croak "parameter 'field' of type FilterField was not specified";
+        is_FilterField( $args{field} ) or croak "parameter 'field' was not of type FilterField";
+        delete $args{field};
+    };
+    my $descending = do {
+        return undef if not exists $args{descending};
+        is_Bool( $args{descending} ) or croak "parameter 'descending' was not of type Bool";
+        delete $args{descending};
+    };
+    if ( keys %args ) {
+        croak "Unknown parameters @{[ keys %args ]}";
+    }
     my $m = 1;
     $m = 0 - 1 if ($descending);
     return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
@@ -159,7 +174,8 @@ method sorted_sections (  FilterField :$field!, Bool :$descending? ) {
 
 
 
-method _build_sections {
+sub _build_sections {
+    my ($self) = @_;
     $self->log->debug('Building Section List');
     if ( $self->_scanner_instance->can_compute_size ) {
         return $self->_scan_with_size;
@@ -193,7 +209,24 @@ has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 
 
-method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
+sub _error_scanner_missing {
+    my ( $self, @args ) = @_;
+    @args < 4 or croak "Too many arguments";
+    my $scanner = do {
+        @args >= 1 or croak "Argument 0 of type Str was not specified";
+        is_Str( $args[0] ) or croak "Argument 0 was not of type Str";
+        $args[0];
+    };
+    my $package = do {
+        @args >= 2 or croak "Argument 1 of type Str was not specified";
+        is_Str( $args[1] ) or croak "Argument 1 was not of type Str";
+        $args[1];
+    };
+    my $error = do {
+        @args >= 3 or croak "Argument 2 of type Str was not specified";
+        is_Str( $args[2] ) or croak "Argument 2 was not of type Str";
+        $args[2];
+    };
     my $message = sprintf qq[The Scanner %s could not be found as %s\n.], $scanner, $package;
     $message .= '>' . $error;
     $self->log->logconfess($message);
@@ -205,7 +238,8 @@ method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
 
 
 
-method _build__scanner_package {
+sub _build__scanner_package {
+    my ($self) = @_;
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
     my ( $success, $error ) = try_load_class($pkg);
     if ( not $success ) {
@@ -220,7 +254,8 @@ method _build__scanner_package {
 
 
 
-method _build__scanner_instance {
+sub _build__scanner_instance {
+    my ($self) = @_;
     my $instance = $self->_scanner_package->new();
     return $instance;
 }
@@ -235,7 +270,25 @@ method _build__scanner_instance {
 
 
 
-method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+sub _warn_stash_collision {
+    my ( $self, @args ) = @_;
+    @args < 4 or croak "Too many arguments";
+    my $stashname = do {
+        @args >= 1 or croak "Argument 0 of type Str was not specified";
+        is_Str( $args[0] ) or croak "Argument 0 was not of type Str";
+        $args[0];
+    };
+    my $header = do {
+        @args >= 2 or croak "Argument 1 of type Str was not specified";
+        is_Str( $args[1] ) or croak "Argument 1 was not of type Str";
+        $args[1];
+    };
+    my $offset = do {
+        @args >= 3 or croak "Argument 2 of type Str was not specified";
+        is_Str( $args[2] ) or croak "Argument 2 was not of type Str";
+        $args[2];
+    };
+
     my $message = q[Warning, duplicate file offset reported by scanner.];
     $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname, $header, $offset;
     $message .= sprintf q[Assuming <%s> is empty and replacing it.], $stashname;
@@ -250,7 +303,25 @@ method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
 
 
 
-method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+sub _stash_record {
+    my ( $self, @args ) = @_;
+    @args < 4 or croak "Too many arguments";
+    my $stash = do {
+        @args >= 1 or croak "Argument 0 of type HashRef was not specified";
+        is_HashRef( $args[0] ) or croak "Argument 0 was not of type HashRef";
+        $args[0];
+    };
+    my $header = do {
+        @args >= 2 or croak "Argument 1 of type Str was not specified";
+        is_Str( $args[1] ) or croak "Argument 1 was not of type Str";
+        $args[1];
+    };
+    my $offset = do {
+        @args >= 3 or croak "Argument 2 of type Str was not specified";
+        is_Str( $args[2] ) or croak "Argument 2 was not of type Str";
+        $args[2];
+    };
+
     if ( exists $stash->{$offset} ) {
         $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
     }
@@ -266,7 +337,30 @@ method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
 
 
 
-method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+sub _build_section_section {
+    my ( $self, @args ) = @_;
+    @args < 5 or croak "Too many arguments";
+    my $stashName = do {
+        @args >= 1 or croak "Argument 0 of type Str was not specified";
+        is_Str( $args[0] ) or croak "Argument 0 was not of type Str";
+        $args[0];
+    };
+    my $start = do {
+        @args >= 2 or croak "Argument 1 of type Int was not specified";
+        is_Int( $args[1] ) or croak "Argument 1 was not of type Int";
+        $args[1];
+    };
+    my $stop = do {
+        @args >= 3 or croak "Argument 2 of type Int was not specified";
+        is_Int( $args[2] ) or croak "Argument 2 was not of type Int";
+        $args[2];
+    };
+    my $file = do {
+        @args >= 4 or croak "Argument 3 of type File was not specified";
+        is_File( $args[3] ) or croak "Argument 3 was not of type File";
+        $args[3];
+    };
+
     $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
     return ELF::Extract::Sections::Section->new(
         offset => $start,
@@ -283,7 +377,15 @@ method _build_section_section ( Str $stashName, Int $start, Int $stop , File $fi
 
 
 
-method _build_section_table ( HashRef $ob! ) {
+sub _build_section_table {
+    my ( $self, @args ) = @_;
+    @args < 2 or croak "Too many arguments";
+    my $ob = do {
+        @args >= 1 or croak "Argument 0 of type HashRef was not specified";
+        is_HashRef( $args[0] ) or croak "Argument 0 was not of type HashRef";
+        $args[0];
+    };
+
     my %datastash = ();
     my @k         = sort { $a <=> $b } keys %{$ob};
     my $i         = 0;
@@ -302,8 +404,10 @@ method _build_section_table ( HashRef $ob! ) {
 
 
 
-method _scan_guess_size {
-                          # HACK: Temporary hack around rt#67210
+sub _scan_guess_size {
+    my ($self) = @_;
+
+    # HACK: Temporary hack around rt#67210
     scalar $self->_scanner_instance->open_file( file => $self->file );
     my %offsets = ();
     while ( $self->_scanner_instance->next_section() ) {
@@ -321,7 +425,8 @@ method _scan_guess_size {
 
 
 
-method _scan_with_size {
+sub _scan_with_size {
+    my ($self) = @_;
     my %datastash = ();
     $self->_scanner_instance->open_file( file => $self->file );
     while ( $self->_scanner_instance->next_section() ) {
@@ -331,7 +436,7 @@ method _scan_with_size {
         $datastash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
     }
     return \%datastash;
-};
+}
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

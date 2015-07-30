@@ -88,6 +88,7 @@ do { my $x = {
                                         'Moose' => '2.000'
                                       },
                       'requires' => {
+                                      'Carp' => '0',
                                       'Class::Load' => '0',
                                       'Log::Log4perl' => '1.21',
                                       'Moose' => '0.76',
