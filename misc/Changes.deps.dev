@@ -11,6 +11,7 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::Plugin::Author::KENTNL::TravisCI 0.001002
  - Dist::Zilla::Plugin::Authority 1.006
  - Dist::Zilla::Plugin::AutoPrereqs
+ - Dist::Zilla::Plugin::BumpVersionAfterRelease
  - Dist::Zilla::Plugin::CheckBin
  - Dist::Zilla::Plugin::ConfirmRelease
  - Dist::Zilla::Plugin::CopyFilesFromBuild
@@ -21,7 +22,6 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::Plugin::Git::Contributors 0.006
  - Dist::Zilla::Plugin::Git::GatherDir
  - Dist::Zilla::Plugin::Git::NextRelease 0.004000
- - Dist::Zilla::Plugin::Git::NextVersion::Sanitized
  - Dist::Zilla::Plugin::Git::Tag
  - Dist::Zilla::Plugin::GithubMeta
  - Dist::Zilla::Plugin::License
@@ -36,7 +36,6 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::Plugin::MetaTests
  - Dist::Zilla::Plugin::MetaYAML::Minimal
  - Dist::Zilla::Plugin::MinimumPerl
- - Dist::Zilla::Plugin::PkgVersion
  - Dist::Zilla::Plugin::PodCoverageTests
  - Dist::Zilla::Plugin::PodSyntaxTests
  - Dist::Zilla::Plugin::PodWeaver
@@ -47,6 +46,7 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::Plugin::Readme::Brief
  - Dist::Zilla::Plugin::ReadmeAnyFromPod
  - Dist::Zilla::Plugin::RemovePrereqs::Provided
+ - Dist::Zilla::Plugin::RewriteVersion::Sanitized
  - Dist::Zilla::Plugin::RunExtraTests
  - Dist::Zilla::Plugin::Test::CPAN::Changes
  - Dist::Zilla::Plugin::Test::Compile::PerFile

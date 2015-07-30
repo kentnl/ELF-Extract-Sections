@@ -5,6 +5,8 @@ package ELF::Extract::Sections::Meta::Scanner;
 
 # ABSTRACT: Interface Contract for Scanners
 
+our $VERSION = '1.000000';
+
 # AUTHORITY
 
 use Moose::Role qw( with requires );

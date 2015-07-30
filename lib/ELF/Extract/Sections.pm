@@ -5,6 +5,8 @@ package ELF::Extract::Sections;
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
+our $VERSION = '1.000000';
+
 # AUTHORITY
 
 use Moose qw( with has );

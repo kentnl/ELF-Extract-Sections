@@ -6,9 +6,9 @@ copyright_holder = Kent Fredric <kentfredric@gmail.com>
 ;abstract = Extract Raw Chunks of data from identifiable ELF Sections
 
 [@Author::KENTNL]
-git_versions     = 1
+bumpversions     = 1
 normal_form      = numify
-mantissa         = 8
+mantissa         = 6
 toolkit          = eumm
 toolkit_hardness = soft
 srcreadme        = mkdn
