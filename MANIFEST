@@ -25,11 +25,13 @@ lib/ELF/Extract/Sections/Meta/Scanner.pm
 lib/ELF/Extract/Sections/Meta/Types.pm
 lib/ELF/Extract/Sections/Scanner/Objdump.pm
 lib/ELF/Extract/Sections/Section.pm
+maint/perlcritic.rc.gen.pl
 misc/Changes.deps
 misc/Changes.deps.all
 misc/Changes.deps.dev
 misc/Changes.deps.opt
 misc/built_with.json
+misc/perlcritic.deps
 perlcritic.rc
 t/00-compile/lib_ELF_Extract_Sections_Meta_Scanner_pm.t
 t/00-compile/lib_ELF_Extract_Sections_Meta_Types_pm.t
