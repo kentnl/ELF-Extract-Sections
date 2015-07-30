@@ -7,9 +7,9 @@ $ELF::Extract::Sections::Section::VERSION = '0.03000102';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-use MooseX::Declare;
+use Moose;
+use MooseX::Method::Signatures;
 
-class ELF::Extract::Sections::Section {
 
 
 
@@ -47,13 +47,13 @@ class ELF::Extract::Sections::Section {
 
 
 
+use MooseX::Has::Sugar 0.0300;
+use MooseX::Types::Moose                ( ':all', );
+use ELF::Extract::Sections::Meta::Types ( ':all', );
+use MooseX::Types::Path::Tiny           ( 'File', );
 
-    use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose                ( ':all', );
-    use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use MooseX::Types::Path::Tiny           ( 'File', );
+use overload '""' => \&to_string;
 
-    use overload '""' => \&to_string;
 
 
 
@@ -64,32 +64,32 @@ class ELF::Extract::Sections::Section {
 
 
 
+has source => ( isa => File, ro, required, coerce, );
 
-    has source => ( isa => File, ro, required, coerce, );
 
 
 
 
 
 
+has name => ( isa => Str, ro, required );
 
-    has name => ( isa => Str, ro, required );
 
 
 
 
 
 
+has offset => ( isa => Int, ro, required );
 
-    has offset => ( isa => Int, ro, required );
 
 
 
 
 
 
+has size => ( isa => Int, ro, required );
 
-    has size => ( isa => Int, ro, required );
 
 
 
@@ -110,76 +110,46 @@ class ELF::Extract::Sections::Section {
 
 
 
+method to_string ( Any $other?, Bool $polarity? ) {
+    return sprintf
+      q{[ Section %s of size %s in %s @ %x to %x ]},
+      $self->name, $self->size, $self->source, $self->offset,
+      $self->offset + $self->size,
+      ;
+}
 
-    method to_string ( Any $other?, Bool $polarity? ) {
-        return sprintf
-          q{[ Section %s of size %s in %s @ %x to %x ]},
-          $self->name, $self->size, $self->source, $self->offset,
-          $self->offset + $self->size,
-          ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
+    if ( $field eq 'name' ) {
+        return ( $self->name cmp $other->name );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    method compare ( ELF::Extract::Sections::Section :$other! , FilterField :$field! ) {
-        if ( $field eq 'name' ) {
-            return ( $self->name cmp $other->name );
-        }
-        if ( $field eq 'offset' ) {
-            return ( $self->offset <=> $other->offset );
-        }
-        if ( $field eq 'size' ) {
-            return ( $self->size <=> $other->size );
-        }
-        return;
+    if ( $field eq 'offset' ) {
+        return ( $self->offset <=> $other->offset );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    method write_to ( File :$file does coerce  ) {
-        my $fh = $self->source->openr;
-        seek $fh, $self->offset, 0;
-        my $output     = $file->openw;
-        my $chunksize  = 1024;
-        my $bytes_left = $self->size;
-        my $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        while ( read $fh, my $buffer, $chunk ) {
-            print {$output} $buffer or Carp::croak("Write to $file failed");
-            $bytes_left -= $chunksize;
-            $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
-        }
-        return 1;
+    if ( $field eq 'size' ) {
+        return ( $self->size <=> $other->size );
     }
+    return;
+}
 
 
 
@@ -187,14 +157,42 @@ class ELF::Extract::Sections::Section {
 
 
 
-    method contents {
-        my $fh = $self->source->openr;
-        seek $fh, $self->offset, 0;
-        my $b;
-        read $fh, $b, $self->size;
-        return $b;
+
+
+
+
+
+
+
+
+method write_to ( File :$file does coerce  ) {
+    my $fh = $self->source->openr;
+    seek $fh, $self->offset, 0;
+    my $output     = $file->openw;
+    my $chunksize  = 1024;
+    my $bytes_left = $self->size;
+    my $chunk      = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
+    while ( read $fh, my $buffer, $chunk ) {
+        print {$output} $buffer or Carp::croak("Write to $file failed");
+        $bytes_left -= $chunksize;
+        $chunk = ( $bytes_left < $chunksize ) ? $bytes_left : $chunksize;
     }
-};
+    return 1;
+}
+
+
+
+
+
+
+
+method contents {
+    my $fh = $self->source->openr;
+    seek $fh, $self->offset, 0;
+    my $b;
+    read $fh, $b, $self->size;
+    return $b;
+}
 
 1;
 
@@ -315,7 +313,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Kent Fredric.
+This software is copyright (c) 2015 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

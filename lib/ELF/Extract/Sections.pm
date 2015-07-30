@@ -7,9 +7,9 @@ $ELF::Extract::Sections::VERSION = '0.03000102';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-use MooseX::Declare;
+use Moose qw( with has );
+with "MooseX::Log::Log4perl";
 
-class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
@@ -52,15 +52,16 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
+use MooseX::Has::Sugar 0.0300;
+use MooseX::Method::Signatures;
+use MooseX::Types::Moose                ( ':all', );
+use MooseX::Types::Path::Tiny           ( 'File', );
+use ELF::Extract::Sections::Meta::Types ( ':all', );
+use Class::Load                         ( 'try_load_class', );
 
+require ELF::Extract::Sections::Section;
 
-    use MooseX::Has::Sugar 0.0300;
-    use MooseX::Types::Moose                ( ':all', );
-    use MooseX::Types::Path::Tiny           ( 'File', );
-    use ELF::Extract::Sections::Meta::Types ( ':all', );
-    use Class::Load                         ( 'try_load_class', );
 
-    require ELF::Extract::Sections::Section;
 
 
 
@@ -69,25 +70,25 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
+has 'file' => ( isa => File, ro, required, coerce, );
 
 
-    has 'file' => ( isa => File, ro, required, coerce, );
 
 
 
 
 
+has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
 
-    has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
 
 
 
 
+has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
 
-    has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
 
 
@@ -101,13 +102,11 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-
-
-    method BUILD ( $args ) {
-        if ( not $self->file->stat ) {
-            $self->log->logconfess(q{File Specifed could not be found.});
-        }
+method BUILD ( $args ) {
+    if ( not $self->file->stat ) {
+        $self->log->logconfess(q{File Specifed could not be found.});
     }
+}
 
 
 
@@ -139,34 +138,33 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-    method sorted_sections (  FilterField :$field!, Bool :$descending? ) {
-        my $m = 1;
-        $m = 0 - 1 if ($descending);
-        return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) }
-              values %{ $self->sections } ];
+method sorted_sections (  FilterField :$field!, Bool :$descending? ) {
+    my $m = 1;
+    $m = 0 - 1 if ($descending);
+    return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+method _build_sections {
+    $self->log->debug('Building Section List');
+    if ( $self->_scanner_instance->can_compute_size ) {
+        return $self->_scan_with_size;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    method _build_sections {
-        $self->log->debug('Building Section List');
-        if ( $self->_scanner_instance->can_compute_size ) {
-            return $self->_scan_with_size;
-        }
-        else {
-            return $self->_scan_guess_size;
-        }
+    else {
+        return $self->_scan_guess_size;
     }
+}
 
 
 
@@ -178,7 +176,7 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-    has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
+has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
 
 
 
@@ -186,18 +184,32 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-    has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
+has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 
 
 
 
-    method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
-        my $message = sprintf qq[The Scanner %s could not be found as %s\n.],
-          $scanner, $package;
-        $message .= '>' . $error;
-        $self->log->logconfess($message);
+method _error_scanner_missing ( Str $scanner!, Str $package!, Str $error! ) {
+    my $message = sprintf qq[The Scanner %s could not be found as %s\n.], $scanner, $package;
+    $message .= '>' . $error;
+    $self->log->logconfess($message);
+}
+
+
+
+
+
+
+
+method _build__scanner_package {
+    my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
+    my ( $success, $error ) = try_load_class($pkg);
+    if ( not $success ) {
+        $self->_error_scanner_missing( $self->scanner, $pkg, $error );
     }
+    return $pkg;
+}
 
 
 
@@ -205,14 +217,42 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-    method _build__scanner_package {
-        my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
-        my ( $success, $error ) = try_load_class($pkg);
-        if ( not $success ) {
-            $self->_error_scanner_missing( $self->scanner, $pkg, $error );
-        }
-        return $pkg;
+method _build__scanner_instance {
+    my $instance = $self->_scanner_package->new();
+    return $instance;
+}
+
+
+
+
+
+
+
+
+
+
+
+method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
+    my $message = q[Warning, duplicate file offset reported by scanner.];
+    $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname, $header, $offset;
+    $message .= sprintf q[Assuming <%s> is empty and replacing it.], $stashname;
+    $self->log->warn($message);
+}
+
+
+
+
+
+
+
+
+
+method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
+    if ( exists $stash->{$offset} ) {
+        $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
     }
+    $stash->{$offset} = $header;
+}
 
 
 
@@ -220,10 +260,36 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-    method _build__scanner_instance {
-        my $instance = $self->_scanner_package->new();
-        return $instance;
+
+
+
+method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
+    $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
+    return ELF::Extract::Sections::Section->new(
+        offset => $start,
+        size   => $stop - $start,
+        name   => $stashName,
+        source => $file,
+    );
+}
+
+
+
+
+
+
+
+
+method _build_section_table ( HashRef $ob! ) {
+    my %datastash = ();
+    my @k         = sort { $a <=> $b } keys %{$ob};
+    my $i         = 0;
+    while ( $i < $#k ) {
+        $datastash{ $ob->{ $k[$i] } } = $self->_build_section_section( $ob->{ $k[$i] }, $k[$i], $k[ $i + 1 ], $self->file );
+        $i++;
     }
+    return \%datastash;
+}
 
 
 
@@ -233,17 +299,17 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-
-
-
-    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
-        my $message = q[Warning, duplicate file offset reported by scanner.];
-        $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname,
-          $header, $offset;
-        $message .= sprintf q[Assuming <%s> is empty and replacing it.],
-          $stashname;
-        $self->log->warn($message);
+method _scan_guess_size {
+                          # HACK: Temporary hack around rt#67210
+    scalar $self->_scanner_instance->open_file( file => $self->file );
+    my %offsets = ();
+    while ( $self->_scanner_instance->next_section() ) {
+        my $name   = $self->_scanner_instance->section_name;
+        my $offset = $self->_scanner_instance->section_offset;
+        $self->_stash_record( \%offsets, $name, $offset );
     }
+    return $self->_build_section_table( \%offsets );
+}
 
 
 
@@ -252,97 +318,17 @@ class ELF::Extract::Sections with MooseX::Log::Log4perl {
 
 
 
-
-    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
-        if ( exists $stash->{$offset} ) {
-            $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
-        }
-        $stash->{$offset} = $header;
+method _scan_with_size {
+    my %datastash = ();
+    $self->_scanner_instance->open_file( file => $self->file );
+    while ( $self->_scanner_instance->next_section() ) {
+        my $name   = $self->_scanner_instance->section_name;
+        my $offset = $self->_scanner_instance->section_offset;
+        my $size   = $self->_scanner_instance->section_size;
+        $datastash{$name} = $self->_build_section_section( $name, $offset, $offset + $size, $self->file );
     }
-
-
-
-
-
-
-
-
-
-
-    method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
-        $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
-        return ELF::Extract::Sections::Section->new(
-            offset => $start,
-            size   => $stop - $start,
-            name   => $stashName,
-            source => $file,
-        );
-    }
-
-
-
-
-
-
-
-
-    method _build_section_table ( HashRef $ob! ) {
-        my %datastash = ();
-        my @k         = sort { $a <=> $b } keys %{$ob};
-        my $i         = 0;
-        while ( $i < $#k ) {
-            $datastash{ $ob->{ $k[$i] } } = $self->_build_section_section(
-                $ob->{ $k[$i] },
-                $k[$i], $k[ $i + 1 ],
-                $self->file
-            );
-            $i++;
-        }
-        return \%datastash;
-    }
-
-
-
-
-
-
-
-
-
-    method _scan_guess_size {
-                              # HACK: Temporary hack around rt#67210
-        scalar $self->_scanner_instance->open_file( file => $self->file );
-        my %offsets = ();
-        while ( $self->_scanner_instance->next_section() ) {
-            my $name   = $self->_scanner_instance->section_name;
-            my $offset = $self->_scanner_instance->section_offset;
-            $self->_stash_record( \%offsets, $name, $offset );
-        }
-        return $self->_build_section_table( \%offsets );
-    }
-
-
-
-
-
-
-
-
-    method _scan_with_size {
-        my %datastash = ();
-        $self->_scanner_instance->open_file( file => $self->file );
-        while ( $self->_scanner_instance->next_section() ) {
-            my $name   = $self->_scanner_instance->section_name;
-            my $offset = $self->_scanner_instance->section_offset;
-            my $size   = $self->_scanner_instance->section_size;
-            $datastash{$name} =
-              $self->_build_section_section( $name, $offset, $offset + $size,
-                $self->file );
-        }
-        return \%datastash;
-    }
-
-};
+    return \%datastash;
+}
 
 1;
 
@@ -538,7 +524,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Kent Fredric.
+This software is copyright (c) 2015 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

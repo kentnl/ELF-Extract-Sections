@@ -30,7 +30,6 @@ while ( my $file = $iter->() ) {
             offset => $_->offset,
         };
     }
-    is_deeply( $d, $data, sprintf 'Analysis of %s matches data stored in %s',
-        $f->basename, $yaml->basename );
+    is_deeply( $d, $data, sprintf 'Analysis of %s matches data stored in %s', $f->basename, $yaml->basename );
 }
 

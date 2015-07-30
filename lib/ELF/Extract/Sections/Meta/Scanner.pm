@@ -7,17 +7,10 @@ $ELF::Extract::Sections::Meta::Scanner::VERSION = '0.03000102';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-use MooseX::Declare;
+use Moose::Role qw( with requires );
+with 'MooseX::Log::Log4perl';
 
-role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {
-
-    requires(
-        'open_file',      'next_section',
-        'section_offset', 'section_size',
-        'section_name',   'can_compute_size'
-    );
-
-};
+requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
 
 1;
 
@@ -71,7 +64,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Kent Fredric.
+This software is copyright (c) 2015 by Kent Fredric.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
