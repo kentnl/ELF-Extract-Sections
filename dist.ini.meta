@@ -1,7 +1,8 @@
+; vim: syntax=dosini
 name    = ELF-Extract-Sections
 author  = Kent Fredric <kentnl@cpan.org>
 license = Perl_5
-copyright_holder = Kent Fredric
+copyright_holder = Kent Fredric <kentfredric@gmail.com>
 ;abstract = Extract Raw Chunks of data from identifiable ELF Sections
 
 [@Author::KENTNL]
@@ -10,6 +11,8 @@ normal_form      = numify
 mantissa         = 8
 toolkit          = eumm
 toolkit_hardness = soft
+srcreadme        = mkdn
+
 ; version_major = 0
 ; version_minor = 2
 ; version_rel_year  = 2009
