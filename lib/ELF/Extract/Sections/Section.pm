@@ -60,7 +60,7 @@ use overload '""' => \&to_string;
 sub _argument {
     my ( $args, $number, $type, %flags ) = @_;
     return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
 
     @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
 
@@ -78,7 +78,7 @@ sub _argument {
 sub _parameter {
     my ( $args, $name, $type, %flags ) = @_;
     return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)': q[];
+    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
     exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
 
     if ( not $flags{coerce} ) {
@@ -187,13 +187,13 @@ sub compare {
         croak "Unknown parameters @{[ keys %args ]}";
     }
 
-    if ( $field eq 'name' ) {
+    if ( 'name' eq $field ) {
         return ( $self->name cmp $other->name );
     }
-    if ( $field eq 'offset' ) {
+    if ( 'offset' eq $field  ) {
         return ( $self->offset <=> $other->offset );
     }
-    if ( $field eq 'size' ) {
+    if ( 'size' eq $field ) {
         return ( $self->size <=> $other->size );
     }
     return;
@@ -215,7 +215,7 @@ sub compare {
 
 sub write_to {
     my ( $self, %args ) = @_;
-    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1  );
+    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1 );
     if ( keys %args ) {
         croak "Unknown parameters @{[ keys %args ]}";
     }
