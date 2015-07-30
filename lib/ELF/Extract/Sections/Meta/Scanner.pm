@@ -7,17 +7,10 @@ package ELF::Extract::Sections::Meta::Scanner;
 
 # AUTHORITY
 
-use MooseX::Declare;
+use Moose::Role qw( with requires );
+with 'MooseX::Log::Log4perl';
 
-role ELF::Extract::Sections::Meta::Scanner with MooseX::Log::Log4perl {
-
-    requires(
-        'open_file',      'next_section',
-        'section_offset', 'section_size',
-        'section_name',   'can_compute_size'
-    );
-
-};
+requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
 
 1;
 
