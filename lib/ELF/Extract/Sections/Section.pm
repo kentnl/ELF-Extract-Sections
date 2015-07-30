@@ -88,7 +88,7 @@ sub _parameter {
         my $value = $type->coerce( delete $args->{$name} );
         return $value if $value;
     }
-    return croak "Parameter \'$name\' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
+    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
 }
 
 
