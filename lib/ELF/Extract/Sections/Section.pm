@@ -92,6 +92,9 @@ has offset => ( isa => Int, ro, required );
 
 has size => ( isa => Int, ro, required );
 
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
 
 
 
@@ -233,6 +236,7 @@ sub contents {
     read $fh, $b, $self->size;
     return $b;
 }
+
 
 1;
 
