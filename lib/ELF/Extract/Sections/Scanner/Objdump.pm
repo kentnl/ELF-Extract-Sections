@@ -213,20 +213,6 @@ sub can_compute_size {
     return 0;
 }
 
-=head1 PRIVATE ATTRIBUTES
-
-=head2 _header_regex : RegexpRef
-
-A regular expression for identifying the
-
-  <asdasdead>
-
-Style tokens that denote objdump header names.
-
-Note: This is not XML.
-
-=cut
-
 has _header_regex => (
     isa => RegexpRef,
     ro,
@@ -234,16 +220,6 @@ has _header_regex => (
         return qr/<(?<header>[^>]+)>/;
     },
 );
-
-=head2 _offset_regex : RegexpRef
-
-A regular expression for identifying offset blocks in objdump's output.
-
-They look like this:
-
-  File Offset: 0xdeadbeef
-
-=cut
 
 has _offset_regex => (
     isa => RegexpRef,
@@ -254,53 +230,11 @@ has _offset_regex => (
     },
 );
 
-=head2 _section_header_identifier : RegexpRef
-
-A regular expression for extracting Headers and Offsets together
-
-  <headername> File Offset: 0xdeadbeef
-
-=cut
-
 has _section_header_identifier => ( isa => RegexpRef, ro, lazy_build, );
-
-=head2 _file : File
-
-A L<Path::Tiny> reference to a file somewhere on a system
-
-=head3 _clear_file : _file.clearer
-
-Clears L</_file>
-
-=cut
 
 has _file => ( isa => File, rw, clearer => '_clear_file', );
 
-=head2 _filehandle : FileHandle
-
-A perl FileHandle that points to the output of objdump for L</_file>
-
-=head3 _clear_file_handle : _filehandle.clearer
-
-Clears L</_filehandle>
-
-=cut
-
 has _filehandle => ( isa => FileHandle, rw, clearer => '_clear_filehandle', );
-
-=head2 _state : HashRef
-
-Keeps track of what we're doing, and what the next header is to return.
-
-=head3 _has_state : _state.predicate
-
-Returns is-set of L</_state>
-
-=head3 _clear_state : _state.clearer
-
-Clears L<_state>
-
-=cut
 
 has _state => (
     isa => HashRef,
@@ -311,18 +245,6 @@ has _state => (
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
-=head1 PRIVATE ATTRIBUTE BUILDERS
-
-=cut
-
-=head2 -> _build__section_header_identifier : RegexpRef
-
-Assembles L</_header_regex> and L</_offset_regex>
-
-L</_section_header_identifier>
-
-=cut
-
 sub _build__section_header_identifier {
     my ($self) = @_;
     my $header = $self->_header_regex;
@@ -330,16 +252,6 @@ sub _build__section_header_identifier {
 
     return qr/${header}\s*${offset}:/;
 }
-
-=head1 PRIVATE METHODS
-
-=cut
-
-=head2 -> _objdump : FileHandle | Undef
-
-Calls the system C<objdump> instance for the currently processing file.
-
-=cut
 
 sub _objdump {
     my ($self) = @_;
@@ -353,4 +265,3 @@ sub _objdump {
 1;
 
 __END__
-
