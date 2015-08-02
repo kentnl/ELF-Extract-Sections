@@ -193,18 +193,6 @@ sub sorted_sections {
     return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 sub _build_sections {
     my ($self) = @_;
     $self->log->debug('Building Section List');
@@ -216,32 +204,12 @@ sub _build_sections {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
-
-
-
-
-
-
 
 has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
-
-
-
-
 
 sub _error_scanner_missing {
     my ( $self, @args ) = @_;
@@ -255,12 +223,6 @@ sub _error_scanner_missing {
     return;
 }
 
-
-
-
-
-
-
 sub _build__scanner_package {
     my ($self) = @_;
     my $pkg = 'ELF::Extract::Sections::Scanner::' . $self->scanner;
@@ -271,27 +233,11 @@ sub _build__scanner_package {
     return $pkg;
 }
 
-
-
-
-
-
-
 sub _build__scanner_instance {
     my ($self) = @_;
     my $instance = $self->_scanner_package->new();
     return $instance;
 }
-
-
-
-
-
-
-
-
-
-
 
 sub _warn_stash_collision {
     my ( $self, @args ) = @_;
@@ -307,14 +253,6 @@ sub _warn_stash_collision {
     return;
 }
 
-
-
-
-
-
-
-
-
 sub _stash_record {
     my ( $self, @args ) = @_;
     @args < 4 or croak 'Too many arguments';
@@ -328,15 +266,6 @@ sub _stash_record {
     $stash->{$offset} = $header;
     return;
 }
-
-
-
-
-
-
-
-
-
 
 sub _build_section_section {
     my ( $self, @args ) = @_;
@@ -355,13 +284,6 @@ sub _build_section_section {
     );
 }
 
-
-
-
-
-
-
-
 sub _build_section_table {
     my ( $self, @args ) = @_;
     @args < 2 or croak 'Too many arguments';
@@ -376,14 +298,6 @@ sub _build_section_table {
     return \%datastash;
 }
 
-
-
-
-
-
-
-
-
 sub _scan_guess_size {
     my ($self) = @_;
 
@@ -397,13 +311,6 @@ sub _scan_guess_size {
     }
     return $self->_build_section_table( \%offsets );
 }
-
-
-
-
-
-
-
 
 sub _scan_with_size {
     my ($self) = @_;
@@ -527,70 +434,6 @@ The Sections offset relative to the start of the file.
 =head4 size
 
 The Size of the section.
-
-=head1 PUBLIC ATTRIBUTE BUILDERS
-
-These aren't really user serviceable, but they make your front end work.
-
-=head2 _build_sections
-
-See L</sections>
-
-=head1 PRIVATE ATTRIBUTES
-
-=head2 _scanner_package
-
-    isa => ClassName, ro, lazy_build
-
-=head2 _scanner_instance
-
-    isa => Object, ro, lazy_build
-
-=head1 PRIVATE ATTRIBUTE BUILDERS
-
-=head2 _build__scanner_package
-
-Builds L</_scanner_package>
-
-=head2 _build__scanner_instance
-
-Builds L</_scanner_instance>
-
-=head1 PRIVATE_METHODS
-
-=head2 _warn_stash_collision
-
-    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
-
-    }
-
-=head2 _stash_record( HashRef, Str, Str )
-
-    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
-
-    }
-
-=head2 _build_section_section( Str, Int, Int, File )
-
-    method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
-
-    }
-
-=head2 _build_section_table( HashRef )
-
-    method _build_section_table ( HashRef $ob! ) {
-    }
-
-=head2 _scan_guess_size
-
-    method _scan_guess_size {
-
-    }
-
-=head2 _scan_with_size
-
-    method _scan_with_size {
-    }
 
 =head1 DEBUGGING
 
