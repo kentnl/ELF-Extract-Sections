@@ -4,7 +4,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 # VERSION
 
-version 1.000001
+version 1.001000
 
 # SYNOPSIS
 
