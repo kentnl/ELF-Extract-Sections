@@ -13,40 +13,6 @@ our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 use Moose qw( with has );
 with 'ELF::Extract::Sections::Meta::Scanner';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 
@@ -292,20 +258,6 @@ TO use this module, simply initialise L<ELF::Extract::Sections> as so
             scanner => "Objdump",
     );
 
-=head1 IMPLEMENTS ROLES
-
-=head2 ELF::Extract::Sections::Meta::Scanner
-
-L<ELF::Extract::Sections::Meta::Scanner>
-
-=head1 DEPENDS
-
-=head2 MooseX::Has::Sugar
-
-Lots of keywords.
-
-L<MooseX::Has::Sugar>
-
 =head2 MooseX::Types::Moose
 
 Type Constraining Keywords.
@@ -355,6 +307,20 @@ L<ELF::Extract::Sections::Meta::Scanner/section_name>
 Returns false
 
 L<ELF::Extract::Sections::Meta::Scanner/can_compute_size>
+
+=head1 IMPLEMENTS ROLES
+
+=head2 ELF::Extract::Sections::Meta::Scanner
+
+L<ELF::Extract::Sections::Meta::Scanner>
+
+=head1 DEPENDS
+
+=head2 MooseX::Has::Sugar
+
+Lots of keywords.
+
+L<MooseX::Has::Sugar>
 
 =head1 AUTHOR
 

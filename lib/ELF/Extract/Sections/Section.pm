@@ -12,43 +12,6 @@ our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );

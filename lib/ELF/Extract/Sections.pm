@@ -14,48 +14,6 @@ use Moose qw( with has );
 use Carp qw( croak );
 with 'MooseX::Log::Log4perl';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
@@ -360,27 +318,6 @@ version 1.000001
     # Get the raw bytes out of the section.
     print $data->contents  # returns bytes
 
-=head1 CAVEATS
-
-=over 4
-
-=item 1. Beta Software
-
-This code is relatively new. It exists only as a best attempt at present until further notice. It
-has proved as practical for at least one application, and this is why the module exists. However, it can't be
-guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
-
-=item 2. Feature Incomplete
-
-This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
-If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
-
-=item 3. Humans
-
-This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
-
-=back
-
 =head1 PUBLIC ATTRIBUTES
 
 =head2 file
@@ -434,6 +371,27 @@ The Sections offset relative to the start of the file.
 =head4 size
 
 The Size of the section.
+
+=head1 CAVEATS
+
+=over 4
+
+=item 1. Beta Software
+
+This code is relatively new. It exists only as a best attempt at present until further notice. It
+has proved as practical for at least one application, and this is why the module exists. However, it can't be
+guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
+
+=item 2. Feature Incomplete
+
+This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
+If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
+
+=item 3. Humans
+
+This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
+
+=back
 
 =head1 DEBUGGING
 
