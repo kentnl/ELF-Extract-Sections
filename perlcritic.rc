@@ -336,7 +336,7 @@ private_name_regex = _(?!build_)\w
 
 [Subroutines::ProtectPrivateSubs]
 
-[Subroutines::RequireArgUnpacking]
+[-Subroutines::RequireArgUnpacking]
 
 [Subroutines::RequireFinalReturn]
 

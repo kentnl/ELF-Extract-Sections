@@ -104,9 +104,8 @@ The Size of the section.
 =cut
 
 sub sorted_sections {
-    my ( $self,  @args )       = @_;
-    my ( $field, $descending ) = validated_list(
-        \@args,
+    my ( $self, $field, $descending ) = validated_list(
+        \@_,
         'field'      => { isa => FilterField, optional => 1 },
         'descending' => { isa => Bool,        optional => 1 },
     );

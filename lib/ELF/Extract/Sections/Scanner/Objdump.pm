@@ -31,11 +31,7 @@ L<ELF::Extract::Sections::Meta::Scanner/open_file>
 =cut
 
 sub open_file {
-    my ( $self, @args ) = @_;
-    my $file = validated_list(
-        \@args,    #
-        file => { isa => File, },
-    );
+    my ( $self, $file ) = validated_list( \@_, file => { isa => File, }, );
     $self->log->debug("Opening $file");
     $self->_file($file);
     $self->_filehandle( $self->_objdump );
