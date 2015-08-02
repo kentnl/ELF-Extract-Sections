@@ -290,7 +290,7 @@ version 1.000001
 
 =head1 METHODS
 
-=head2 new
+=head2 C<new>
 
   my $object = ELF::Extract::Sections->new( file => FILENAME );
 
@@ -300,7 +300,7 @@ Creates A new Section Extractor object with the default scanner
 
 Creates A new Section Extractor object with the specified scanner
 
-=head2 sorted_sections
+=head2 C<sorted_sections>
 
   my $sections = $object->sorted_sections( field => SORT_BY )
 
