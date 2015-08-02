@@ -31,10 +31,7 @@ use MooseX::Params::Validate  (qw( validated_list ));
 
 
 sub open_file {
-    my ( $self, $file ) = validated_list(
-        \@_,
-        file => { isa => File, },
-    );
+    my ( $self, $file ) = validated_list( \@_, file => { isa => File, }, );
     $self->log->debug("Opening $file");
     $self->_file($file);
     $self->_filehandle( $self->_objdump );

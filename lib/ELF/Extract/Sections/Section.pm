@@ -106,7 +106,7 @@ sub to_string {
 
 
 sub compare {
-    my ( $self,  $other, $field ) = validated_list(
+    my ( $self, $other, $field ) = validated_list(
         \@_,
         other => { isa => class_type('ELF::Extract::Sections::Section') },
         field => { isa => FilterField, },
