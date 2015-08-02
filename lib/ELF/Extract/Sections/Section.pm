@@ -106,9 +106,8 @@ sub to_string {
 
 
 sub compare {
-    my ( $self,  @args )  = @_;
-    my ( $other, $field ) = validated_list(
-        \@args,
+    my ( $self,  $other, $field ) = validated_list(
+        \@_,
         other => { isa => class_type('ELF::Extract::Sections::Section') },
         field => { isa => FilterField, },
     );
@@ -141,9 +140,8 @@ sub compare {
 
 
 sub write_to {
-    my ( $self, @args ) = @_;
-    my $file = validated_list(
-        \@args,    #
+    my ( $self, $file ) = validated_list(
+        \@_,    #
         file => { isa => File, optional => 0, coerce => 1 },
     );
     my $fh = $self->source->openr;

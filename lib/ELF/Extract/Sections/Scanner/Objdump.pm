@@ -31,9 +31,8 @@ use MooseX::Params::Validate  (qw( validated_list ));
 
 
 sub open_file {
-    my ( $self, @args ) = @_;
-    my $file = validated_list(
-        \@args,    #
+    my ( $self, $file ) = validated_list(
+        \@_,
         file => { isa => File, },
     );
     $self->log->debug("Opening $file");

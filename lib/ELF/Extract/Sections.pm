@@ -104,9 +104,8 @@ sub BUILD {
 
 
 sub sorted_sections {
-    my ( $self,  @args )       = @_;
-    my ( $field, $descending ) = validated_list(
-        \@args,
+    my ( $self, $field, $descending ) = validated_list(
+        \@_,
         'field'      => { isa => FilterField, optional => 1 },
         'descending' => { isa => Bool,        optional => 1 },
     );
@@ -134,9 +133,8 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 
 sub _error_scanner_missing {
-    my ( $self, @args ) = @_;
-    my ( $scanner, $package, $error ) = pos_validated_list(
-        \@args,
+    my ( $self, $scanner, $package, $error ) = pos_validated_list(
+        \@_,
         { isa => Str, },    #
         { isa => Str, },    #
         { isa => Str, },    #
@@ -164,9 +162,8 @@ sub _build__scanner_instance {
 }
 
 sub _warn_stash_collision {
-    my ( $self, @args ) = @_;
-    my ( $stashname, $header, $offset ) = pos_validated_list(
-        \@args,
+    my ( $self, $stashname, $header, $offset ) = pos_validated_list(
+        \@_,
         { isa => Str, },    #
         { isa => Str, },
         { isa => Str, },
@@ -179,9 +176,8 @@ sub _warn_stash_collision {
 }
 
 sub _stash_record {
-    my ( $self, @args ) = @_;
-    my ( $stash, $header, $offset ) = pos_validated_list(
-        \@args,
+    my ( $self, $stash, $header, $offset ) = pos_validated_list(
+        \@_,
         { isa => HashRef, },    #
         { isa => Str, },
         { isa => Str, },
@@ -194,9 +190,8 @@ sub _stash_record {
 }
 
 sub _build_section_section {
-    my ( $self, @args ) = @_;
-    my ( $stashName, $start, $stop, $file ) = pos_validated_list(
-        \@args,
+    my ( $self, $stashName, $start, $stop, $file ) = pos_validated_list(
+        \@_,
         { isa => Str,  required => 1 },
         { isa => Int,  required => 1 },
         { isa => Int,  required => 1 },
@@ -212,9 +207,8 @@ sub _build_section_section {
 }
 
 sub _build_section_table {
-    my ( $self, @args ) = @_;
-    my ($ob) = pos_validated_list(
-        \@args,    #
+    my ( $self, $ob ) = pos_validated_list(
+        \@_,    #
         { isa => HashRef },
     );
     my %datastash = ();
