@@ -16,24 +16,7 @@ with 'ELF::Extract::Sections::Meta::Scanner';
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 
-=head2 MooseX::Types::Moose
-
-Type Constraining Keywords.
-
-L<MooseX::Types::Moose>
-
-=cut
-
 use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
-
-=head2 MooseX::Types::Path::Tiny
-
-File Type Constraints w/ Path::Tiny
-
-L<MooseX::Types::Path::Tiny>
-
-=cut
-
 use MooseX::Types::Path::Tiny ('File');
 
 =head1 PUBLIC METHODS
@@ -253,15 +236,5 @@ TO use this module, simply initialise L<ELF::Extract::Sections> as so
 =head2 ELF::Extract::Sections::Meta::Scanner
 
 L<ELF::Extract::Sections::Meta::Scanner>
-
-=cut
-
-=head1 DEPENDS
-
-=head2 MooseX::Has::Sugar
-
-Lots of keywords.
-
-L<MooseX::Has::Sugar>
 
 =cut
