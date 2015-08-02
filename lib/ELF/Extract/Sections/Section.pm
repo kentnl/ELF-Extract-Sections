@@ -54,11 +54,7 @@ sub _parameter {
     return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
 }
 
-=head1 PUBLIC ATTRIBUTES
-
-=cut
-
-=head2 source
+=attr C<source>
 
 C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
 
@@ -66,7 +62,7 @@ C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the f
 
 has source => ( isa => File, ro, required, coerce, );
 
-=head2 name
+=attr C<name>
 
 C<Str>: The ELF Section Name
 
@@ -74,7 +70,7 @@ C<Str>: The ELF Section Name
 
 has name => ( isa => Str, ro, required );
 
-=head2 offset
+=attr C<offset>
 
 C<Int>: Position in bytes relative to the start of the file.
 
@@ -82,7 +78,7 @@ C<Int>: Position in bytes relative to the start of the file.
 
 has offset => ( isa => Int, ro, required );
 
-=head2 size
+=attr C<size>
 
 C<Int>: The ELF Section Size
 
@@ -93,19 +89,17 @@ has size => ( isa => Int, ro, required );
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
-=head1 PUBLIC METHODS
+=method C<new>
 
-=cut
-
-=head2 -> new ( %ATTRIBUTES )
+  my $section = ELF::Extract::Sections::Section->new( %ATTRIBUTES );
 
 4 Parameters, all required.
 
 Returns an C<ELF::Extract::Sections::Section> object.
 
-=cut
+=method C<to_string>
 
-=head2 -> to_string
+  my $string = $section->to_string;
 
 returns C<Str> description of the object
 
@@ -122,7 +116,9 @@ sub to_string {
       ;
 }
 
-=head2 -> compare ( other => $other, field => $field )
+=method C<compare>
+
+  my $cmp_result = $section->compare( other => $other, field => $field );
 
 2 Parameters, both required
 
@@ -162,7 +158,9 @@ sub compare {
     return;
 }
 
-=head2 -> write_to ( file => $file )
+=method C<write_to>
+
+  my $boolean = $section->write_to( file => $file );
 
 B<UNIMPLEMENTED AS OF YET>
 
@@ -196,7 +194,9 @@ sub write_to {
     return 1;
 }
 
-=head2 -> contents
+=method C<contents>
+
+  my $string = $section->contents;
 
 returns C<Str> of binary data read out of file.
 

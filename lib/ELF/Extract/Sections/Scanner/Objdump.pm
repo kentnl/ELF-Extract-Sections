@@ -19,11 +19,9 @@ use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
 use MooseX::Types::Path::Tiny ('File');
 
-=head1 PUBLIC METHODS
+=method C<open_file>
 
-=cut
-
-=head2 -> open_file ( file => File ) : Bool I< ::Scanner >
+  my $boolean = $scanner->open_file( file => File );
 
 Opens the file and assigns our state to that file.
 
@@ -77,7 +75,9 @@ sub open_file {
     return 1;
 }
 
-=head2 -> next_section () : Bool I< ::Scanner >
+=method C<next_section>
+
+  my $boolean = $scanner->next_section();
 
 Advances our state to the next section.
 
@@ -102,7 +102,9 @@ sub next_section {
     return 0;
 }
 
-=head2 -> section_offset () : Int | Undef I< ::Scanner >
+=method C<section_offset>
+
+  my $return = $scanner->section_offset(); # Int | Undef
 
 Reports the offset of the currently open section
 
@@ -119,7 +121,9 @@ sub section_offset {
     return hex( $self->_state->{offset} );
 }
 
-=head2 -> section_size () : Undef I< ::Scanner >
+=method C<section_size>
+
+  my $return = $scanner->section_size(); # BANG
 
 Dies, because this module can't compute section sizes.
 
@@ -133,7 +137,9 @@ sub section_size {
     return;
 }
 
-=head2 -> section_name () : Str | Undef I< ::Scanner >
+=method C<section_name>
+
+  my $name = $scanner->section_name(); # Str | Undef
 
 Returns the name of the current section
 
@@ -150,7 +156,9 @@ sub section_name {
     return $self->_state->{header};
 }
 
-=head2 -> can_compute_size () : Bool I< ::Scanner >
+=method C<can_compute_size>
+
+  my $bool = $scanner->can_compute_size;
 
 Returns false
 

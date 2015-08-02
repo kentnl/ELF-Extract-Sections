@@ -22,10 +22,7 @@ use Module::Runtime                     ( 'require_module', );
 
 require ELF::Extract::Sections::Section;
 
-=head1 PUBLIC ATTRIBUTES
-=cut
-
-=head2 file
+=attr C<file>
 
 Returns the file the section data is being created for.
 
@@ -33,7 +30,7 @@ Returns the file the section data is being created for.
 
 has 'file' => ( isa => File, ro, required, coerce, );
 
-=head2 sections
+=attr C<sections>
 
 Returns a HashRef of the available sections.
 
@@ -41,7 +38,7 @@ Returns a HashRef of the available sections.
 
 has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
-=head2 scanner
+=attr C<scanner>
 
 Returns the name of the default scanner plug-in
 
@@ -49,15 +46,13 @@ Returns the name of the default scanner plug-in
 
 has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
-=head1 PUBLIC METHODS
+=method C<new>
 
-=cut
-
-=head2 new ( file => FILENAME )
+  my $object = ELF::Extract::Sections->new( file => FILENAME );
 
 Creates A new Section Extractor object with the default scanner
 
-=head2 new ( file => FILENAME , scanner => 'Objdump' )
+  my $object = ELF::Extract::Sections->new( file => FILENAME , scanner => 'Objdump' )
 
 Creates A new Section Extractor object with the specified scanner
 
@@ -75,11 +70,13 @@ sub BUILD {
     return;
 }
 
-=head2 sorted_sections ( field => SORT_BY )
+=method C<sorted_sections>
+
+  my $sections = $object->sorted_sections( field => SORT_BY )
 
 Returns an ArrayRef sorted by the SORT_BY field, in the default order.
 
-=head2 sorted_sections ( field => SORT_BY, descending => DESCENDING )
+  my $sections = $object->sorted_sections( field => SORT_BY, descending => DESCENDING );
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
