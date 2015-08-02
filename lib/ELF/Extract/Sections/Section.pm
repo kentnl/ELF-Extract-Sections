@@ -12,43 +12,6 @@ our $VERSION = '1.000001';
 
 use Moose;
 
-=head1 DESCRIPTION
-
-Generally Intended for use by L<ELF::Extract::Sections> as a meta-structure for tracking data,
-but generated objects are returned to you for you to  deal with
-
-=cut
-
-=head1 SYNOPSIS
-
-  use ELF::Extract::Sections::Section;
-
-  my $s = ELF::Extract::Sections::Section->new(
-      source => '/foo/bar.pl',
-      name   => '.comment',
-      offset => 45670,
-      size   => 1244,
-  );
-
-  # prints a human friendly description
-  print $s->to_string;
-
-  # does likewise.
-  print "$s";
-
-  # Compare with another section ( preferably in the same file, meaningless otherwise )
-  if( $s->compare( $y , 'name' ) ){
-
-  }
-
-  # Unimplemented
-  $s->write_to ( file => '/tmp/out.txt' );
-
-  # Retuns the sections contents as a string
-  print $s->contents;
-
-=cut
-
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
@@ -252,4 +215,37 @@ sub contents {
 
 __END__
 
+=head1 DESCRIPTION
 
+Generally Intended for use by L<ELF::Extract::Sections> as a meta-structure for tracking data,
+but generated objects are returned to you for you to  deal with
+
+=head1 SYNOPSIS
+
+  use ELF::Extract::Sections::Section;
+
+  my $s = ELF::Extract::Sections::Section->new(
+      source => '/foo/bar.pl',
+      name   => '.comment',
+      offset => 45670,
+      size   => 1244,
+  );
+
+  # prints a human friendly description
+  print $s->to_string;
+
+  # does likewise.
+  print "$s";
+
+  # Compare with another section ( preferably in the same file, meaningless otherwise )
+  if( $s->compare( $y , 'name' ) ){
+
+  }
+
+  # Unimplemented
+  $s->write_to ( file => '/tmp/out.txt' );
+
+  # Retuns the sections contents as a string
+  print $s->contents;
+
+=cut

@@ -13,40 +13,6 @@ our $VERSION = '1.000001';
 use Moose qw( with has );
 with 'ELF::Extract::Sections::Meta::Scanner';
 
-=head1 SYNOPSIS
-
-This module is a model implementation of a Naive and system reliant ELF Section detector.
-Its currently highly inefficient due to having to run the entire ELF through a disassembly
-process to determine the section positions and only I<guesses> at section lengths by
-advertising that it can't compute sizes.
-
-TO use this module, simply initialise L<ELF::Extract::Sections> as so
-
-    my $extractor  = ELF::Extract::Sections->new(
-            file => "/path/to/file.so" ,
-            scanner => "Objdump",
-    );
-
-=cut
-
-=head1 IMPLEMENTS ROLES
-
-=head2 ELF::Extract::Sections::Meta::Scanner
-
-L<ELF::Extract::Sections::Meta::Scanner>
-
-=cut
-
-=head1 DEPENDS
-
-=head2 MooseX::Has::Sugar
-
-Lots of keywords.
-
-L<MooseX::Has::Sugar>
-
-=cut
-
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 
@@ -265,3 +231,37 @@ sub _objdump {
 1;
 
 __END__
+
+=head1 SYNOPSIS
+
+This module is a model implementation of a Naive and system reliant ELF Section detector.
+Its currently highly inefficient due to having to run the entire ELF through a disassembly
+process to determine the section positions and only I<guesses> at section lengths by
+advertising that it can't compute sizes.
+
+TO use this module, simply initialise L<ELF::Extract::Sections> as so
+
+    my $extractor  = ELF::Extract::Sections->new(
+            file => "/path/to/file.so" ,
+            scanner => "Objdump",
+    );
+
+=cut
+
+=head1 IMPLEMENTS ROLES
+
+=head2 ELF::Extract::Sections::Meta::Scanner
+
+L<ELF::Extract::Sections::Meta::Scanner>
+
+=cut
+
+=head1 DEPENDS
+
+=head2 MooseX::Has::Sugar
+
+Lots of keywords.
+
+L<MooseX::Has::Sugar>
+
+=cut
