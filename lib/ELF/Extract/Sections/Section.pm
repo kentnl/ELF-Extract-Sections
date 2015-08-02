@@ -17,42 +17,9 @@ use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
+use MooseX::Params::Validate            (qw( validated_list ));
 
 use overload '""' => \&to_string;
-
-sub _argument {
-    my ( $args, $number, $type, %flags ) = @_;
-    return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-
-    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->[$number] ) and return $args->[$number];
-    }
-    else {
-        my $value = $type->coerce( $args->[$number] );
-        return $value if $value;
-    }
-    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
-
-}
-
-sub _parameter {
-    my ( $args, $name, $type, %flags ) = @_;
-    return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->{$name} ) and return delete $args->{$name};
-    }
-    else {
-        my $value = $type->coerce( delete $args->{$name} );
-        return $value if $value;
-    }
-    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
-}
 
 =attr C<source>
 
@@ -139,13 +106,12 @@ returns C<Int> of comparison result, between -1 and 1
 =cut
 
 sub compare {
-    my ( $self, %args ) = @_;
-    my $other = _parameter( \%args, 'other', class_type('ELF::Extract::Sections::Section'), required => 1 );
-    my $field = _parameter( \%args, 'field', FilterField, required => 1 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
-
+    my ( $self,  @args )  = @_;
+    my ( $other, $field ) = validated_list(
+        \@args,
+        other => { isa => class_type('ELF::Extract::Sections::Section') },
+        field => { isa => FilterField, },
+    );
     if ( 'name' eq $field ) {
         return ( $self->name cmp $other->name );
     }
@@ -175,11 +141,11 @@ C<Str>|C<Path::Tiny>: File target to write section contents to.
 =cut
 
 sub write_to {
-    my ( $self, %args ) = @_;
-    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
+    my ( $self, @args ) = @_;
+    my $file = validated_list(
+        \@args,    #
+        file => { isa => File, optional => 0, coerce => 1 },
+    );
     my $fh = $self->source->openr;
     seek $fh, $self->offset, 0;
     my $output     = $file->openw;

@@ -1,6 +1,13 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+ [Dependencies::Stats]
+ - Dependencies changed since 1.000000, see misc/*.deps* for details
+ - runtime: +1
+
+ [Internals]
+ - Parameter handling delegated to MooseX::Params::Validate
+ - TODO: guard against spurious bless() causing problems, re rt#106192
 
 1.000000 2015-07-30T16:49:16Z 1c37bc4
  [!Major]
