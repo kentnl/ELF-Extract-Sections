@@ -60,10 +60,6 @@ sub _parameter {
 
 
 
-
-
-
-
 has source => ( isa => File, ro, required, coerce, );
 
 
@@ -111,8 +107,6 @@ no Moose;
 
 
 
-
-
 sub to_string {
     my ( $self, ) = @_;
     return sprintf
@@ -121,6 +115,8 @@ sub to_string {
       $self->offset + $self->size,
       ;
 }
+
+
 
 
 
@@ -176,6 +172,8 @@ sub compare {
 
 
 
+
+
 sub write_to {
     my ( $self, %args ) = @_;
     my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1 );
@@ -195,6 +193,8 @@ sub write_to {
     }
     return 1;
 }
+
+
 
 
 
@@ -260,39 +260,27 @@ version 1.000001
 Generally Intended for use by L<ELF::Extract::Sections> as a meta-structure for tracking data,
 but generated objects are returned to you for you to  deal with
 
-=head1 PUBLIC ATTRIBUTES
+=head1 METHODS
 
-=head2 source
+=head2 C<new>
 
-C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
-
-=head2 name
-
-C<Str>: The ELF Section Name
-
-=head2 offset
-
-C<Int>: Position in bytes relative to the start of the file.
-
-=head2 size
-
-C<Int>: The ELF Section Size
-
-=head1 PUBLIC METHODS
-
-=head2 -> new ( %ATTRIBUTES )
+  my $section = ELF::Extract::Sections::Section->new( %ATTRIBUTES );
 
 4 Parameters, all required.
 
 Returns an C<ELF::Extract::Sections::Section> object.
 
-=head2 -> to_string
+=head2 C<to_string>
+
+  my $string = $section->to_string;
 
 returns C<Str> description of the object
 
     [ Section {name} of size {size} in {file} @ {start} to {stop} ]
 
-=head2 -> compare ( other => $other, field => $field )
+=head2 C<compare>
+
+  my $cmp_result = $section->compare( other => $other, field => $field );
 
 2 Parameters, both required
 
@@ -310,7 +298,9 @@ C<Str['name','offset','size']>: Field to compare with.
 
 returns C<Int> of comparison result, between -1 and 1
 
-=head2 -> write_to ( file => $file )
+=head2 C<write_to>
+
+  my $boolean = $section->write_to( file => $file );
 
 B<UNIMPLEMENTED AS OF YET>
 
@@ -322,9 +312,29 @@ C<Str>|C<Path::Tiny>: File target to write section contents to.
 
 =back
 
-=head2 -> contents
+=head2 C<contents>
+
+  my $string = $section->contents;
 
 returns C<Str> of binary data read out of file.
+
+=head1 ATTRIBUTES
+
+=head2 C<source>
+
+C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
+
+=head2 C<name>
+
+C<Str>: The ELF Section Name
+
+=head2 C<offset>
+
+C<Int>: Position in bytes relative to the start of the file.
+
+=head2 C<size>
+
+C<Int>: The ELF Section Size
 
 =head1 AUTHOR
 

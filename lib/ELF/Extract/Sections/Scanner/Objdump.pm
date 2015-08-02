@@ -16,27 +16,8 @@ with 'ELF::Extract::Sections::Meta::Scanner';
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 
-
-
-
-
-
-
-
-
 use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
-
-
-
-
-
-
-
-
-
 use MooseX::Types::Path::Tiny ('File');
-
-
 
 
 
@@ -102,6 +83,8 @@ sub open_file {
 
 
 
+
+
 sub next_section {
     my ($self) = @_;
     my $re     = $self->_section_header_identifier;
@@ -118,6 +101,8 @@ sub next_section {
     $self->_clear_state;
     return 0;
 }
+
+
 
 
 
@@ -144,11 +129,15 @@ sub section_offset {
 
 
 
+
+
 sub section_size {
     my ($self) = @_;
     $self->log->logcroak('Can\'t perform section_size on this type of object.');
     return;
 }
+
+
 
 
 
@@ -166,6 +155,8 @@ sub section_name {
     }
     return $self->_state->{header};
 }
+
+
 
 
 
@@ -258,51 +249,51 @@ TO use this module, simply initialise L<ELF::Extract::Sections> as so
             scanner => "Objdump",
     );
 
-=head2 MooseX::Types::Moose
+=head1 METHODS
 
-Type Constraining Keywords.
+=head2 C<open_file>
 
-L<MooseX::Types::Moose>
-
-=head2 MooseX::Types::Path::Tiny
-
-File Type Constraints w/ Path::Tiny
-
-L<MooseX::Types::Path::Tiny>
-
-=head1 PUBLIC METHODS
-
-=head2 -> open_file ( file => File ) : Bool I< ::Scanner >
+  my $boolean = $scanner->open_file( file => File );
 
 Opens the file and assigns our state to that file.
 
 L<ELF::Extract::Sections::Meta::Scanner/open_file>
 
-=head2 -> next_section () : Bool I< ::Scanner >
+=head2 C<next_section>
+
+  my $boolean = $scanner->next_section();
 
 Advances our state to the next section.
 
 L<ELF::Extract::Sections::Meta::Scanner/next_section>
 
-=head2 -> section_offset () : Int | Undef I< ::Scanner >
+=head2 C<section_offset>
+
+  my $return = $scanner->section_offset(); # Int | Undef
 
 Reports the offset of the currently open section
 
 L<ELF::Extract::Sections::Meta::Scanner/section_offset>
 
-=head2 -> section_size () : Undef I< ::Scanner >
+=head2 C<section_size>
+
+  my $return = $scanner->section_size(); # BANG
 
 Dies, because this module can't compute section sizes.
 
 L<ELF::Extract::Sections::Meta::Scanner/section_size>
 
-=head2 -> section_name () : Str | Undef I< ::Scanner >
+=head2 C<section_name>
+
+  my $name = $scanner->section_name(); # Str | Undef
 
 Returns the name of the current section
 
 L<ELF::Extract::Sections::Meta::Scanner/section_name>
 
-=head2 -> can_compute_size () : Bool I< ::Scanner >
+=head2 C<can_compute_size>
+
+  my $bool = $scanner->can_compute_size;
 
 Returns false
 
@@ -313,14 +304,6 @@ L<ELF::Extract::Sections::Meta::Scanner/can_compute_size>
 =head2 ELF::Extract::Sections::Meta::Scanner
 
 L<ELF::Extract::Sections::Meta::Scanner>
-
-=head1 DEPENDS
-
-=head2 MooseX::Has::Sugar
-
-Lots of keywords.
-
-L<MooseX::Has::Sugar>
 
 =head1 AUTHOR
 

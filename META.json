@@ -478,11 +478,6 @@
                      },
                      {
                         "class" : "Pod::Weaver::Section::Generic",
-                        "name" : "NAMING_SCHEME",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Generic",
                         "name" : "OVERVIEW",
                         "version" : "4.012"
                      },
@@ -494,31 +489,6 @@
                      {
                         "class" : "Pod::Weaver::Section::Collect",
                         "name" : "ATTRIBUTES",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "FILTER_METHODS",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "TERMINATOR_LIST_METHODS",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "MIRROR_LIST_METHODS",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "PRIVATE_ATTRIBUTES",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "PRIVATE_METHODS",
                         "version" : "4.012"
                      },
                      {

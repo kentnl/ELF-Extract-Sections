@@ -28,9 +28,6 @@ require ELF::Extract::Sections::Section;
 
 
 
-
-
-
 has 'file' => ( isa => File, ro, required, coerce, );
 
 
@@ -65,8 +62,6 @@ has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
 
 
 
-
-
 sub BUILD {
     my ( $self, ) = @_;
     if ( not $self->file->stat ) {
@@ -74,6 +69,8 @@ sub BUILD {
     }
     return;
 }
+
+
 
 
 
@@ -318,37 +315,25 @@ version 1.000001
     # Get the raw bytes out of the section.
     print $data->contents  # returns bytes
 
-=head1 PUBLIC ATTRIBUTES
+=head1 METHODS
 
-=head2 file
+=head2 new
 
-Returns the file the section data is being created for.
-
-=head2 sections
-
-Returns a HashRef of the available sections.
-
-=head2 scanner
-
-Returns the name of the default scanner plug-in
-
-=head1 PUBLIC METHODS
-
-=head2 new ( file => FILENAME )
+  my $object = ELF::Extract::Sections->new( file => FILENAME );
 
 Creates A new Section Extractor object with the default scanner
 
-=head2 new ( file => FILENAME , scanner => 'Objdump' )
+  my $object = ELF::Extract::Sections->new( file => FILENAME , scanner => 'Objdump' )
 
 Creates A new Section Extractor object with the specified scanner
 
-=for Pod::Coverage BUILD
+=head2 sorted_sections
 
-=head2 sorted_sections ( field => SORT_BY )
+  my $sections = $object->sorted_sections( field => SORT_BY )
 
 Returns an ArrayRef sorted by the SORT_BY field, in the default order.
 
-=head2 sorted_sections ( field => SORT_BY, descending => DESCENDING )
+  my $sections = $object->sorted_sections( field => SORT_BY, descending => DESCENDING );
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
@@ -371,6 +356,22 @@ The Sections offset relative to the start of the file.
 =head4 size
 
 The Size of the section.
+
+=head1 ATTRIBUTES
+
+=head2 C<file>
+
+Returns the file the section data is being created for.
+
+=head2 C<sections>
+
+Returns a HashRef of the available sections.
+
+=head2 C<scanner>
+
+Returns the name of the default scanner plug-in
+
+=for Pod::Coverage BUILD
 
 =head1 CAVEATS
 

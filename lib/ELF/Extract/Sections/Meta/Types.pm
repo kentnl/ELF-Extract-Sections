@@ -36,11 +36,11 @@ version 1.000001
 
 =head1 Types
 
-=head2 FilterField
+=head2 C<FilterField>
 
 ENUM: name, offset, size
 
-=head2 ElfSection
+=head2 C<ElfSection>
 
 An object that is a ELF::Extract::Sections::Section
 
