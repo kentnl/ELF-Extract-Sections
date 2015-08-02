@@ -16,8 +16,9 @@ with 'ELF::Extract::Sections::Meta::Scanner';
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 
-use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
+use MooseX::Types::Moose      (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
 use MooseX::Types::Path::Tiny ('File');
+use MooseX::Params::Validate  (qw( validated_list ));
 
 
 
@@ -28,47 +29,13 @@ use MooseX::Types::Path::Tiny ('File');
 
 
 
-
-sub _argument {
-    my ( $args, $number, $type, %flags ) = @_;
-    return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-
-    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->[$number] ) and return $args->[$number];
-    }
-    else {
-        my $value = $type->coerce( $args->[$number] );
-        return $value if $value;
-    }
-    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
-
-}
-
-sub _parameter {
-    my ( $args, $name, $type, %flags ) = @_;
-    return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->{$name} ) and return delete $args->{$name};
-    }
-    else {
-        my $value = $type->coerce( delete $args->{$name} );
-        return $value if $value;
-    }
-    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
-}
 
 sub open_file {
-    my ( $self, %args ) = @_;
-    my $file = _parameter( \%args, 'file', File, required => 1 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
+    my ( $self, @args ) = @_;
+    my $file = validated_list(
+        \@args,    #
+        file => { isa => File, },
+    );
     $self->log->debug("Opening $file");
     $self->_file($file);
     $self->_filehandle( $self->_objdump );

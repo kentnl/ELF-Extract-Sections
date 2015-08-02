@@ -66,6 +66,7 @@
       "Moose::Role" : "2.1500",
       "MooseX::Has::Sugar" : "1.000004",
       "MooseX::Log::Log4perl" : "0.46",
+      "MooseX::Params::Validate" : "0.21",
       "MooseX::Types" : "0.45",
       "MooseX::Types::Moose" : "0.45",
       "MooseX::Types::Path::Tiny" : "0.011",

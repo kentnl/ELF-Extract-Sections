@@ -107,6 +107,7 @@
             "Moose::Role" : "0",
             "MooseX::Has::Sugar" : "0.0300",
             "MooseX::Log::Log4perl" : "0.31",
+            "MooseX::Params::Validate" : "0",
             "MooseX::Types" : "0.10",
             "MooseX::Types::Moose" : "0.10",
             "MooseX::Types::Path::Tiny" : "0",
