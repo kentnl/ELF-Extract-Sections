@@ -13,7 +13,12 @@ our $VERSION = '1.000001';
 use Moose::Role qw( with requires );
 with 'MooseX::Log::Log4perl';
 
-requires( 'open_file', 'next_section', 'section_offset', 'section_size', 'section_name', 'can_compute_size' );
+requires 'open_file';
+requires 'next_section';
+requires 'section_offset';
+requires 'section_size';
+requires 'section_name';
+requires 'can_compute_size';
 
 no Moose::Role;
 
