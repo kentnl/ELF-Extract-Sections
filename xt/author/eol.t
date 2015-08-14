@@ -19,6 +19,7 @@ my @files = (
     't/00-compile/lib_ELF_Extract_Sections_pm.t',
     't/00-report-prereqs.dd',
     't/00-report-prereqs.t',
+    't/00-version-check.t',
     't/01-elf-libs.t',
     't/test_files/gen_expected.pl'
 );

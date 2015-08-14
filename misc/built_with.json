@@ -1,6 +1,7 @@
 {
    "modules" : {
       "CPAN::Meta" : "2.150005",
+      "Capture::Tiny" : "0.30",
       "Carp" : "1.36",
       "Devel::CheckBin" : "0.03",
       "Dist::Zilla" : "5.037",
@@ -59,6 +60,7 @@
       "Dist::Zilla::PluginBundle::Author::KENTNL" : "2.025001",
       "ExtUtils::MakeMaker" : "7.04_01",
       "File::Spec" : "3.56",
+      "File::Which" : "1.18",
       "FindBin" : "1.51",
       "Log::Log4perl" : "1.46",
       "Module::Runtime" : "0.014",
