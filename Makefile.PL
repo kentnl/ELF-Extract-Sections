@@ -30,6 +30,7 @@ my %WriteMakefileArgs = (
     "Moose::Role" => 0,
     "MooseX::Has::Sugar" => "0.0300",
     "MooseX::Log::Log4perl" => "0.31",
+    "MooseX::Params::Validate" => 0,
     "MooseX::Types" => "0.10",
     "MooseX::Types::Moose" => "0.10",
     "MooseX::Types::Path::Tiny" => 0,
@@ -38,8 +39,10 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "Capture::Tiny" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
+    "File::Which" => 0,
     "FindBin" => 0,
     "Log::Log4perl" => "1.21",
     "Path::Iterator::Rule" => 0,
@@ -48,7 +51,7 @@ my %WriteMakefileArgs = (
     "YAML::XS" => 0,
     "lib" => 0
   },
-  "VERSION" => "1.000000",
+  "VERSION" => "1.001000",
   "test" => {
     "TESTS" => "t/*.t t/00-compile/*.t"
   }
@@ -56,10 +59,12 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Capture::Tiny" => 0,
   "Carp" => 0,
   "Devel::CheckBin" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
+  "File::Which" => 0,
   "FindBin" => 0,
   "Log::Log4perl" => "1.21",
   "Module::Runtime" => 0,
@@ -67,6 +72,7 @@ my %FallbackPrereqs = (
   "Moose::Role" => 0,
   "MooseX::Has::Sugar" => "0.0300",
   "MooseX::Log::Log4perl" => "0.31",
+  "MooseX::Params::Validate" => 0,
   "MooseX::Types" => "0.10",
   "MooseX::Types::Moose" => "0.10",
   "MooseX::Types::Path::Tiny" => 0,

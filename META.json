@@ -107,6 +107,7 @@
             "Moose::Role" : "0",
             "MooseX::Has::Sugar" : "0.0300",
             "MooseX::Log::Log4perl" : "0.31",
+            "MooseX::Params::Validate" : "0",
             "MooseX::Types" : "0.10",
             "MooseX::Types::Moose" : "0.10",
             "MooseX::Types::Path::Tiny" : "0",
@@ -124,8 +125,10 @@
             "Test::More" : "0.99"
          },
          "requires" : {
+            "Capture::Tiny" : "0",
             "ExtUtils::MakeMaker" : "0",
             "File::Spec" : "0",
+            "File::Which" : "0",
             "FindBin" : "0",
             "Log::Log4perl" : "1.21",
             "Path::Iterator::Rule" : "0",
@@ -140,23 +143,23 @@
    "provides" : {
       "ELF::Extract::Sections" : {
          "file" : "lib/ELF/Extract/Sections.pm",
-         "version" : "1.000000"
+         "version" : "1.001000"
       },
       "ELF::Extract::Sections::Meta::Scanner" : {
          "file" : "lib/ELF/Extract/Sections/Meta/Scanner.pm",
-         "version" : "1.000000"
+         "version" : "1.001000"
       },
       "ELF::Extract::Sections::Meta::Types" : {
          "file" : "lib/ELF/Extract/Sections/Meta/Types.pm",
-         "version" : "1.000000"
+         "version" : "1.001000"
       },
       "ELF::Extract::Sections::Scanner::Objdump" : {
          "file" : "lib/ELF/Extract/Sections/Scanner/Objdump.pm",
-         "version" : "1.000000"
+         "version" : "1.001000"
       },
       "ELF::Extract::Sections::Section" : {
          "file" : "lib/ELF/Extract/Sections/Section.pm",
-         "version" : "1.000000"
+         "version" : "1.001000"
       }
    },
    "release_status" : "stable",
@@ -171,7 +174,7 @@
          "web" : "https://github.com/kentnl/ELF-Extract-Sections"
       }
    },
-   "version" : "1.000000",
+   "version" : "1.001000",
    "x_BuiltWith" : {
       "external_file" : "misc/built_with.json"
    },
@@ -478,11 +481,6 @@
                      },
                      {
                         "class" : "Pod::Weaver::Section::Generic",
-                        "name" : "NAMING_SCHEME",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Generic",
                         "name" : "OVERVIEW",
                         "version" : "4.012"
                      },
@@ -494,31 +492,6 @@
                      {
                         "class" : "Pod::Weaver::Section::Collect",
                         "name" : "ATTRIBUTES",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "FILTER_METHODS",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "TERMINATOR_LIST_METHODS",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "MIRROR_LIST_METHODS",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "PRIVATE_ATTRIBUTES",
-                        "version" : "4.012"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Section::Collect",
-                        "name" : "PRIVATE_METHODS",
                         "version" : "4.012"
                      },
                      {
@@ -683,7 +656,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "1.000000-source",
+                  "tag" : "1.001000-source",
                   "tag_format" : "%v-source",
                   "tag_message" : "v%v",
                   "time_zone" : "local"
@@ -759,7 +732,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : "releases",
                   "signed" : 0,
-                  "tag" : "1.000000",
+                  "tag" : "1.001000",
                   "tag_format" : "%v",
                   "tag_message" : "v%v",
                   "time_zone" : "local"

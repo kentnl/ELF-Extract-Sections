@@ -3,8 +3,10 @@ abstract: 'Extract Raw Chunks of data from identifiable ELF Sections'
 author:
   - 'Kent Fredric <kentnl@cpan.org>'
 build_requires:
+  Capture::Tiny: '0'
   ExtUtils::MakeMaker: '0'
   File::Spec: '0'
+  File::Which: '0'
   FindBin: '0'
   Log::Log4perl: '1.21'
   Path::Iterator::Rule: '0'
@@ -27,19 +29,19 @@ name: ELF-Extract-Sections
 provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
-    version: '1.000000'
+    version: '1.001000'
   ELF::Extract::Sections::Meta::Scanner:
     file: lib/ELF/Extract/Sections/Meta/Scanner.pm
-    version: '1.000000'
+    version: '1.001000'
   ELF::Extract::Sections::Meta::Types:
     file: lib/ELF/Extract/Sections/Meta/Types.pm
-    version: '1.000000'
+    version: '1.001000'
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
-    version: '1.000000'
+    version: '1.001000'
   ELF::Extract::Sections::Section:
     file: lib/ELF/Extract/Sections/Section.pm
-    version: '1.000000'
+    version: '1.001000'
 recommends:
   Moose: '2.000'
 requires:
@@ -50,6 +52,7 @@ requires:
   Moose::Role: '0'
   MooseX::Has::Sugar: '0.0300'
   MooseX::Log::Log4perl: '0.31'
+  MooseX::Params::Validate: '0'
   MooseX::Types: '0.10'
   MooseX::Types::Moose: '0.10'
   MooseX::Types::Path::Tiny: '0'
@@ -61,4 +64,4 @@ resources:
   bugtracker: https://github.com/kentnl/ELF-Extract-Sections/issues
   homepage: https://github.com/kentnl/ELF-Extract-Sections
   repository: https://github.com/kentnl/ELF-Extract-Sections.git
-version: '1.000000'
+version: '1.001000'

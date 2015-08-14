@@ -6,69 +6,19 @@ package ELF::Extract::Sections::Scanner::Objdump;
 
 # ABSTRACT: An objdump based section scanner.
 
-our $VERSION = '1.000000';
+our $VERSION = '1.001000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose qw( with has );
 with 'ELF::Extract::Sections::Meta::Scanner';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 
-
-
-
-
-
-
-
-
-use MooseX::Types::Moose (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
-
-
-
-
-
-
-
-
-
+use MooseX::Types::Moose      (qw( Bool HashRef RegexpRef FileHandle Undef Str Int));
 use MooseX::Types::Path::Tiny ('File');
+use MooseX::Params::Validate  (qw( validated_list ));
 
 
 
@@ -79,54 +29,16 @@ use MooseX::Types::Path::Tiny ('File');
 
 
 
-
-
-
-sub _argument {
-    my ( $args, $number, $type, %flags ) = @_;
-    return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-
-    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->[$number] ) and return $args->[$number];
-    }
-    else {
-        my $value = $type->coerce( $args->[$number] );
-        return $value if $value;
-    }
-    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
-
-}
-
-sub _parameter {
-    my ( $args, $name, $type, %flags ) = @_;
-    return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->{$name} ) and return delete $args->{$name};
-    }
-    else {
-        my $value = $type->coerce( delete $args->{$name} );
-        return $value if $value;
-    }
-    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
-}
 
 sub open_file {
-    my ( $self, %args ) = @_;
-    my $file = _parameter( \%args, 'file', File, required => 1 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
+    my ( $self, $file ) = validated_list( \@_, file => { isa => File, }, );
     $self->log->debug("Opening $file");
     $self->_file($file);
     $self->_filehandle( $self->_objdump );
     return 1;
 }
+
+
 
 
 
@@ -161,6 +73,8 @@ sub next_section {
 
 
 
+
+
 sub section_offset {
     my ($self) = @_;
     if ( not $self->_has_state ) {
@@ -178,11 +92,15 @@ sub section_offset {
 
 
 
+
+
 sub section_size {
     my ($self) = @_;
     $self->log->logcroak('Can\'t perform section_size on this type of object.');
     return;
 }
+
+
 
 
 
@@ -209,23 +127,11 @@ sub section_name {
 
 
 
+
+
 sub can_compute_size {
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 has _header_regex => (
     isa => RegexpRef,
@@ -234,16 +140,6 @@ has _header_regex => (
         return qr/<(?<header>[^>]+)>/;
     },
 );
-
-
-
-
-
-
-
-
-
-
 
 has _offset_regex => (
     isa => RegexpRef,
@@ -254,53 +150,11 @@ has _offset_regex => (
     },
 );
 
-
-
-
-
-
-
-
-
 has _section_header_identifier => ( isa => RegexpRef, ro, lazy_build, );
-
-
-
-
-
-
-
-
-
-
 
 has _file => ( isa => File, rw, clearer => '_clear_file', );
 
-
-
-
-
-
-
-
-
-
-
 has _filehandle => ( isa => FileHandle, rw, clearer => '_clear_filehandle', );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 has _state => (
     isa => HashRef,
@@ -311,18 +165,6 @@ has _state => (
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
-
-
-
-
-
-
-
-
-
-
-
-
 sub _build__section_header_identifier {
     my ($self) = @_;
     my $header = $self->_header_regex;
@@ -330,16 +172,6 @@ sub _build__section_header_identifier {
 
     return qr/${header}\s*${offset}:/;
 }
-
-
-
-
-
-
-
-
-
-
 
 sub _objdump {
     my ($self) = @_;
@@ -364,7 +196,7 @@ ELF::Extract::Sections::Scanner::Objdump - An objdump based section scanner.
 
 =head1 VERSION
 
-version 1.000000
+version 1.001000
 
 =head1 SYNOPSIS
 
@@ -380,137 +212,61 @@ TO use this module, simply initialise L<ELF::Extract::Sections> as so
             scanner => "Objdump",
     );
 
-=head1 IMPLEMENTS ROLES
+=head1 METHODS
 
-=head2 ELF::Extract::Sections::Meta::Scanner
+=head2 C<open_file>
 
-L<ELF::Extract::Sections::Meta::Scanner>
-
-=head1 DEPENDS
-
-=head2 MooseX::Has::Sugar
-
-Lots of keywords.
-
-L<MooseX::Has::Sugar>
-
-=head2 MooseX::Types::Moose
-
-Type Constraining Keywords.
-
-L<MooseX::Types::Moose>
-
-=head2 MooseX::Types::Path::Tiny
-
-File Type Constraints w/ Path::Tiny
-
-L<MooseX::Types::Path::Tiny>
-
-=head1 PUBLIC METHODS
-
-=head2 -> open_file ( file => File ) : Bool I< ::Scanner >
+  my $boolean = $scanner->open_file( file => File );
 
 Opens the file and assigns our state to that file.
 
 L<ELF::Extract::Sections::Meta::Scanner/open_file>
 
-=head2 -> next_section () : Bool I< ::Scanner >
+=head2 C<next_section>
+
+  my $boolean = $scanner->next_section();
 
 Advances our state to the next section.
 
 L<ELF::Extract::Sections::Meta::Scanner/next_section>
 
-=head2 -> section_offset () : Int | Undef I< ::Scanner >
+=head2 C<section_offset>
+
+  my $return = $scanner->section_offset(); # Int | Undef
 
 Reports the offset of the currently open section
 
 L<ELF::Extract::Sections::Meta::Scanner/section_offset>
 
-=head2 -> section_size () : Undef I< ::Scanner >
+=head2 C<section_size>
+
+  my $return = $scanner->section_size(); # BANG
 
 Dies, because this module can't compute section sizes.
 
 L<ELF::Extract::Sections::Meta::Scanner/section_size>
 
-=head2 -> section_name () : Str | Undef I< ::Scanner >
+=head2 C<section_name>
+
+  my $name = $scanner->section_name(); # Str | Undef
 
 Returns the name of the current section
 
 L<ELF::Extract::Sections::Meta::Scanner/section_name>
 
-=head2 -> can_compute_size () : Bool I< ::Scanner >
+=head2 C<can_compute_size>
+
+  my $bool = $scanner->can_compute_size;
 
 Returns false
 
 L<ELF::Extract::Sections::Meta::Scanner/can_compute_size>
 
-=head1 PRIVATE ATTRIBUTES
+=head1 IMPLEMENTS ROLES
 
-=head2 _header_regex : RegexpRef
+=head2 ELF::Extract::Sections::Meta::Scanner
 
-A regular expression for identifying the
-
-  <asdasdead>
-
-Style tokens that denote objdump header names.
-
-Note: This is not XML.
-
-=head2 _offset_regex : RegexpRef
-
-A regular expression for identifying offset blocks in objdump's output.
-
-They look like this:
-
-  File Offset: 0xdeadbeef
-
-=head2 _section_header_identifier : RegexpRef
-
-A regular expression for extracting Headers and Offsets together
-
-  <headername> File Offset: 0xdeadbeef
-
-=head2 _file : File
-
-A L<Path::Tiny> reference to a file somewhere on a system
-
-=head3 _clear_file : _file.clearer
-
-Clears L</_file>
-
-=head2 _filehandle : FileHandle
-
-A perl FileHandle that points to the output of objdump for L</_file>
-
-=head3 _clear_file_handle : _filehandle.clearer
-
-Clears L</_filehandle>
-
-=head2 _state : HashRef
-
-Keeps track of what we're doing, and what the next header is to return.
-
-=head3 _has_state : _state.predicate
-
-Returns is-set of L</_state>
-
-=head3 _clear_state : _state.clearer
-
-Clears L<_state>
-
-=head1 PRIVATE ATTRIBUTE BUILDERS
-
-=head2 -> _build__section_header_identifier : RegexpRef
-
-Assembles L</_header_regex> and L</_offset_regex>
-
-L</_section_header_identifier>
-
-=head1 PRIVATE METHODS
-
-=head2 -> _objdump : FileHandle | Undef
-
-Calls the system C<objdump> instance for the currently processing file.
+L<ELF::Extract::Sections::Meta::Scanner>
 
 =head1 AUTHOR
 

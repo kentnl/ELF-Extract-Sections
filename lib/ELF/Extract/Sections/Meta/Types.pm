@@ -6,7 +6,7 @@ package ELF::Extract::Sections::Meta::Types;
 
 # ABSTRACT: Generic Type Constraints for E:E:S
 
-our $VERSION = '1.000000';
+our $VERSION = '1.001000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -32,15 +32,15 @@ ELF::Extract::Sections::Meta::Types - Generic Type Constraints for E:E:S
 
 =head1 VERSION
 
-version 1.000000
+version 1.001000
 
 =head1 Types
 
-=head2 FilterField
+=head2 C<FilterField>
 
 ENUM: name, offset, size
 
-=head2 ElfSection
+=head2 C<ElfSection>
 
 An object that is a ELF::Extract::Sections::Section
 

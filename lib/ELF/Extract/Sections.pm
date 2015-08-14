@@ -6,7 +6,7 @@ package ELF::Extract::Sections;
 
 # ABSTRACT: Extract Raw Chunks of data from identifiable ELF Sections
 
-our $VERSION = '1.000000';
+our $VERSION = '1.001000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -14,58 +14,14 @@ use Moose qw( with has );
 use Carp qw( croak );
 with 'MooseX::Log::Log4perl';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
 use Module::Runtime                     ( 'require_module', );
+use MooseX::Params::Validate            (qw( validated_list pos_validated_list ));
 
 require ELF::Extract::Sections::Section;
-
-
-
 
 
 
@@ -90,8 +46,6 @@ has 'sections' => ( isa => HashRef [ElfSection], ro, lazy_build, );
 
 
 has 'scanner' => ( isa => Str, ro, default => 'Objdump', );
-
-
 
 
 
@@ -147,63 +101,18 @@ sub BUILD {
 
 
 
-sub _argument {
-    my ( $args, $number, $type, %flags ) = @_;
-    return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
 
-    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->[$number] ) and return $args->[$number];
-    }
-    else {
-        my $value = $type->coerce( $args->[$number] );
-        return $value if $value;
-    }
-    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
-
-}
-
-sub _parameter {
-    my ( $args, $name, $type, %flags ) = @_;
-    return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->{$name} ) and return delete $args->{$name};
-    }
-    else {
-        my $value = $type->coerce( delete $args->{$name} );
-        return $value if $value;
-    }
-    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
-}
 
 sub sorted_sections {
-    my ( $self, %args ) = @_;
-    my $field      = _parameter( \%args, 'field',      FilterField, required => 0 );
-    my $descending = _parameter( \%args, 'descending', Bool,        required => 0 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
+    my ( $self, $field, $descending ) = validated_list(
+        \@_,
+        'field'      => { isa => FilterField, optional => 1 },
+        'descending' => { isa => Bool,        optional => 1 },
+    );
     my $m = 1;
     $m = 0 - 1 if ($descending);
     return [ sort { $m * ( $a->compare( other => $b, field => $field ) ) } values %{ $self->sections } ];
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 sub _build_sections {
     my ($self) = @_;
@@ -216,50 +125,26 @@ sub _build_sections {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 has '_scanner_package' => ( isa => ClassName, ro, lazy_build, );
-
-
-
-
-
-
 
 has '_scanner_instance' => ( isa => Object, ro, lazy_build, );
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
-
-
-
-
 sub _error_scanner_missing {
     my ( $self, @args ) = @_;
-    @args < 4 or croak 'Too many arguments';
-    my $scanner = _argument( \@args, 0, Str, required => 1 );
-    my $package = _argument( \@args, 1, Str, required => 1 );
-    my $error   = _argument( \@args, 2, Str, required => 1 );
+    my ( $scanner, $package, $error ) = pos_validated_list(
+        \@args,
+        { isa => Str, },    #
+        { isa => Str, },    #
+        { isa => Str, },    #
+    );
     my $message = sprintf qq[The Scanner %s could not be found as %s\n.], $scanner, $package;
     $message .= '>' . $error;
     $self->log->logconfess($message);
     return;
 }
-
-
-
-
-
-
 
 sub _build__scanner_package {
     my ($self) = @_;
@@ -271,35 +156,20 @@ sub _build__scanner_package {
     return $pkg;
 }
 
-
-
-
-
-
-
 sub _build__scanner_instance {
     my ($self) = @_;
     my $instance = $self->_scanner_package->new();
     return $instance;
 }
 
-
-
-
-
-
-
-
-
-
-
 sub _warn_stash_collision {
     my ( $self, @args ) = @_;
-    @args < 4 or croak 'Too many arguments';
-    my $stashname = _argument( \@args, 0, Str, required => 1 );
-    my $header    = _argument( \@args, 1, Str, required => 1 );
-    my $offset    = _argument( \@args, 2, Str, required => 1 );
-
+    my ( $stashname, $header, $offset ) = pos_validated_list(
+        \@args,
+        { isa => Str, },    #
+        { isa => Str, },
+        { isa => Str, },
+    );
     my $message = q[Warning, duplicate file offset reported by scanner.];
     $message .= sprintf q[<%s> and <%s> collide at <%s>.], $stashname, $header, $offset;
     $message .= sprintf q[Assuming <%s> is empty and replacing it.], $stashname;
@@ -307,21 +177,14 @@ sub _warn_stash_collision {
     return;
 }
 
-
-
-
-
-
-
-
-
 sub _stash_record {
     my ( $self, @args ) = @_;
-    @args < 4 or croak 'Too many arguments';
-    my $stash  = _argument( \@args, 0, HashRef, required => 1 );
-    my $header = _argument( \@args, 1, Str,     required => 1 );
-    my $offset = _argument( \@args, 2, Str,     required => 1 );
-
+    my ( $stash, $header, $offset ) = pos_validated_list(
+        \@args,
+        { isa => HashRef, },    #
+        { isa => Str, },
+        { isa => Str, },
+    );
     if ( exists $stash->{$offset} ) {
         $self->_warn_stash_collision( $stash->{$offset}, $header, $offset );
     }
@@ -329,23 +192,15 @@ sub _stash_record {
     return;
 }
 
-
-
-
-
-
-
-
-
-
 sub _build_section_section {
     my ( $self, @args ) = @_;
-    @args < 5 or croak 'Too many arguments';
-    my $stashName = _argument( \@args, 0, Str,  required => 1 );
-    my $start     = _argument( \@args, 1, Int,  required => 1 );
-    my $stop      = _argument( \@args, 2, Int,  required => 1 );
-    my $file      = _argument( \@args, 3, File, required => 1 );
-
+    my ( $stashName, $start, $stop, $file ) = pos_validated_list(
+        \@args,
+        { isa => Str,  required => 1 },
+        { isa => Int,  required => 1 },
+        { isa => Int,  required => 1 },
+        { isa => File, required => 1 },
+    );
     $self->log->info(" Section ${stashName} , ${start} -> ${stop} ");
     return ELF::Extract::Sections::Section->new(
         offset => $start,
@@ -355,17 +210,12 @@ sub _build_section_section {
     );
 }
 
-
-
-
-
-
-
-
 sub _build_section_table {
     my ( $self, @args ) = @_;
-    @args < 2 or croak 'Too many arguments';
-    my $ob        = _argument( \@args, 0, HashRef, required => 1 );
+    my ($ob) = pos_validated_list(
+        \@args,    #
+        { isa => HashRef },
+    );
     my %datastash = ();
     my @k         = sort { $a <=> $b } keys %{$ob};
     my $i         = 0;
@@ -375,14 +225,6 @@ sub _build_section_table {
     }
     return \%datastash;
 }
-
-
-
-
-
-
-
-
 
 sub _scan_guess_size {
     my ($self) = @_;
@@ -397,13 +239,6 @@ sub _scan_guess_size {
     }
     return $self->_build_section_table( \%offsets );
 }
-
-
-
-
-
-
-
 
 sub _scan_with_size {
     my ($self) = @_;
@@ -432,7 +267,7 @@ ELF::Extract::Sections - Extract Raw Chunks of data from identifiable ELF Sectio
 
 =head1 VERSION
 
-version 1.000000
+version 1.001000
 
 =head1 SYNOPSIS
 
@@ -453,58 +288,25 @@ version 1.000000
     # Get the raw bytes out of the section.
     print $data->contents  # returns bytes
 
-=head1 CAVEATS
+=head1 METHODS
 
-=over 4
+=head2 C<new>
 
-=item 1. Beta Software
-
-This code is relatively new. It exists only as a best attempt at present until further notice. It
-has proved as practical for at least one application, and this is why the module exists. However, it can't be
-guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
-
-=item 2. Feature Incomplete
-
-This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
-If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
-
-=item 3. Humans
-
-This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
-
-=back
-
-=head1 PUBLIC ATTRIBUTES
-
-=head2 file
-
-Returns the file the section data is being created for.
-
-=head2 sections
-
-Returns a HashRef of the available sections.
-
-=head2 scanner
-
-Returns the name of the default scanner plug-in
-
-=head1 PUBLIC METHODS
-
-=head2 new ( file => FILENAME )
+  my $object = ELF::Extract::Sections->new( file => FILENAME );
 
 Creates A new Section Extractor object with the default scanner
 
-=head2 new ( file => FILENAME , scanner => 'Objdump' )
+  my $object = ELF::Extract::Sections->new( file => FILENAME , scanner => 'Objdump' )
 
 Creates A new Section Extractor object with the specified scanner
 
-=for Pod::Coverage BUILD
+=head2 C<sorted_sections>
 
-=head2 sorted_sections ( field => SORT_BY )
+  my $sections = $object->sorted_sections( field => SORT_BY )
 
 Returns an ArrayRef sorted by the SORT_BY field, in the default order.
 
-=head2 sorted_sections ( field => SORT_BY, descending => DESCENDING )
+  my $sections = $object->sorted_sections( field => SORT_BY, descending => DESCENDING );
 
 Returns an ArrayRef sorted by the SORT_BY field. May be Ascending or Descending depending on requirements.
 
@@ -528,69 +330,42 @@ The Sections offset relative to the start of the file.
 
 The Size of the section.
 
-=head1 PUBLIC ATTRIBUTE BUILDERS
+=head1 ATTRIBUTES
 
-These aren't really user serviceable, but they make your front end work.
+=head2 C<file>
 
-=head2 _build_sections
+Returns the file the section data is being created for.
 
-See L</sections>
+=head2 C<sections>
 
-=head1 PRIVATE ATTRIBUTES
+Returns a HashRef of the available sections.
 
-=head2 _scanner_package
+=head2 C<scanner>
 
-    isa => ClassName, ro, lazy_build
+Returns the name of the default scanner plug-in
 
-=head2 _scanner_instance
+=for Pod::Coverage BUILD
 
-    isa => Object, ro, lazy_build
+=head1 CAVEATS
 
-=head1 PRIVATE ATTRIBUTE BUILDERS
+=over 4
 
-=head2 _build__scanner_package
+=item 1. Beta Software
 
-Builds L</_scanner_package>
+This code is relatively new. It exists only as a best attempt at present until further notice. It
+has proved as practical for at least one application, and this is why the module exists. However, it can't be
+guaranteed it will work for whatever you want it to in all cases. Please report any bugs you find.
 
-=head2 _build__scanner_instance
+=item 2. Feature Incomplete
 
-Builds L</_scanner_instance>
+This only presently has a very bare-bones functionality, which should however prove practical for most purposes.
+If you have any suggestions, please tell me via "report bugs". If you never seek, you'll never find.
 
-=head1 PRIVATE_METHODS
+=item 3. Humans
 
-=head2 _warn_stash_collision
+This code is written by a human, and like all human code, it sucks. There will be bugs. Please report them.
 
-    method _warn_stash_collision ( Str $stashname!, Str $header!, Str $offset! ) {
-
-    }
-
-=head2 _stash_record( HashRef, Str, Str )
-
-    method _stash_record ( HashRef $stash! , Str $header!, Str $offset! ) {
-
-    }
-
-=head2 _build_section_section( Str, Int, Int, File )
-
-    method _build_section_section ( Str $stashName, Int $start, Int $stop , File $file ) {
-
-    }
-
-=head2 _build_section_table( HashRef )
-
-    method _build_section_table ( HashRef $ob! ) {
-    }
-
-=head2 _scan_guess_size
-
-    method _scan_guess_size {
-
-    }
-
-=head2 _scan_with_size
-
-    method _scan_with_size {
-    }
+=back
 
 =head1 DEBUGGING
 

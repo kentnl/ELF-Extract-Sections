@@ -6,94 +6,20 @@ package ELF::Extract::Sections::Section;
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
-our $VERSION = '1.000000';
+our $VERSION = '1.001000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moose;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 use Carp qw( croak );
 use MooseX::Has::Sugar 0.0300;
 use MooseX::Types::Moose                ( ':all', );
 use ELF::Extract::Sections::Meta::Types ( ':all', );
 use MooseX::Types::Path::Tiny           ( 'File', );
+use MooseX::Params::Validate            (qw( validated_list ));
 
 use overload '""' => \&to_string;
-
-sub _argument {
-    my ( $args, $number, $type, %flags ) = @_;
-    return if not $flags{required} and @{$args} < $number + 1;
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-
-    @{$args} >= $number + 1 or croak "Argument $number of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->[$number] ) and return $args->[$number];
-    }
-    else {
-        my $value = $type->coerce( $args->[$number] );
-        return $value if $value;
-    }
-    return croak "Argument $number was not of type $type$can_coerce: " . $type->get_message( $args->[$number] );
-
-}
-
-sub _parameter {
-    my ( $args, $name, $type, %flags ) = @_;
-    return if not $flags{required} and not exists $args->{$name};
-    my $can_coerce = $flags{coerce} ? '(coerceable)' : q[];
-    exists $args->{$name} or croak "Parameter '$name' of type $type$can_coerce was not specified";
-
-    if ( not $flags{coerce} ) {
-        $type->check( $args->{$name} ) and return delete $args->{$name};
-    }
-    else {
-        my $value = $type->coerce( delete $args->{$name} );
-        return $value if $value;
-    }
-    return croak "Parameter '$name' was not of type $type$can_coerce: " . $type->get_message( $args->{$name} );
-}
-
-
-
-
 
 
 
@@ -148,8 +74,6 @@ no Moose;
 
 
 
-
-
 sub to_string {
     my ( $self, ) = @_;
     return sprintf
@@ -179,14 +103,14 @@ sub to_string {
 
 
 
-sub compare {
-    my ( $self, %args ) = @_;
-    my $other = _parameter( \%args, 'other', class_type('ELF::Extract::Sections::Section'), required => 1 );
-    my $field = _parameter( \%args, 'field', FilterField, required => 1 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
 
+
+sub compare {
+    my ( $self, $other, $field ) = validated_list(
+        \@_,
+        other => { isa => class_type('ELF::Extract::Sections::Section') },
+        field => { isa => FilterField, },
+    );
     if ( 'name' eq $field ) {
         return ( $self->name cmp $other->name );
     }
@@ -213,12 +137,13 @@ sub compare {
 
 
 
+
+
 sub write_to {
-    my ( $self, %args ) = @_;
-    my $file = _parameter( \%args, 'file', File, required => 1, coerce => 1 );
-    if ( keys %args ) {
-        croak "Unknown parameters @{[ keys %args ]}";
-    }
+    my ( $self, $file ) = validated_list(
+        \@_,    #
+        file => { isa => File, optional => 0, coerce => 1 },
+    );
     my $fh = $self->source->openr;
     seek $fh, $self->offset, 0;
     my $output     = $file->openw;
@@ -232,6 +157,8 @@ sub write_to {
     }
     return 1;
 }
+
+
 
 
 
@@ -262,7 +189,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 1.000000
+version 1.001000
 
 =head1 SYNOPSIS
 
@@ -297,39 +224,27 @@ version 1.000000
 Generally Intended for use by L<ELF::Extract::Sections> as a meta-structure for tracking data,
 but generated objects are returned to you for you to  deal with
 
-=head1 PUBLIC ATTRIBUTES
+=head1 METHODS
 
-=head2 source
+=head2 C<new>
 
-C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
-
-=head2 name
-
-C<Str>: The ELF Section Name
-
-=head2 offset
-
-C<Int>: Position in bytes relative to the start of the file.
-
-=head2 size
-
-C<Int>: The ELF Section Size
-
-=head1 PUBLIC METHODS
-
-=head2 -> new ( %ATTRIBUTES )
+  my $section = ELF::Extract::Sections::Section->new( %ATTRIBUTES );
 
 4 Parameters, all required.
 
 Returns an C<ELF::Extract::Sections::Section> object.
 
-=head2 -> to_string
+=head2 C<to_string>
+
+  my $string = $section->to_string;
 
 returns C<Str> description of the object
 
     [ Section {name} of size {size} in {file} @ {start} to {stop} ]
 
-=head2 -> compare ( other => $other, field => $field )
+=head2 C<compare>
+
+  my $cmp_result = $section->compare( other => $other, field => $field );
 
 2 Parameters, both required
 
@@ -347,7 +262,9 @@ C<Str['name','offset','size']>: Field to compare with.
 
 returns C<Int> of comparison result, between -1 and 1
 
-=head2 -> write_to ( file => $file )
+=head2 C<write_to>
+
+  my $boolean = $section->write_to( file => $file );
 
 B<UNIMPLEMENTED AS OF YET>
 
@@ -359,9 +276,29 @@ C<Str>|C<Path::Tiny>: File target to write section contents to.
 
 =back
 
-=head2 -> contents
+=head2 C<contents>
+
+  my $string = $section->contents;
 
 returns C<Str> of binary data read out of file.
+
+=head1 ATTRIBUTES
+
+=head2 C<source>
+
+C<Str>|C<Path::Tiny>: Either a String or a Path::Tiny instance pointing to the file in mention.
+
+=head2 C<name>
+
+C<Str>: The ELF Section Name
+
+=head2 C<offset>
+
+C<Int>: Position in bytes relative to the start of the file.
+
+=head2 C<size>
+
+C<Int>: The ELF Section Size
 
 =head1 AUTHOR
 
