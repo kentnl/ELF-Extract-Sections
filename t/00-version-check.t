@@ -33,7 +33,7 @@ unless ( ok( $path, "objdump is available") ) {
   cmp_ok( $exit, '==', 0 , "objdump exited with 0");
 
   if ( unlike( $stdout, qr/^\s*$/ , "objdump --help emitted data to STDOUT" )  ) {
-  
+
       my $ok = like( $stdout, qr/-D,\s*--disassemble-all/, "has -D param" );
       $ok = undef unless like( $stdout, qr/-F,\s*--file-offsets/, "has -F param" );
 
