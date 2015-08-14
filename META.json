@@ -143,23 +143,23 @@
    "provides" : {
       "ELF::Extract::Sections" : {
          "file" : "lib/ELF/Extract/Sections.pm",
-         "version" : "1.001000"
+         "version" : "1.001001"
       },
       "ELF::Extract::Sections::Meta::Scanner" : {
          "file" : "lib/ELF/Extract/Sections/Meta/Scanner.pm",
-         "version" : "1.001000"
+         "version" : "1.001001"
       },
       "ELF::Extract::Sections::Meta::Types" : {
          "file" : "lib/ELF/Extract/Sections/Meta/Types.pm",
-         "version" : "1.001000"
+         "version" : "1.001001"
       },
       "ELF::Extract::Sections::Scanner::Objdump" : {
          "file" : "lib/ELF/Extract/Sections/Scanner/Objdump.pm",
-         "version" : "1.001000"
+         "version" : "1.001001"
       },
       "ELF::Extract::Sections::Section" : {
          "file" : "lib/ELF/Extract/Sections/Section.pm",
-         "version" : "1.001000"
+         "version" : "1.001001"
       }
    },
    "release_status" : "stable",
@@ -174,7 +174,7 @@
          "web" : "https://github.com/kentnl/ELF-Extract-Sections"
       }
    },
-   "version" : "1.001000",
+   "version" : "1.001001",
    "x_BuiltWith" : {
       "external_file" : "misc/built_with.json"
    },
@@ -656,7 +656,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "1.001000-source",
+                  "tag" : "1.001001-source",
                   "tag_format" : "%v-source",
                   "tag_message" : "v%v",
                   "time_zone" : "local"
@@ -732,7 +732,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : "releases",
                   "signed" : 0,
-                  "tag" : "1.001000",
+                  "tag" : "1.001001",
                   "tag_format" : "%v",
                   "tag_message" : "v%v",
                   "time_zone" : "local"
