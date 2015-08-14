@@ -39,8 +39,10 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "Capture::Tiny" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
+    "File::Which" => 0,
     "FindBin" => 0,
     "Log::Log4perl" => "1.21",
     "Path::Iterator::Rule" => 0,
@@ -57,10 +59,12 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Capture::Tiny" => 0,
   "Carp" => 0,
   "Devel::CheckBin" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
+  "File::Which" => 0,
   "FindBin" => 0,
   "Log::Log4perl" => "1.21",
   "Module::Runtime" => 0,

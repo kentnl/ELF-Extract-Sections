@@ -4,6 +4,10 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  [Added / runtime requires]
  - MooseX::Params::Validate
 
+ [Added / test requires]
+ - Capture::Tiny
+ - File::Which
+
 1.000000 2015-07-30T16:49:16Z
  [Added / configure requires]
  - Devel::CheckBin
