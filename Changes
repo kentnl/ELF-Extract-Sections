@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+1.001000 2015-08-14T06:32:18Z 4d78d05
  [Dependencies::Stats]
  - Dependencies changed since 1.000000, see misc/*.deps* for details
  - runtime: +1
