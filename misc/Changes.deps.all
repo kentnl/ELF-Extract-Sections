@@ -1,6 +1,8 @@
 This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL dependencies for all phases (configure/build/runtime/test/develop)
 
-1.001000
+1.001001
+
+1.001000 2015-08-14T06:32:18Z
  [Added / runtime requires]
  - MooseX::Params::Validate
 
