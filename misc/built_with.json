@@ -101,5 +101,5 @@
       "osname" : "linux"
    },
    "platform" : "linux",
-   "uname" : "Linux 4.1.0-gentoo-r1 x86_64 GenuineIntel GNU/Linux"
+   "uname" : "Linux 4.1.4-gentoo x86_64 GenuineIntel GNU/Linux"
 }

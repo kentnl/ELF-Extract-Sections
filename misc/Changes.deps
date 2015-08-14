@@ -1,6 +1,6 @@
 This file contains changes in REQUIRED dependencies for standard CPAN phases (configure/build/runtime/test)
 
-1.001000
+1.000001
  [Added / runtime requires]
  - MooseX::Params::Validate
 
