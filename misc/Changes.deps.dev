@@ -1,6 +1,8 @@
 This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and OPTIONAL )
 
-1.001001
+1.001002
+
+1.001001 2015-09-26T06:22:10Z
  [Added / develop requires]
  - Dist::Zilla::Plugin::DynamicPrereqs
  - English
