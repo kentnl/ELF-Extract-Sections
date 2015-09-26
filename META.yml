@@ -17,7 +17,7 @@ build_requires:
   perl: '5.010000'
 configure_requires:
   ExtUtils::MakeMaker: '0'
-  perl: '5.010'
+  perl: '5.006'
 dynamic_config: 1
 generated_by: 'Dist::Zilla version 5.039, CPAN::Meta::Converter version 2.150005'
 license: perl
