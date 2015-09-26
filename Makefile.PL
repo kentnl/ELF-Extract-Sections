@@ -10,7 +10,10 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Extract Raw Chunks of data from identifiable ELF Sections",
   "AUTHOR" => "Kent Fredric <kentnl\@cpan.org>",
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => 0
+    "Capture::Tiny" => 0,
+    "ExtUtils::MakeMaker" => 0,
+    "File::Which" => 0,
+    "Term::ANSIColor" => 0
   },
   "DISTNAME" => "ELF-Extract-Sections",
   "LICENSE" => "perl",

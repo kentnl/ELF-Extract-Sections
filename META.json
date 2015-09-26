@@ -19,7 +19,10 @@
             "ExtUtils::MakeMaker" : "7.00"
          },
          "requires" : {
+            "Capture::Tiny" : "0",
             "ExtUtils::MakeMaker" : "0",
+            "File::Which" : "0",
+            "Term::ANSIColor" : "0",
             "perl" : "5.006"
          }
       },
@@ -851,6 +854,17 @@
          {
             "class" : "Dist::Zilla::Plugin::Encoding",
             "name" : "BinaryFiles",
+            "version" : "5.039"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "configure",
+                  "type" : "requires"
+               }
+            },
+            "name" : "ConfigureRequires",
             "version" : "5.039"
          },
          {

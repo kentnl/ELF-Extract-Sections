@@ -76,6 +76,7 @@
       "Path::Tiny" : "0.072",
       "Pod::Coverage::TrustPod" : "0.100003",
       "Software::License::Perl_5" : "0.103010",
+      "Term::ANSIColor" : "4.03",
       "Test::CPAN::Changes" : "0.400002",
       "Test::CPAN::Meta" : "0.25",
       "Test::EOL" : "1.6",

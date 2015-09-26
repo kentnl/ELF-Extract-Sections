@@ -16,7 +16,10 @@ build_requires:
   lib: '0'
   perl: '5.010000'
 configure_requires:
+  Capture::Tiny: '0'
   ExtUtils::MakeMaker: '0'
+  File::Which: '0'
+  Term::ANSIColor: '0'
   perl: '5.006'
 dynamic_config: 1
 generated_by: 'Dist::Zilla version 5.039, CPAN::Meta::Converter version 2.150005'

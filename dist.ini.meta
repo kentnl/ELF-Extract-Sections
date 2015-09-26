@@ -38,6 +38,11 @@ filename = t/test_files/libreadline.so.6.0.debug
 filename = t/test_files/libz.so
 filename = t/test_files/libz.so.1.2.3.debug
 
+[Prereqs / ConfigureRequires]
+Term::ANSIColor = 0
+Capture::Tiny   = 0
+File::Which     = 0
+
 [Prereqs / RuntimeRequires]
 perl                       = 5.010000
 Log::Log4perl              = 1.21
