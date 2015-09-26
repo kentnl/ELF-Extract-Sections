@@ -1,6 +1,10 @@
 Revision history for ELF-Extract-Sections
 
 1.001001 2015-08-14T06:33:16Z 4620064
+ [Dependencies::Stats]
+ - Dependencies changed since 1.001000, see misc/*.deps* for details
+ - configure: +3 ↓1 -1
+ - develop: +3 ↑1 -1 (suggests: ↑1)
 
 1.001000 2015-08-14T06:32:18Z 4d78d05
  [Dependencies::Stats]

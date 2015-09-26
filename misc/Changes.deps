@@ -1,6 +1,16 @@
 This file contains changes in REQUIRED dependencies for standard CPAN phases (configure/build/runtime/test)
 
 1.001001
+ [Added / configure requires]
+ - Capture::Tiny
+ - File::Which
+ - Term::ANSIColor
+
+ [Changed / configure requires]
+ - perl 5.010 → 5.006
+
+ [Removed / configure requires]
+ - Devel::CheckBin
 
 1.001000 2015-08-14T06:32:18Z
  [Added / runtime requires]
