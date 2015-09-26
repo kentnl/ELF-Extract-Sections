@@ -63,7 +63,7 @@ sub good_msg {
 sub quote_msg {
     my @lines = split /\n/, $_[0];
     for my $line ( @lines ) {
-      print STDERR colored( "> ", 'bright_white' );
+      print STDERR colored( "#> ", 'bright_white' );
       print STDERR "$line\n";
     }
 }
