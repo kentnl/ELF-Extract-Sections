@@ -1,6 +1,8 @@
 This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL dependencies for all phases (configure/build/runtime/test/develop)
 
-1.001001
+1.001002
+
+1.001001 2015-09-26T06:22:10Z
  [Added / configure requires]
  - Capture::Tiny
  - File::Which
