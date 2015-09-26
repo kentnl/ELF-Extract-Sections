@@ -49,6 +49,13 @@ sub good_msg {
     print STDERR colored( $_[0], 'bright_green' );
     return 1;
 }
+sub quote_msg {
+    my @lines = split /\n/, $_[0];
+    for my $line ( @lines ) {
+      print STDERR colored( "> ", 'bright_white' );
+      print STDERR "$line\n";
+    }
+}
 
 sub bad_msg {
     print STDERR colored( $_[0], 'bright_red' );
@@ -78,8 +85,8 @@ sub version_check {
         good_msg("Known Good obdump: $good_string");
         return 1;
     }
-    warn_msg("Unknown objdump version string, proceed with caution");
-    print STDERR $stdout;
+    warn_msg("Unknown objdump version string, proceed with caution\n");
+    quote_msg($stdout);
     return 1;
 }
 1;
