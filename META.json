@@ -23,7 +23,7 @@
             "ExtUtils::MakeMaker" : "0",
             "File::Which" : "0",
             "Term::ANSIColor" : "3.00",
-            "perl" : "5.006"
+            "perl" : "5.010"
          }
       },
       "develop" : {
@@ -166,7 +166,7 @@
          "version" : "1.001001"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/kentnl/ELF-Extract-Sections/issues"
@@ -937,7 +937,7 @@
       "zilla" : {
          "class" : "Dist::Zilla::Dist::Builder",
          "config" : {
-            "is_trial" : "0"
+            "is_trial" : "1"
          },
          "version" : "5.039"
       }
