@@ -1,6 +1,19 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+ [Dependencies::Stats]
+ - Dependencies changed since 1.001000, see misc/*.deps* for details
+ - configure: +3 ↓1 -1
+ - develop: +3 ↑1 -1 (suggests: ↑1)
+
+ [Installation]
+ - Now have a cursory white/black list of known good/bad objdump versions.
+ - Not yet possible to clearly make sense of how to parse objdump's version directly and its not yet known exactly
+   which version introduces the required functions.
+
+ [Installation: TODO]
+ - work out how to extract the list of supported targets to make sure that the ELF target is supported, and that all
+   the machine targets that the test files are coded in are supported.
 
 1.001000 2015-08-14T06:32:18Z 4d78d05
  [Dependencies::Stats]

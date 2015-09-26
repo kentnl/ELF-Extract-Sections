@@ -22,8 +22,14 @@ srcreadme        = mkdn
 ; version_rel_time_zone = Pacific/Auckland
 twitter_hash_tags = #perl #cpan
 
-[CheckBin]
-command = objdump
+[DynamicPrereqs]
+-delimiter = |
+-raw = | {
+-raw = |    local @INC = @INC;
+-raw = |    unshift @INC, 'inc';
+-raw = |    require objdump_version;
+-raw = |    objdump_version::version_check();
+-raw = | }
 
 [Encoding / BinaryFiles]
 encoding = bytes
@@ -31,6 +37,11 @@ filename = t/test_files/libc.so.6
 filename = t/test_files/libreadline.so.6.0.debug
 filename = t/test_files/libz.so
 filename = t/test_files/libz.so.1.2.3.debug
+
+[Prereqs / ConfigureRequires]
+Term::ANSIColor = 0
+Capture::Tiny   = 0
+File::Which     = 0
 
 [Prereqs / RuntimeRequires]
 perl                       = 5.010000
