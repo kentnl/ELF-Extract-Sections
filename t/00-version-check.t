@@ -9,7 +9,7 @@ my $path = which('objdump');
 
 if ( -e 't/_objdump_version' ) {
   my (@state) = split /\n/, do { open my $fh, '<', 't/_objdump_version'; scalar <$fh> };
-  note "Makefile.PL result:", explain \@state;
+  diag "Makefile.PL result:", explain \@state;
 }
 unless ( ok( $path, "objdump is available") ) {
   done_testing;
