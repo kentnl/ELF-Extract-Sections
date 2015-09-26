@@ -69,12 +69,12 @@ sub version_check {
         return is_na( "'objdump' binary responded with exit code other than 0.\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
     }
     for my $bad_string ( @{ $KNOWN_BAD{$^O} || [] } ) {
-        next unless $stdout =~ /(?<=\n|\A)\Q$bad_string\E/;
+        next unless $stdout =~ /(?:\A|(?<=\n)\Q$bad_string\E/;
         return is_na(
             "'objdump' binary responded with a known-bad version $bad_string.\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
     }
     for my $good_string ( @{ $KNOWN_GOOD{$^O} || [] } ) {
-        next unless $stdout =~ /(?<=\n|\A)\Q$good_string\E/;
+        next unless $stdout =~ /(?:\A|(?<=\n))\Q$good_string\E/;
         good_msg("Known Good obdump: $good_string");
         return 1;
     }
