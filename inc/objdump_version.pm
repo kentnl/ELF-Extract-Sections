@@ -32,6 +32,16 @@ use Term::ANSIColor qw( colored );
 use File::Which qw( which );
 use Capture::Tiny qw( capture );
 
+my @state = ();
+
+sub record_state {
+  push @state, $_[0];
+  open my $fh, '>' , 't/_objdump_version' or return;
+  print $fh "$_\n" for @state;
+  close $fh;
+  return;
+}
+
 sub is_na {
     if ( not $ENV{FORCE_BAD_OBJDUMP} ) {
         bad_msg( $_[0] );
@@ -40,6 +50,7 @@ sub is_na {
         print STDERR "NA: Unable to build distribution on this platform.\n";
         exit(0);
     }
+    record_state('forced');
     warn_msg( $_[0] );
     warn_msg("FORCE_BAD_OBJDUMP overriding failure.\n");
     return 0;
@@ -69,22 +80,27 @@ sub warn_msg {
 sub version_check {
     my $path = which('objdump');
     if ( not $path ) {
+        record_state('no_binary');
         return is_na("No 'objdump' binary.\n");
     }
     my ( $stdout, $stderr, $exit ) = capture { system("objdump --version") };
     if ( $exit != 0 ) {
+        record_state('exit_nonzero');
         return is_na( "'objdump' binary responded with exit code other than 0.\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
     }
     for my $bad_string ( @{ $KNOWN_BAD{$^O} || [] } ) {
         next unless $stdout =~ /(?:\A|(?<=\n))\Q$bad_string\E/;
+        record_state('known_bad');
         return is_na(
             "'objdump' binary responded with a known-bad version $bad_string.\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
     }
     for my $good_string ( @{ $KNOWN_GOOD{$^O} || [] } ) {
         next unless $stdout =~ /(?:\A|(?<=\n))\Q$good_string\E/;
+        record_state('known_good');
         good_msg("Known Good obdump: $good_string");
         return 1;
     }
+    record_state('unknown');
     warn_msg("Unknown objdump version string, proceed with caution\n");
     quote_msg($stdout);
     return 1;
