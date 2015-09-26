@@ -3,7 +3,7 @@ Revision history for {{$dist->name}}
 {{$NEXT}}
  [Dependencies::Stats]
  - Dependencies changed since 1.001000, see misc/*.deps* for details
- - configure: +3 ↓1 -1
+ - configure: +3 -1
  - develop: +3 ↑1 -1 (suggests: ↑1)
 
  [Installation]

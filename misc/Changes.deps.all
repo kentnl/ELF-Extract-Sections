@@ -4,15 +4,12 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  [Added / configure requires]
  - Capture::Tiny
  - File::Which
- - Term::ANSIColor
+ - Term::ANSIColor 3.00
 
  [Added / develop requires]
  - Dist::Zilla::Plugin::DynamicPrereqs
  - English
  - Software::License::Perl_5
-
- [Changed / configure requires]
- - perl 5.010 → 5.006
 
  [Changed / develop requires]
  - Test::More 0.88 → 0.96
