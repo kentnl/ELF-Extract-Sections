@@ -20,6 +20,7 @@ our %KNOWN_GOOD = (
         q[GNU objdump (GNU Binutils for Debian) 2.25.1],
         q[GNU objdump (GNU Binutils for Debian) 2.22],
         q[GNU objdump version 2.23.52.0.1-30.el7_1.2 20130226],
+        q[GNU objdump (GNU Binutils for Ubuntu) 2.22],
     ],
     gnukfreebsd =>
       [ q[GNU objdump (GNU Binutils for Debian) 2.20.1-system.20100303], q[GNU objdump (GNU Binutils for Debian) 2.25], ],
