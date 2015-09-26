@@ -13,7 +13,7 @@ my %WriteMakefileArgs = (
     "Capture::Tiny" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Which" => 0,
-    "Term::ANSIColor" => 0
+    "Term::ANSIColor" => "3.00"
   },
   "DISTNAME" => "ELF-Extract-Sections",
   "LICENSE" => "perl",
