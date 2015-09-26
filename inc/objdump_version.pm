@@ -35,11 +35,11 @@ use Capture::Tiny qw( capture );
 my @state = ();
 
 sub record_state {
-  push @state, $_[0];
-  open my $fh, '>' , 't/_objdump_version' or return;
-  print $fh "$_\n" for @state;
-  close $fh;
-  return;
+    push @state, $_[0];
+    open my $fh, '>', 't/_objdump_version' or return;
+    print $fh "$_\n" for @state;
+    close $fh;
+    return;
 }
 
 sub is_na {
@@ -60,11 +60,12 @@ sub good_msg {
     print STDERR colored( $_[0], 'bright_green' );
     return 1;
 }
+
 sub quote_msg {
     my @lines = split /\n/, $_[0];
-    for my $line ( @lines ) {
-      print STDERR colored( "#> ", 'bright_white' );
-      print STDERR "$line\n";
+    for my $line (@lines) {
+        print STDERR colored( "#> ", 'bright_white' );
+        print STDERR "$line\n";
     }
 }
 
