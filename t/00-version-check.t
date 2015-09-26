@@ -7,10 +7,14 @@ use Capture::Tiny qw( capture );
 
 my $path = which('objdump');
 
-unless ( ok( $path, "objdump is available") ) {
-  done_testing;
-  exit 0;
-};
+if ( -e 't/_objdump_version' ) {
+    my (@state) = split /\n/, do { open my $fh, '<', 't/_objdump_version'; scalar <$fh> };
+    diag "Makefile.PL result: [" . ( join q[, ], @state ) . "]";
+}
+unless ( ok( $path, "objdump is available" ) ) {
+    done_testing;
+    exit 0;
+}
 {
   my ( $stdout, $stderr, $exit ) = capture { system("objdump --version") };
 

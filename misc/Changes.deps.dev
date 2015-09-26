@@ -1,6 +1,21 @@
 This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and OPTIONAL )
 
-1.001000
+1.001001
+ [Added / develop requires]
+ - Dist::Zilla::Plugin::DynamicPrereqs
+ - English
+ - Software::License::Perl_5
+
+ [Changed / develop requires]
+ - Test::More 0.88 → 0.96
+
+ [Changed / develop suggests]
+ - Dist::Zilla::PluginBundle::Author::KENTNL 2.025001 → 2.025002
+
+ [Removed / develop requires]
+ - Dist::Zilla::Plugin::CheckBin
+
+1.001000 2015-08-14T06:32:18Z
 
 1.000000 2015-07-30T16:49:16Z
  [Added / develop recommends]

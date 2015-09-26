@@ -1,6 +1,15 @@
 This file contains changes in REQUIRED dependencies for standard CPAN phases (configure/build/runtime/test)
 
-1.001000
+1.001001
+ [Added / configure requires]
+ - Capture::Tiny
+ - File::Which
+ - Term::ANSIColor 3.00
+
+ [Removed / configure requires]
+ - Devel::CheckBin
+
+1.001000 2015-08-14T06:32:18Z
  [Added / runtime requires]
  - MooseX::Params::Validate
 

@@ -16,11 +16,13 @@ build_requires:
   lib: '0'
   perl: '5.010000'
 configure_requires:
-  Devel::CheckBin: '0'
+  Capture::Tiny: '0'
   ExtUtils::MakeMaker: '0'
+  File::Which: '0'
+  Term::ANSIColor: '3.00'
   perl: '5.010'
-dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.037, CPAN::Meta::Converter version 2.150005'
+dynamic_config: 1
+generated_by: 'Dist::Zilla version 5.039, CPAN::Meta::Converter version 2.150005'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -29,19 +31,19 @@ name: ELF-Extract-Sections
 provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
-    version: '1.001000'
+    version: '1.001001'
   ELF::Extract::Sections::Meta::Scanner:
     file: lib/ELF/Extract/Sections/Meta/Scanner.pm
-    version: '1.001000'
+    version: '1.001001'
   ELF::Extract::Sections::Meta::Types:
     file: lib/ELF/Extract/Sections/Meta/Types.pm
-    version: '1.001000'
+    version: '1.001001'
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
-    version: '1.001000'
+    version: '1.001001'
   ELF::Extract::Sections::Section:
     file: lib/ELF/Extract/Sections/Section.pm
-    version: '1.001000'
+    version: '1.001001'
 recommends:
   Moose: '2.000'
 requires:
@@ -64,4 +66,4 @@ resources:
   bugtracker: https://github.com/kentnl/ELF-Extract-Sections/issues
   homepage: https://github.com/kentnl/ELF-Extract-Sections
   repository: https://github.com/kentnl/ELF-Extract-Sections.git
-version: '1.001000'
+version: '1.001001'
