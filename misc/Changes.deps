@@ -4,10 +4,7 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  [Added / configure requires]
  - Capture::Tiny
  - File::Which
- - Term::ANSIColor
-
- [Changed / configure requires]
- - perl 5.010 → 5.006
+ - Term::ANSIColor 3.00
 
  [Removed / configure requires]
  - Devel::CheckBin
