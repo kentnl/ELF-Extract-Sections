@@ -37,7 +37,7 @@ use Capture::Tiny qw( capture );
 my @state = ();
 
 sub record_state {
-    push @state, @_;
+    push @state, $_ for @_;
     open my $fh, '>', 't/_objdump_version' or return;
     print $fh "$_\n" for @state;
     close $fh;
