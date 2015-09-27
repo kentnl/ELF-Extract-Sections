@@ -6,7 +6,7 @@ package ELF::Extract::Sections::Scanner::Objdump;
 
 # ABSTRACT: An objdump based section scanner.
 
-our $VERSION = '1.001002';
+our $VERSION = '1.001003';
 
 # AUTHORITY
 

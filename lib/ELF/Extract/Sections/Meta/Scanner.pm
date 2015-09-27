@@ -6,7 +6,7 @@ package ELF::Extract::Sections::Meta::Scanner;
 
 # ABSTRACT: Interface Contract for Scanners
 
-our $VERSION = '1.001002';
+our $VERSION = '1.001003';
 
 # AUTHORITY
 
