@@ -1,6 +1,6 @@
 Revision history for ELF-Extract-Sections
 
-1.001002 2015-09-27T06:34:16Z f4c10e0
+1.001002 2015-09-27T07:02:59Z 986bab9
  [Installation]
  - Checks now attempt to extract the version itself from the version string
    and versions prior to 2.17 are now all known bad.
