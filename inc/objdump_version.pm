@@ -13,6 +13,7 @@ our %KNOWN_BAD = (
     gnukfreebsd => [],
     freebsd     => [ q[GNU objdump 2.17.50 [FreeBSD] 2007-07-03], ],
     openbsd     => [ q[GNU objdump 2.15], ],
+    MSWin32     => [ q[GNU objdump 2.17.50 20060824], ],
 );
 our %KNOWN_GOOD = (
     linux => [
