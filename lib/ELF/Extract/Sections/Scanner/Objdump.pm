@@ -176,24 +176,28 @@ sub _build__section_header_identifier {
 sub _objdump_win32 {
     my ($self) = @_;
     require Capture::Tiny;
-    my ( $stdout, $result ) = Capture::Tiny::capture_stdout(sub{
-      system('objdump',qw( -D -F ), $self->_file->realpath->absolute );
-    });
+    ## no critic (Subroutines::ProhibitCallsToUnexportedSubs)
+    my ( $stdout, $result ) = Capture::Tiny::capture_stdout(
+        sub {
+            system 'objdump', qw( -D -F ), $self->_file->realpath->absolute;
+        }
+    );
     if ( $result != 0 ) {
-      $self->log->logconfess(qq{An error occured requesting section data from objdump $^E $@ });
+        $self->log->logconfess(qq{An error occured requesting section data from objdump $^E $@ });
     }
     open my $fh, '<', \$stdout or do {
-      $self->log->logconfess(qq{An error occured making a string IO filehandle $! $@ });
+        $self->log->logconfess(qq{An error occured making a string IO filehandle $! $@ });
     };
     return $fh;
 }
+
 sub _objdump {
     my ($self) = @_;
-    if ( $^O eq 'MSWin32' or $ENV{OBJDUMP_SLURP} ) {
-      return $self->_objdump_win32;
+    if ( 'MSWin32' eq $^O or $ENV{OBJDUMP_SLURP} ) {
+        return $self->_objdump_win32;
     }
     if ( open my $fh, q{-|}, q{objdump}, qw( -D -F ), $self->_file->realpath->absolute ) {
-      return $fh;
+        return $fh;
     }
     $self->log->logconfess(qq{An error occured requesting section data from objdump $! $@ });
     return;
