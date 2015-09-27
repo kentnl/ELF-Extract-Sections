@@ -1,6 +1,13 @@
 This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL dependencies for all phases (configure/build/runtime/test/develop)
 
-1.001002
+1.001003
+ [Added / runtime requires]
+ - Capture::Tiny
+
+ [Removed / test requires]
+ - Capture::Tiny
+
+1.001002 2015-09-27T07:39:23Z
 
 1.001001 2015-09-26T06:22:10Z
  [Added / configure requires]
