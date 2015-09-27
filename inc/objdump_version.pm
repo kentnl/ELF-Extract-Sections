@@ -109,44 +109,43 @@ sub version_check {
     quote_msg($stdout);
     return 1;
 }
+
 sub version_match {
-    my ( $version_string ) = @_;
-    my ( @parts ) = split /\./, $version_string; 
+    my ($version_string) = @_;
+    my (@parts) = split /\./, $version_string;
     if ( $parts[0] <= 2 ) {
-      if ( $parts[1] <= 17 ) {
-        record_state('version_match_bad');
-        return is_na(
-            "'objdump' binarys version string parsed version <= 2.17.*\n" .
-            "Broken/Old/Non-GNU `objdump` binary.\n" 
-        );
-      }
+        if ( $parts[1] <= 17 ) {
+            record_state('version_match_bad');
+            return is_na(
+                "'objdump' binarys version string parsed version <= 2.17.*\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
+        }
     }
     return 1;
 }
 
 sub parse_version {
     my ($text) = @_;
-    if ($text =~ /(?:\A|(?<=\n))GNU objdump\s+\(([^)]+)\)\s+([\d.]+)/ ){
-      my $vendor_string = $1;
-      my $version_string = $2;
-      record_state('expr_match_0','vendor_string=' . $1, 'version_string=' . $2 );
-      version_match( $version_string );
-      warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
-      return 1;
+    if ( $text =~ /(?:\A|(?<=\n))GNU objdump\s+\(([^)]+)\)\s+([\d.]+)/ ) {
+        my $vendor_string  = $1;
+        my $version_string = $2;
+        record_state( 'expr_match_0', 'vendor_string=' . $1, 'version_string=' . $2 );
+        version_match($version_string);
+        warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
+        return 1;
     }
-    if ($text =~ /(?:\A|(?<=\n))GNU objdump\s+version\s+([\d.]+)/ ){
-      my $version_string = $1;
-      record_state('expr_match_1','version_string=' . $1 );
-      version_match( $version_string );
-      warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
-      return 1;
+    if ( $text =~ /(?:\A|(?<=\n))GNU objdump\s+version\s+([\d.]+)/ ) {
+        my $version_string = $1;
+        record_state( 'expr_match_1', 'version_string=' . $1 );
+        version_match($version_string);
+        warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
+        return 1;
     }
-    if ($text =~ /(?:\A|(?<=\n))GNU objdump\s+([\d.]+)/ ){
-      my $version_string = $1;
-      record_state('expr_match_2','version_string=' . $1 );
-      version_match( $version_string );
-      warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
-      return 1;
+    if ( $text =~ /(?:\A|(?<=\n))GNU objdump\s+([\d.]+)/ ) {
+        my $version_string = $1;
+        record_state( 'expr_match_2', 'version_string=' . $1 );
+        version_match($version_string);
+        warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
+        return 1;
     }
     return;
 }
