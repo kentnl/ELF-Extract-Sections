@@ -8,7 +8,7 @@ use Capture::Tiny qw( capture );
 my $path = which('objdump');
 
 if ( -e 't/_objdump_version' ) {
-    my (@state) = split /\n/, do { open my $fh, '<', 't/_objdump_version'; scalar <$fh> };
+    my (@state) = split /\n/, do { open my $fh, '<', 't/_objdump_version'; local $/ = undef; scalar <$fh> };
     diag "Makefile.PL result: [" . ( join q[, ], @state ) . "]";
 }
 unless ( ok( $path, "objdump is available" ) ) {
