@@ -112,8 +112,8 @@ sub version_check {
 sub version_match {
     my ( $version_string ) = @_;
     my ( @parts ) = split /\./, $version_string; 
-    if ( $version_parts[0] <= 2 ) {
-      if ( $version_parts[1] <= 17 ) {
+    if ( $parts[0] <= 2 ) {
+      if ( $parts[1] <= 17 ) {
         record_state('version_match_bad');
         return is_na(
             "'objdump' binarys version string parsed version <= 2.17.*\n" .
