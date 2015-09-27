@@ -1,6 +1,14 @@
 Revision history for ELF-Extract-Sections
 
-1.001003 2015-09-27T07:40:11Z 02f086f
+1.001003 2015-09-27T08:06:04Z 55e4d01
+ [Dependencies::Stats]
+ - Dependencies changed since 1.001002, see misc/*.deps* for details
+ - runtime: +1
+ - test: -1
+
+ [Win32 Support]
+ - Handle reading from objdump using slurp style IO instead of using an IO Handle  due to open '-|', @list not being
+   reliable on Win32.
 
 1.001002 2015-09-27T07:39:23Z f807e17
  [Installation]
