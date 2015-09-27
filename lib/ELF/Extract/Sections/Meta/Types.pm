@@ -6,7 +6,7 @@ package ELF::Extract::Sections::Meta::Types;
 
 # ABSTRACT: Generic Type Constraints for E:E:S
 
-our $VERSION = '1.001003';
+our $VERSION = '1.001004';
 
 # AUTHORITY
 
