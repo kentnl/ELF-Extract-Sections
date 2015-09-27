@@ -31,19 +31,19 @@ name: ELF-Extract-Sections
 provides:
   ELF::Extract::Sections:
     file: lib/ELF/Extract/Sections.pm
-    version: '1.001001'
+    version: '1.001002'
   ELF::Extract::Sections::Meta::Scanner:
     file: lib/ELF/Extract/Sections/Meta/Scanner.pm
-    version: '1.001001'
+    version: '1.001002'
   ELF::Extract::Sections::Meta::Types:
     file: lib/ELF/Extract/Sections/Meta/Types.pm
-    version: '1.001001'
+    version: '1.001002'
   ELF::Extract::Sections::Scanner::Objdump:
     file: lib/ELF/Extract/Sections/Scanner/Objdump.pm
-    version: '1.001001'
+    version: '1.001002'
   ELF::Extract::Sections::Section:
     file: lib/ELF/Extract/Sections/Section.pm
-    version: '1.001001'
+    version: '1.001002'
 recommends:
   Moose: '2.000'
 requires:
@@ -66,4 +66,4 @@ resources:
   bugtracker: https://github.com/kentnl/ELF-Extract-Sections/issues
   homepage: https://github.com/kentnl/ELF-Extract-Sections
   repository: https://github.com/kentnl/ELF-Extract-Sections.git
-version: '1.001001'
+version: '1.001002'

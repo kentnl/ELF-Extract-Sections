@@ -13,6 +13,7 @@ our %KNOWN_BAD = (
     gnukfreebsd => [],
     freebsd     => [ q[GNU objdump 2.17.50 [FreeBSD] 2007-07-03], ],
     openbsd     => [ q[GNU objdump 2.15], ],
+    MSWin32     => [ q[GNU objdump 2.17.50 20060824], ],
 );
 our %KNOWN_GOOD = (
     linux => [
@@ -36,7 +37,7 @@ use Capture::Tiny qw( capture );
 my @state = ();
 
 sub record_state {
-    push @state, $_[0];
+    push @state, $_ for @_;
     open my $fh, '>', 't/_objdump_version' or return;
     print $fh "$_\n" for @state;
     close $fh;
@@ -102,10 +103,58 @@ sub version_check {
         good_msg("Known Good obdump: $good_string");
         return 1;
     }
+    return if parse_version($stdout);
     record_state('unknown');
     warn_msg("Unknown objdump version string, proceed with caution\n");
     quote_msg($stdout);
     return 1;
+}
+
+sub version_match {
+    my ($version_string) = @_;
+    my (@parts) = split /\./, $version_string;
+    if ( $parts[0] <= 2 ) {
+        if ( $parts[1] <= 17 ) {
+            record_state('version_match_bad');
+            return is_na(
+                "'objdump' binarys version string parsed version <= 2.17.*\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
+        }
+    }
+    record_state('version_match_ok');
+    return 1;
+}
+
+sub parse_version {
+    my ($text) = @_;
+    if ( $text =~ /(?:\A|(?<=\n))GNU objdump\s+\(([^)]+)\)\s+([\d.]+)/ ) {
+        my $vendor_string  = $1;
+        my $version_string = $2;
+        record_state( 'expr_match_0', 'vendor_string=' . $1, 'version_string=' . $2 );
+        if ( version_match($version_string) ) {
+            warn_msg("objdump version: $version_string ( $vendor_string ) possibly good, proceed with caution.\n");
+            return 1;
+        }
+        return 0;
+    }
+    if ( $text =~ /(?:\A|(?<=\n))GNU objdump\s+version\s+([\d.]+)/ ) {
+        my $version_string = $1;
+        record_state( 'expr_match_1', 'version_string=' . $1 );
+        if ( version_match($version_string) ) {
+            warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
+            return 1;
+        }
+        return 0;
+    }
+    if ( $text =~ /(?:\A|(?<=\n))GNU objdump\s+([\d.]+)/ ) {
+        my $version_string = $1;
+        record_state( 'expr_match_2', 'version_string=' . $1 );
+        if ( version_match($version_string) ) {
+            warn_msg("objdump version: $version_string possibly good, proceed with caution.\n");
+            return 1;
+        }
+        return 0;
+    }
+    return;
 }
 1;
 
