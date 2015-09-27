@@ -180,7 +180,7 @@ sub _objdump_win32 {
     my ( $stdout, $result ) = Capture::Tiny::capture_stdout(
         sub {
             system 'objdump', qw( -D -F ), $self->_file->realpath->absolute;
-        }
+        },
     );
     if ( $result != 0 ) {
         $self->log->logconfess(qq{An error occured requesting section data from objdump $^E $@ });
