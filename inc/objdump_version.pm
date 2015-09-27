@@ -120,6 +120,7 @@ sub version_match {
                 "'objdump' binarys version string parsed version <= 2.17.*\n" . "Broken/Old/Non-GNU `objdump` binary.\n" );
         }
     }
+    record_state('version_match_ok');
     return 1;
 }
 
