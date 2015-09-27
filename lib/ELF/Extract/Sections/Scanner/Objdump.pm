@@ -173,7 +173,7 @@ sub _build__section_header_identifier {
     return qr/${header}\s*${offset}:/;
 }
 
-sub _objump_win32 {
+sub _objdump_win32 {
     my ($self) = @_;
     require Capture::Tiny;
     my ( $stdout, $result ) = Capture::Tiny::capture_stdout(sub{
