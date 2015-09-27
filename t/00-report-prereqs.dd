@@ -89,6 +89,7 @@ do { my $x = {
                                         'Moose' => '2.000'
                                       },
                       'requires' => {
+                                      'Capture::Tiny' => '0',
                                       'Carp' => '0',
                                       'Log::Log4perl' => '1.21',
                                       'Module::Runtime' => '0',
@@ -114,7 +115,6 @@ do { my $x = {
                                      'Test::More' => '0.99'
                                    },
                    'requires' => {
-                                   'Capture::Tiny' => '0',
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec' => '0',
                                    'File::Which' => '0',

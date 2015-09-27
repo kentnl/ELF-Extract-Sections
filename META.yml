@@ -3,7 +3,6 @@ abstract: 'Extract Raw Chunks of data from identifiable ELF Sections'
 author:
   - 'Kent Fredric <kentnl@cpan.org>'
 build_requires:
-  Capture::Tiny: '0'
   ExtUtils::MakeMaker: '0'
   File::Spec: '0'
   File::Which: '0'
@@ -47,6 +46,7 @@ provides:
 recommends:
   Moose: '2.000'
 requires:
+  Capture::Tiny: '0'
   Carp: '0'
   Log::Log4perl: '1.21'
   Module::Runtime: '0'

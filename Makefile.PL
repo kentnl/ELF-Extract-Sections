@@ -20,6 +20,7 @@ my %WriteMakefileArgs = (
   "MIN_PERL_VERSION" => "5.010000",
   "NAME" => "ELF::Extract::Sections",
   "PREREQ_PM" => {
+    "Capture::Tiny" => 0,
     "Carp" => 0,
     "Log::Log4perl" => "1.21",
     "Module::Runtime" => 0,
@@ -36,7 +37,6 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "Capture::Tiny" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
     "File::Which" => 0,
