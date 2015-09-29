@@ -31,20 +31,39 @@ unless ( ok( $path, "objdump is available" ) ) {
     }
     ok( $gotoutput, "objdump --version emitted data" );
 }
+my $help_out;
 {
     my ( $stdout, $stderr, $exit ) = capture { system("objdump --help") };
 
-    cmp_ok( $exit, '==', 0, "objdump exited with 0" );
+    my $ok = cmp_ok( $exit, '==', 0, "objdump exited with 0" );
 
     if ( unlike( $stdout, qr/^\s*$/, "objdump --help emitted data to STDOUT" ) ) {
-
-        my $ok = like( $stdout, qr/-D,\s*--disassemble-all/, "has -D param" );
-        $ok = undef unless like( $stdout, qr/-F,\s*--file-offsets/, "has -F param" );
+        $help_out = $stdout;
+        $ok       = undef unless like( $stdout, qr/-D,\s*--disassemble-all/, "has -D param" );
+        $ok       = undef unless like( $stdout, qr/-F,\s*--file-offsets/, "has -F param" );
 
         diag "STDOUT: ---\n" . $stdout unless $ok;
     }
     elsif ( $stderr !~ /^\s*$/ ) {
-        diag "STDERR: ---\n";
+        diag "STDERR: ---\n" . $stderr;
+    }
+}
+{
+    my ( $stdout, $stderr, $exit ) = capture { system("objdump -f t/test_files/libz.so.1.2.3.debug") };
+
+    my $ok = cmp_ok( $exit, '==', 0, 'objdump exited with 0' );
+    if ( unlike( $stdout, qr/^\s*$/, "objdump -f emitted data to STDOUT" ) ) {
+
+        $ok = undef unless like( $stdout, qr/elf64-x86-64/, "Id's elf64-x86-64" );
+
+        diag "STDOUT: ---\n" . $stdout unless $ok;
+    }
+    elsif ( $stderr !~ /^\s*$/ ) {
+        $ok = undef;
+        diag "STDERR: ---\n" . $stderr;
+    }
+    if ( not $ok and $help_out ) {
+        diag "HELP OUT: ---\n$help_out";
     }
 }
 

@@ -6,7 +6,7 @@ package ELF::Extract::Sections::Scanner::Objdump;
 
 # ABSTRACT: An objdump based section scanner.
 
-our $VERSION = '1.001003'; # TRIAL
+our $VERSION = '1.001004'; # TRIAL
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -217,7 +217,7 @@ ELF::Extract::Sections::Scanner::Objdump - An objdump based section scanner.
 
 =head1 VERSION
 
-version 1.001003
+version 1.001004
 
 =head1 SYNOPSIS
 
