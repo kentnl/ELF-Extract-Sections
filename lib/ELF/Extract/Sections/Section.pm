@@ -6,7 +6,7 @@ package ELF::Extract::Sections::Section;
 
 # ABSTRACT:  An Objective reference to a section in an ELF file.
 
-our $VERSION = '1.001004'; # TRIAL
+our $VERSION = '1.001005'; # TRIAL
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
@@ -189,7 +189,7 @@ ELF::Extract::Sections::Section - An Objective reference to a section in an ELF 
 
 =head1 VERSION
 
-version 1.001004
+version 1.001005
 
 =head1 SYNOPSIS
 
