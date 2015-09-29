@@ -49,7 +49,7 @@ my $help_out;
     }
 }
 {
-    my ( $stdout, $stderr, $exit ) = capture { system("objdump -f t/test_files/libc.so.6") };
+    my ( $stdout, $stderr, $exit ) = capture { system("objdump -f t/test_files/libz.so.1.2.3.debug") };
 
     my $ok = cmp_ok( $exit, '==', 0, 'objdump exited with 0' );
     if ( unlike( $stdout, qr/^\s*$/, "objdump -f emitted data to STDOUT" ) ) {
