@@ -49,12 +49,12 @@ my $help_out;
     }
 }
 {
-    my ( $stdout, $stderr, $exit ) = capture { system("objdump -f t/test_files/libc.so.6") };
+    my ( $stdout, $stderr, $exit ) = capture { system("objdump -f t/test_files/libz.so.1.2.3.debug") };
 
     my $ok = cmp_ok( $exit, '==', 0, 'objdump exited with 0' );
     if ( unlike( $stdout, qr/^\s*$/, "objdump -f emitted data to STDOUT" ) ) {
 
-        $ok = undef unless like( $stdout, qr/elf64-x86-64/, "Id's elf65-x86-64" );
+        $ok = undef unless like( $stdout, qr/elf64-x86-64/, "Id's elf64-x86-64" );
 
         diag "STDOUT: ---\n" . $stdout unless $ok;
     }

@@ -1,6 +1,8 @@
 Revision history for ELF-Extract-Sections
 
-1.001004 2015-09-27T08:13:56Z f9073e2
+1.001004 2015-09-29T14:21:04Z b0ca7c0
+ [Tests]
+ - Try to work out what the finger prints of a system that can't handle ELF64 files looks like.
 
 1.001003 2015-09-27T08:06:04Z 55e4d01
  [Dependencies::Stats]
